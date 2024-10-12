@@ -2,28 +2,70 @@ import { Canvas } from "@react-three/fiber";
 import { Suspense, useEffect, useRef, useState } from "react";
 
 import sakura from "../assets/sakura.mp3";
+import bacdangcungchungchauhanhquan from "../assets/BacDangCungChungChauHanhQuan-VA_95g.mp3";
+import baonoilenroi from "../assets/BaoNoiLenRoi-TrongTan-DangDuong-V_a27.mp3";
+import cogaimoduong from "../assets/Cogaimoduong-ThuyVan_agqb.mp3";
+import NhuCoBacHoTrongNgayVuiDaiThang from "../assets/NhuCoBacHoTrongNgayVuiDaiThang-T_3dyat.mp3";
+import Tienvesaigon from "../assets/TienVeSaiGon-VA_95r.mp3";
+import VietNamQueHuongToi from "../assets/VietNamQueHuongToi-DangDuong-Trong_3hn82.mp3";
 import { HomeInfo, Loader } from "../components";
 import { soundoff, soundon } from "../assets/icons";
 import { Bird, Island, Plane, Sky } from "../models";
+import { a } from "@react-spring/three";
 
 const Home = () => {
-  const audioRef = useRef(new Audio(sakura));
+  const audioRef = useRef(new Audio(VietNamQueHuongToi));
   audioRef.current.volume = 0.2;
   audioRef.current.loop = true;
 
   const [currentStage, setCurrentStage] = useState(1);
   const [isRotating, setIsRotating] = useState(false);
-  const [isPlayingMusic, setIsPlayingMusic] = useState(true);
+  const [isPlayingMusic, setIsPlayingMusic] = useState(false);
+  const music = [
+    VietNamQueHuongToi,
+    bacdangcungchungchauhanhquan,
+    baonoilenroi,
+    cogaimoduong,
+    NhuCoBacHoTrongNgayVuiDaiThang,
+    Tienvesaigon,
+    VietNamQueHuongToi,
+  ];
+  const [musicList, setMusicList] = useState(0);
+
+  const playMusic = (index) => {
+    audioRef.current.src = music[index];
+    audioRef.current.load();
+    audioRef.current.play();
+  };
 
   useEffect(() => {
     if (isPlayingMusic) {
-      audioRef.current.play();
+      playMusic(musicList);
     }
 
     return () => {
       audioRef.current.pause();
     };
   }, [isPlayingMusic]);
+
+  useEffect(() => {
+    if (audioRef.current) {
+      const handleEnd = () => {
+        const nextTrack = (musicList + 1) % music.length; // Go to next track
+        setMusicList(nextTrack); // Update current track
+        if (isPlayingMusic) {
+          changeAudioSource(nextTrack); // Change to the next track if music is playing
+        }
+      };
+
+      audioRef.current.addEventListener('ended', handleEnd); // Listen for end of audio
+
+      // Cleanup event listener on unmount
+      return () => {
+        audioRef.current.removeEventListener('ended', handleEnd);
+      };
+    }
+  }, [musicList, music, isPlayingMusic]);
 
   const adjustBiplaneForScreenSize = () => {
     let screenScale, screenPosition;
