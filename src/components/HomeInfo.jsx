@@ -59,6 +59,20 @@ const HomeInfo = ({ currentStage }) => {
     );
   }
 
+  if (currentStage === 5) {
+    return (
+      <div className='info-box'>
+        <h1>Trường Sa, Hoàng Sa là của Việt Nam</h1>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 480" width="32" height="32">
+          <g fill-rule="evenodd" stroke-width="1pt">
+            <path fill="#da251d" d="M0 0h640v480H0z"/>
+            <path fill="#ff0" d="m320 69.397 42.852 131.905h138.642l-112.258 81.606 42.903 131.695-112.139-81.777-112.028 81.896 42.834-131.696-112.25-81.605h138.526L320 69.397z"/>
+          </g>
+        </svg>
+      </div>
+    );
+  }
+
   return null;
 };
 
