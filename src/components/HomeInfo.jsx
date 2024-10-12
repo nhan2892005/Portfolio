@@ -18,7 +18,7 @@ const HomeInfo = ({ currentStage }) => {
     return (
       <div className='info-box text-center'>
         <p className='font-medium sm:text-xl inline-block' style={{ marginRight: '8px' }}>
-          Trường Sa, Hoàng Sa là của Việt Nam
+          Trường Sa, Hoàng Sa belong to Viet Nam
         </p>
         <svg className='inline-block' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 480" width="32" height="32">
           <g fill-rule="evenodd" stroke-width="1pt">
