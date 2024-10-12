@@ -193,50 +193,44 @@ export function Island({
 
       // Set the current stage based on the island's orientation
       switch (true) {
-        case normalizedRotation >= 1.5 && normalizedRotation <= 1:
+        case normalizedRotation >= 0 && normalizedRotation <= 0.5:
+          setCurrentStage(5);
+          break;
+        case normalizedRotation >= 0.5 && normalizedRotation <= 1:
           setCurrentStage(4);
           break;
-        case normalizedRotation >= 1.5 && normalizedRotation <= 2:
+        case normalizedRotation >= 1 && normalizedRotation <= 1.5:
           setCurrentStage(3);
           break;
-        case normalizedRotation >= 2 && normalizedRotation <= 2.5:
+        case normalizedRotation >= 1.5 && normalizedRotation <= 2:
           setCurrentStage(2);
+          break;
+        case normalizedRotation >= 2 && normalizedRotation <= 2.5:
+          setCurrentStage(5);
           break;
         case normalizedRotation >= 2.5 && normalizedRotation <= 3:
           setCurrentStage(1);
           break;
         case normalizedRotation >= 3 && normalizedRotation <= 3.5:
-          setCurrentStage(2);
+          setCurrentStage(5);
           break;
         case normalizedRotation >= 3.5 && normalizedRotation <= 4:
-          setCurrentStage(3);
+          setCurrentStage(2);
           break;
         case normalizedRotation >= 4 && normalizedRotation <= 4.5:
-          setCurrentStage(4);
+          setCurrentStage(3);
           break;
         case normalizedRotation >= 4.5 && normalizedRotation <= 5:
-          setCurrentStage(1);
+          setCurrentStage(4);
           break;
         case normalizedRotation >= 5 && normalizedRotation <= 5.5:
-          setCurrentStage(2);
+          setCurrentStage(5);
           break;
         case normalizedRotation >= 5.5 && normalizedRotation <= 6:
-          setCurrentStage(3);
+          setCurrentStage(5);
           break;
-        case normalizedRotation >= 6 && normalizedRotation <= 6.5:
-          setCurrentStage(4);
-          break;
-        case normalizedRotation >= 6.5 && normalizedRotation <= 7:
-          setCurrentStage(1);
-          break;
-        case normalizedRotation >= 7 && normalizedRotation <= 7.5:
-          setCurrentStage(2);
-          break;
-        case normalizedRotation >= 7.5 && normalizedRotation <= 8:
-          setCurrentStage(3);
-          break;
-        case normalizedRotation >= 8 && normalizedRotation <= 8.5:
-          setCurrentStage(4);
+        case normalizedRotation >= 6 && normalizedRotation <= (2 * Math.PI):
+          setCurrentStage(5);
           break;
         default:
           setCurrentStage(null);
