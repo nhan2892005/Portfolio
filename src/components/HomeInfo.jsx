@@ -61,8 +61,10 @@ const HomeInfo = ({ currentStage }) => {
 
   if (currentStage === 5) {
     return (
-      <div className='info-box'>
-        <h1>Trường Sa, Hoàng Sa là của Việt Nam</h1>
+      <div className='info-box flex items-center justify-center'>
+        <p className='font-medium sm:text-xl text-center mr-2'>
+          Trường Sa, Hoàng Sa là của Việt Nam
+        </p>
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 480" width="32" height="32">
           <g fill-rule="evenodd" stroke-width="1pt">
             <path fill="#da251d" d="M0 0h640v480H0z"/>
