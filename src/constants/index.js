@@ -258,14 +258,12 @@ export const research_experiences = [
         iconBg: "#accbe1",
         date: "Sep 2024 - Present",
         points: [
-            "Focused on Data Engineering and Reinforcement Learning, developing data pipelines, optimizing storage solutions, and applying RL techniques to improve the job scheduling process in HPC systems.",
-            "Developed and implemented efficient data pipelines for big data handling and analysis.",
-            "Leveraged Kafka and Spark for data stream processing and real-time analytics.",
-            "Designed storage solutions using PostgreSQL for scalable data storage and retrieval."
+            "Research on the application of Reinforcement Learning in Resource Management, particularly in the Scheduling Problem within HPC Systems.",
+            "Leveraged Kafka and Spark for data stream processing, real-time analytics and IOT",
         ],
     },
     {
-        title: "Former Member",
+        title: "Member",
         company_name: "Fablab Innovation",
         icon: fablab,  // Replace with the appropriate icon
         iconBg: "#fbc3bc",
@@ -274,7 +272,6 @@ export const research_experiences = [
             "Researched AI applications in digital factory transformation, industrial modernization, and manufacturing.",
             "Focused on computer vision technologies for automated factory processes and design of industrial ICs.",
             "Utilized Python for AI model development and applied WinForms for UI development in .NET.",
-            "Contributed to projects that aimed to modernize manufacturing systems through automation and AI integration."
         ],
     },
     {
