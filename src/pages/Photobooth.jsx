@@ -29,6 +29,11 @@ const Photobooth = () => {
   const [bgGradient1, setBgGradient1] = useState("#ffffff");
   const [bgGradient2, setBgGradient2] = useState("#cccccc");
 
+  // Bộ đếm giờ
+  const [countdown, setCountdown] = useState(0);
+  // Số giây đếm tùy chỉnh (mặc định là 3 giây)
+  const [customCountdown, setCustomCountdown] = useState(3);
+
   // Setup camera: giữ nguyên kích thước gốc, không scale
   useEffect(() => {
     async function getCamera() {
@@ -57,7 +62,7 @@ const Photobooth = () => {
     setFrameSlots(Array(template.slots.length).fill(null));
   }, [selectedTemplateKey]);
 
-  // Chụp ảnh: không scale, giữ nguyên kích thước video
+  // Hàm chụp ảnh: không scale, giữ nguyên kích thước video
   const capture = () => {
     const video = videoRef.current;
     const canvas = canvasRef.current;
@@ -67,23 +72,33 @@ const Photobooth = () => {
     canvas.width = video.videoWidth;
     canvas.height = video.videoHeight;
 
-
     context.translate(canvas.width, 0);
     context.scale(-1, 1);
 
     // Không áp dụng scale hay mirror
     context.drawImage(video, 0, 0, canvas.width, canvas.height);
 
-    // Vẽ khung nếu cần
-    //context.strokeStyle = frameColor;
-    //context.lineWidth = 20;
-    //context.strokeRect(0, 0, canvas.width, canvas.height);
-    
     // Reset lại transform nếu cần sử dụng canvas cho mục đích khác
     context.setTransform(1, 0, 0, 1, 0, 0);
 
     const dataUrl = canvas.toDataURL("image/png");
     setCapturedImages((prev) => [...prev, dataUrl]);
+  };
+
+  // Hàm bắt đầu đếm ngược trước khi chụp
+  const startCountdown = () => {
+    let seconds = Number(customCountdown);
+    setCountdown(seconds);
+    const intervalId = setInterval(() => {
+      setCountdown((prev) => {
+        if (prev === 1) {
+          clearInterval(intervalId);
+          capture();
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
   };
 
   // Xoá từng ảnh
@@ -111,7 +126,7 @@ const Photobooth = () => {
     newSlots[slotIndex] = img;
     console.log("Cập nhật slot:", slotIndex, newSlots); // Kiểm tra state
     setFrameSlots(newSlots);
-  };  
+  };
 
   const handleDragOver = (e) => {
     e.preventDefault();
@@ -122,105 +137,122 @@ const Photobooth = () => {
       <h1 className="text-3xl font-bold mb-4">Photobooth Layout</h1>
 
       <div className="flex flex-wrap items-center gap-4 mb-4">
-  <div className="flex items-center">
-    <label className="mr-1">Chọn template:</label>
-    <select
-      value={selectedTemplateKey}
-      onChange={(e) => setSelectedTemplateKey(e.target.value)}
-      className="border p-1"
-    >
-      {Object.keys(templates).map((key) => (
-        <option key={key} value={key}>
-          {templates[key].label}
-        </option>
-      ))}
-    </select>
-  </div>
+        <div className="flex items-center">
+          <label className="mr-1">Chọn template:</label>
+          <select
+            value={selectedTemplateKey}
+            onChange={(e) => setSelectedTemplateKey(e.target.value)}
+            className="border p-1"
+          >
+            {Object.keys(templates).map((key) => (
+              <option key={key} value={key}>
+                {templates[key].label}
+              </option>
+            ))}
+          </select>
+        </div>
 
-  <div className="flex items-center">
-    <label className="mr-1">Kiểu background:</label>
-    <select
-      value={bgType}
-      onChange={(e) => setBgType(e.target.value)}
-      className="border p-1"
-    >
-      <option value="solid">Solid</option>
-      <option value="gradient">Gradient</option>
-    </select>
-  </div>
+        <div className="flex items-center">
+          <label className="mr-1">Kiểu background:</label>
+          <select
+            value={bgType}
+            onChange={(e) => setBgType(e.target.value)}
+            className="border p-1"
+          >
+            <option value="solid">Solid</option>
+            <option value="gradient">Gradient</option>
+          </select>
+        </div>
 
-  {bgType === "solid" && (
-    <div className="flex items-center">
-      <label className="mr-1">Màu background:</label>
-      <input
-        type="color"
-        value={bgSolid}
-        onChange={(e) => setBgSolid(e.target.value)}
-        className="border p-1"
-      />
-    </div>
-  )}
-  {bgType === "gradient" && (
-    <>
-      <div className="flex items-center">
-        <label className="mr-1">Màu 1:</label>
-        <input
-          type="color"
-          value={bgGradient1}
-          onChange={(e) => setBgGradient1(e.target.value)}
-          className="border p-1"
-        />
+        {bgType === "solid" && (
+          <div className="flex items-center">
+            <label className="mr-1">Màu background:</label>
+            <input
+              type="color"
+              value={bgSolid}
+              onChange={(e) => setBgSolid(e.target.value)}
+              className="border p-1"
+            />
+          </div>
+        )}
+        {bgType === "gradient" && (
+          <>
+            <div className="flex items-center">
+              <label className="mr-1">Màu 1:</label>
+              <input
+                type="color"
+                value={bgGradient1}
+                onChange={(e) => setBgGradient1(e.target.value)}
+                className="border p-1"
+              />
+            </div>
+            <div className="flex items-center">
+              <label className="mr-1">Màu 2:</label>
+              <input
+                type="color"
+                value={bgGradient2}
+                onChange={(e) => setBgGradient2(e.target.value)}
+                className="border p-1"
+              />
+            </div>
+          </>
+        )}
+
+        <div className="flex items-center">
+          <label className="mr-1">Text:</label>
+          <input
+            type="text"
+            value={brandText}
+            onChange={(e) => setBrandText(e.target.value)}
+            className="border p-1"
+          />
+        </div>
+
+        <div className="flex items-center">
+          <label className="mr-1">Date:</label>
+          <input
+            type="text"
+            value={dateText}
+            onChange={(e) => setDateText(e.target.value)}
+            className="border p-1"
+          />
+        </div>
+
+        {/* Cho phép người dùng điều chỉnh số giây đếm */}
+        <div className="flex items-center">
+          <label className="mr-1">Số giây đếm:</label>
+          <input
+            type="number"
+            min="1"
+            value={customCountdown}
+            onChange={(e) => setCustomCountdown(e.target.value)}
+            className="border p-1 w-16"
+          />
+        </div>
       </div>
-      <div className="flex items-center">
-        <label className="mr-1">Màu 2:</label>
-        <input
-          type="color"
-          value={bgGradient2}
-          onChange={(e) => setBgGradient2(e.target.value)}
-          className="border p-1"
-        />
-      </div>
-    </>
-  )}
-
-  <div className="flex items-center">
-    <label className="mr-1">Text:</label>
-    <input
-      type="text"
-      value={brandText}
-      onChange={(e) => setBrandText(e.target.value)}
-      className="border p-1"
-    />
-  </div>
-
-  <div className="flex items-center">
-    <label className="mr-1">Date:</label>
-    <input
-      type="text"
-      value={dateText}
-      onChange={(e) => setDateText(e.target.value)}
-      className="border p-1"
-    />
-  </div>
-</div>
-
 
       {/* Video & Canvas ẩn */}
       <div className="mb-4">
-      <video
-        ref={videoRef}
-        autoPlay
-        className="border"
-        style={{ width: "400", height: "300", transform: "scaleX(-1)" }}
-      ></video>
+        <video
+          ref={videoRef}
+          autoPlay
+          className="border"
+          style={{ width: "400px", height: "300px", transform: "scaleX(-1)" }}
+        ></video>
         <canvas ref={canvasRef} style={{ display: "none" }} />
       </div>
+
+      {/* Hiển thị countdown nếu đang chạy */}
+      {countdown > 0 && (
+        <div className="text-4xl font-bold mb-4">{countdown}</div>
+      )}
 
       {/* Nút chụp ảnh & Clear All */}
       <div className="mb-4 flex gap-4">
         <button
-          onClick={capture}
+          onClick={startCountdown}
           className="px-4 py-2 bg-blue-500 text-white rounded"
+          disabled={countdown > 0} // vô hiệu hóa nút khi đang đếm
         >
           Chụp Ảnh
         </button>
@@ -264,24 +296,24 @@ const Photobooth = () => {
         <div className="flex flex-wrap gap-4">
           {frameSlots.map((slotImg, i) => (
             <div
-                key={i}
-                className="border p-2"
-                onDrop={(e) => handleDrop(e, i)}
-                onDragOver={(e) => { e.preventDefault(); }}
-                style={{ width: "150px", height: "150px", overflow: "hidden" }}
+              key={i}
+              className="border p-2"
+              onDrop={(e) => handleDrop(e, i)}
+              onDragOver={handleDragOver}
+              style={{ width: "150px", height: "150px", overflow: "hidden" }}
             >
-                {slotImg ? (
+              {slotImg ? (
                 <img
-                    src={slotImg}
-                    alt={`Slot ${i}`}
-                    style={{ width: "100%", height: "100%", objectFit: "cover" }}
+                  src={slotImg}
+                  alt={`Slot ${i}`}
+                  style={{ width: "100%", height: "100%", objectFit: "cover" }}
                 />
-                ) : (
+              ) : (
                 <div className="flex items-center justify-center h-full text-xs text-gray-500">
-                    Kéo & thả ảnh vào đây
+                  Kéo & thả ảnh vào đây
                 </div>
-                )}
-            </div>          
+              )}
+            </div>
           ))}
         </div>
       </div>
