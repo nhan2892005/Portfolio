@@ -67,6 +67,7 @@ const Photobooth = () => {
     canvas.width = video.videoWidth;
     canvas.height = video.videoHeight;
 
+
     context.translate(canvas.width, 0);
     context.scale(-1, 1);
 
@@ -74,9 +75,9 @@ const Photobooth = () => {
     context.drawImage(video, 0, 0, canvas.width, canvas.height);
 
     // Vẽ khung nếu cần
-    context.strokeStyle = frameColor;
-    context.lineWidth = 20;
-    context.strokeRect(0, 0, canvas.width, canvas.height);
+    //context.strokeStyle = frameColor;
+    //context.lineWidth = 20;
+    //context.strokeRect(0, 0, canvas.width, canvas.height);
     
     // Reset lại transform nếu cần sử dụng canvas cho mục đích khác
     context.setTransform(1, 0, 0, 1, 0, 0);
@@ -210,7 +211,7 @@ const Photobooth = () => {
         ref={videoRef}
         autoPlay
         className="border"
-        style={{ width: "500px", height: "500px", transform: "scaleX(-1)" }}
+        style={{ width: "400", height: "300", transform: "scaleX(-1)" }}
       ></video>
         <canvas ref={canvasRef} style={{ display: "none" }} />
       </div>
