@@ -4,8 +4,8 @@
     },
     "rewrites": [
         {
-            "source": "/sitemap.xml",
-            "destination": "/sitemap.xml"
+            "source": "/mapsite.xml",
+            "destination": "/mapsite.xml"
         },
         {
             "source": "/(.*)",
