@@ -11,6 +11,7 @@ import VietNamQueHuongToi from "../assets/VietNamQueHuongToi-DangDuong-Trong_3hn
 import { HomeInfo, Loader } from "../components";
 import { soundoff, soundon } from "../assets/icons";
 import { Bird, Island, Plane, Sky } from "../models";
+import { Helmet } from "react-helmet-async";
 import { a } from "@react-spring/three";
 
 const Home = () => {
@@ -100,6 +101,14 @@ const Home = () => {
   const [islandScale, islandPosition] = adjustIslandForScreenSize();
 
   return (
+    <>
+    <Helmet>
+      <title>Nguyen Phuc Nhan | Home</title>
+      <meta name="description" content="Trang chủ portfolio của Nguyen Phuc Nhan, nơi giới thiệu các dự án và nghiên cứu về HPC, Big Data, Quantum Computing và Reinforcement Learning." />
+      <meta property="og:title" content="Nguyen Phuc Nhan | Home" />
+      <meta property="og:description" content="Khám phá các dự án sáng tạo của Nguyen Phuc Nhan, lập trình viên &amp; kỹ sư dữ liệu." />
+      <link rel="canonical" href="https://phucnhan.vercel.app" />
+    </Helmet>
     <section className='w-full h-screen relative'>
       <div className='absolute top-28 left-0 right-0 z-10 flex items-center justify-center'>
         {currentStage && <HomeInfo currentStage={currentStage} />}
@@ -155,6 +164,7 @@ const Home = () => {
         />
       </div>
     </section>
+    </>
   );
 };
 
