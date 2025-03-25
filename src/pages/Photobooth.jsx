@@ -23,7 +23,9 @@ const Photobooth = () => {
   const [dateText, setDateText] = useState("2025.03.20");
   const [brandText, setBrandText] = useState("Nhan");
 
-  // Tùy chọn background: chọn kiểu (solid/gradient)
+  // Thêm state cho màu chữ
+  const [textColor, setTextColor] = useState("#000000");
+  // Tùy chọn background
   const [bgType, setBgType] = useState("solid"); // "solid" hoặc "gradient"
   const [bgSolid, setBgSolid] = useState("#ffffff");
   const [bgGradient1, setBgGradient1] = useState("#ffffff");
@@ -49,9 +51,10 @@ const Photobooth = () => {
     }
     getCamera();
 
+    // Khi component unmount, dừng camera
     return () => {
-      if (stream) {
-        stream.getTracks().forEach((track) => track.stop());
+      if (videoRef.current && videoRef.current.srcObject) {
+        videoRef.current.srcObject.getTracks().forEach((track) => track.stop());
       }
     };
   }, []);
@@ -68,24 +71,22 @@ const Photobooth = () => {
     const canvas = canvasRef.current;
     const context = canvas.getContext("2d");
 
-    // Dùng kích thước gốc của video
     canvas.width = video.videoWidth;
     canvas.height = video.videoHeight;
 
     context.translate(canvas.width, 0);
     context.scale(-1, 1);
 
-    // Không áp dụng scale hay mirror
     context.drawImage(video, 0, 0, canvas.width, canvas.height);
 
-    // Reset lại transform nếu cần sử dụng canvas cho mục đích khác
+    // Reset transform
     context.setTransform(1, 0, 0, 1, 0, 0);
 
     const dataUrl = canvas.toDataURL("image/png");
     setCapturedImages((prev) => [...prev, dataUrl]);
   };
 
-  // Hàm bắt đầu đếm ngược trước khi chụp
+  // Hàm bắt đầu đếm ngược
   const startCountdown = () => {
     let seconds = Number(customCountdown);
     setCountdown(seconds);
@@ -106,25 +107,23 @@ const Photobooth = () => {
     setCapturedImages((prev) => prev.filter((_, i) => i !== idx));
   };
 
-  // Clear all captured images và reset slot
+  // Clear all ảnh và reset slot
   const clearAll = () => {
     setCapturedImages([]);
     const template = templates[selectedTemplateKey];
     setFrameSlots(Array(template.slots.length).fill(null));
   };
 
-  // Xử lý kéo – thả: khi kéo ảnh từ gallery
+  // Xử lý kéo – thả
   const handleDragStart = (e, img) => {
     e.dataTransfer.setData("text/plain", img);
   };
 
-  // Khi thả vào slot
   const handleDrop = (e, slotIndex) => {
     e.preventDefault();
     const img = e.dataTransfer.getData("text/plain");
     const newSlots = [...frameSlots];
     newSlots[slotIndex] = img;
-    console.log("Cập nhật slot:", slotIndex, newSlots); // Kiểm tra state
     setFrameSlots(newSlots);
   };
 
@@ -133,8 +132,8 @@ const Photobooth = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center pt-20 p-4">
-      <h1 className="text-3xl font-bold mb-4">Photobooth Layout</h1>
+    <div className="min-h-screen flex flex-col items-center pt-20 py-4 px-20">
+      <h1 className="text-3xl font-bold mb-4">Photobooth</h1>
 
       <div className="flex flex-wrap items-center gap-4 mb-4">
         <div className="flex items-center">
@@ -208,6 +207,17 @@ const Photobooth = () => {
           />
         </div>
 
+        {/* Input chọn màu chữ */}
+        <div className="flex items-center">
+          <label className="mr-1">Màu chữ:</label>
+          <input
+            type="color"
+            value={textColor}
+            onChange={(e) => setTextColor(e.target.value)}
+            className="border p-1"
+          />
+        </div>
+
         <div className="flex items-center">
           <label className="mr-1">Date:</label>
           <input
@@ -218,7 +228,6 @@ const Photobooth = () => {
           />
         </div>
 
-        {/* Cho phép người dùng điều chỉnh số giây đếm */}
         <div className="flex items-center">
           <label className="mr-1">Số giây đếm:</label>
           <input
@@ -242,17 +251,15 @@ const Photobooth = () => {
         <canvas ref={canvasRef} style={{ display: "none" }} />
       </div>
 
-      {/* Hiển thị countdown nếu đang chạy */}
       {countdown > 0 && (
         <div className="text-4xl font-bold mb-4">{countdown}</div>
       )}
 
-      {/* Nút chụp ảnh & Clear All */}
       <div className="mb-4 flex gap-4">
         <button
           onClick={startCountdown}
           className="px-4 py-2 bg-blue-500 text-white rounded"
-          disabled={countdown > 0} // vô hiệu hóa nút khi đang đếm
+          disabled={countdown > 0}
         >
           Chụp Ảnh
         </button>
@@ -290,7 +297,7 @@ const Photobooth = () => {
         </div>
       </div>
 
-      {/* Các slot: thay vì select box, dùng vùng kéo thả */}
+      {/* Các slot kéo thả */}
       <div className="mb-4 w-full max-w-3xl">
         <h2 className="text-xl mb-2">Gán ảnh vào slots</h2>
         <div className="flex flex-wrap gap-4">
@@ -325,6 +332,7 @@ const Photobooth = () => {
         frameColor={frameColor}
         dateText={dateText}
         brandText={brandText}
+        textColor={textColor}  // truyền màu chữ xuống
         bgType={bgType}
         bgSolid={bgSolid}
         bgGradient1={bgGradient1}

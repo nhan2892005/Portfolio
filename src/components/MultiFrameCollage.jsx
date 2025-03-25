@@ -1,5 +1,3 @@
-// src/components/MultiFrameCollage.jsx
-
 import React, { useRef, useEffect, useState } from "react";
 
 const MultiFrameCollage = ({
@@ -8,10 +6,11 @@ const MultiFrameCollage = ({
   frameColor,
   dateText,
   brandText,
-  bgType,        // "solid" hoặc "gradient"
-  bgSolid,       // nếu bgType === "solid"
-  bgGradient1,   // nếu bgType === "gradient"
-  bgGradient2,   // nếu bgType === "gradient"
+  textColor,    // nhận từ Photobooth
+  bgType,       // "solid" hoặc "gradient"
+  bgSolid,      // nếu bgType === "solid"
+  bgGradient1,  // nếu bgType === "gradient"
+  bgGradient2,  // nếu bgType === "gradient"
 }) => {
   const canvasRef = useRef(null);
   const [previewDataUrl, setPreviewDataUrl] = useState(null);
@@ -27,19 +26,18 @@ const MultiFrameCollage = ({
     canvas.width = width;
     canvas.height = height;
 
-    // Tô background: nếu bgType là gradient, tạo gradient
+    // Tô background
     if (bgType === "gradient") {
       const gradient = ctx.createLinearGradient(0, 0, width, height);
       gradient.addColorStop(0, bgGradient1);
       gradient.addColorStop(1, bgGradient2);
       ctx.fillStyle = gradient;
     } else {
-      // Nếu solid, dùng màu từ bgSolid (nếu không, dùng backgroundColor của template)
       ctx.fillStyle = bgSolid || backgroundColor || "#ffffff";
     }
     ctx.fillRect(0, 0, width, height);
 
-    // Vẽ từng ảnh vào vị trí slot (co giãn theo kích thước slot)
+    // Vẽ từng ảnh vào slot
     for (let i = 0; i < slots.length; i++) {
       if (!frameSlots[i]) continue;
       const img = new Image();
@@ -51,22 +49,26 @@ const MultiFrameCollage = ({
       ctx.drawImage(img, x, y, w, h);
     }
 
-    // (Tuỳ chọn) Nếu có viền, bạn có thể vẽ nó (ở đây vẫn giữ nếu frameColor có giá trị)
+    // Vẽ viền nếu có
     if (frameColor) {
       ctx.strokeStyle = frameColor;
       ctx.lineWidth = 20;
       ctx.strokeRect(0, 0, width, height);
     }
 
-    // Vẽ text brand & date ở dưới
+    // Xác định màu chữ hiệu quả
+    const effectiveTextColor =
+      textColor || (bgType === "gradient" ? "#FFD700" : "#000000");
+
+    // Vẽ text brand & date
     if (brandText) {
-      ctx.fillStyle = bgType === "gradient" ? "#FFD700" : "#000000";
+      ctx.fillStyle = effectiveTextColor;
       ctx.font = "bold 48px sans-serif";
       ctx.textAlign = "center";
       ctx.fillText(brandText, width / 2, height - 80);
     }
     if (dateText) {
-      ctx.fillStyle = bgType === "gradient" ? "#FFD700" : "#000000";
+      ctx.fillStyle = effectiveTextColor;
       ctx.font = "30px sans-serif";
       ctx.textAlign = "center";
       ctx.fillText(dateText, width / 2, height - 30);
@@ -83,7 +85,18 @@ const MultiFrameCollage = ({
   useEffect(() => {
     generatePreview();
     // eslint-disable-next-line
-  }, [selectedTemplate, frameSlots, frameColor, dateText, brandText, bgType, bgSolid, bgGradient1, bgGradient2]);
+  }, [
+    selectedTemplate,
+    frameSlots,
+    frameColor,
+    dateText,
+    brandText,
+    textColor,
+    bgType,
+    bgSolid,
+    bgGradient1,
+    bgGradient2,
+  ]);
 
   const handleSaveCollage = async () => {
     const dataUrl = await generateCollage();
@@ -110,14 +123,13 @@ const MultiFrameCollage = ({
             src={previewDataUrl}
             alt="Collage Preview"
             className="border"
-            style={{ maxWidth: "300px" }} // preview nhỏ lại
+            style={{ maxWidth: "300px" }}
           />
         ) : (
           <p>Chưa có preview</p>
         )}
       </div>
 
-      {/* Canvas ẩn */}
       <canvas ref={canvasRef} style={{ display: "none" }} />
     </div>
   );
