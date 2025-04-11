@@ -63,5 +63,16 @@ export const templates = {
       { x: 1400,  y: 50, width: 400, height: 300 },  // Slot 4
     ],
   },
+  threeByOneWhite: {
+    label: "3x1 White Background",
+    width: 1400,       // Tổng chiều rộng
+    height: 400,     // Tổng chiều cao (50px lề trên + 500px ảnh + 50px lề giữa, lặp lại)
+    backgroundColor: "#ffffff",
+    slots: [
+      { x: 50,  y: 50, width: 400, height: 300 },   // Slot 1
+      { x: 500,  y: 50, width: 400, height: 300 },   // Slot 2
+      { x: 950,  y: 50, width: 400, height: 300 },  // Slot 3
+    ],
+  },
   // Các template khác (photostrip4...) tuỳ ý
 };
