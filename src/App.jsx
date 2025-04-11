@@ -2,7 +2,7 @@ import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import { Footer, Navbar } from "./components";
 import { About, Contact, Home, Projects, SorryPage } from "./pages";
 import Photobooth from "./pages/Photobooth"; // Giả sử bạn lưu Photobooth.jsx trong folder pages
-import VintageCakePage from "./pages/VintageCakePage"; // Giả sử bạn lưu VintageCakePage.jsx trong folder pages
+//import VintageCakePage from "./pages/VintageCakePage"; // Giả sử bạn lưu VintageCakePage.jsx trong folder pages
 import ChatBtn from "./components/ChatBtn";
 
 const App = () => {
@@ -13,7 +13,7 @@ const App = () => {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/photobooth" element={<Photobooth />} />
-          <Route path="/canales" element={<VintageCakePage />} />
+          {/*<Route path="/canales" element={<VintageCakePage />} />*/}
           <Route
             path="/*"
             element={
