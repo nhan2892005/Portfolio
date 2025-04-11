@@ -66,7 +66,7 @@ export const templates = {
   threeByOneWhite: {
     label: "3x1 White Background",
     width: 1400,       // Tổng chiều rộng
-    height: 400,     // Tổng chiều cao (50px lề trên + 500px ảnh + 50px lề giữa, lặp lại)
+    height: 500,     // Tổng chiều cao (50px lề trên + 500px ảnh + 50px lề giữa, lặp lại)
     backgroundColor: "#ffffff",
     slots: [
       { x: 50,  y: 50, width: 400, height: 300 },   // Slot 1
