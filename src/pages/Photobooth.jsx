@@ -36,6 +36,14 @@ const Photobooth = () => {
   // Số giây đếm tùy chỉnh (mặc định là 3 giây)
   const [customCountdown, setCustomCountdown] = useState(3);
 
+  useEffect(() => {
+    const today = new Date();
+    const yyyy = today.getFullYear();
+    const mm = String(today.getMonth() + 1).padStart(2, "0");
+    const dd = String(today.getDate()).padStart(2, "0");
+    setDateText(`${yyyy}.${mm}.${dd}`);
+  }, []);  
+
   // Setup camera: giữ nguyên kích thước gốc, không scale
   useEffect(() => {
     async function getCamera() {
