@@ -15,7 +15,9 @@ const gradeToGPA = {
 };
 
 const Transcript = () => {
-  const { diemSinhVien, khoiKienThuc } = transcriptData.data;
+  // State cho dữ liệu (có thể chỉnh sửa)
+  const [currentData, setCurrentData] = useState(transcriptData.data);
+  const { diemSinhVien, khoiKienThuc } = currentData;
   
   // State cho search và filter
   const [searchTerm, setSearchTerm] = useState("");
@@ -27,6 +29,30 @@ const Transcript = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [sidebarWidth, setSidebarWidth] = useState(320); // Default width
   const [isResizing, setIsResizing] = useState(false);
+
+  // State cho quản lý môn học và điểm
+  const [showManagementModal, setShowManagementModal] = useState(false);
+  const [activeTab, setActiveTab] = useState('courses'); // 'courses' hoặc 'scores'
+  const [editingCourse, setEditingCourse] = useState(null);
+  const [editingScore, setEditingScore] = useState(null);
+  const [courseForm, setCourseForm] = useState({
+    MAMONHOC: '',
+    TENMONHOC: '',
+    SOTC: '',
+    TENKHOIKIENTHUC: '',
+    KHOIKIENTHUCID: ''
+  });
+  const [scoreForm, setScoreForm] = useState({
+    MONHOCID: '',
+    DIEMCHU: '',
+    DIEMSO: ''
+  });
+
+  // State cho xác thực mật khẩu
+  const [showPasswordModal, setShowPasswordModal] = useState(false);
+  const [passwordInput, setPasswordInput] = useState('');
+  const [pendingAction, setPendingAction] = useState(null);
+  const PASSWORD = 'phucnhanvythuong@28982';
 
   const scoreMap = diemSinhVien.reduce((acc, item) => {
     acc[item.MONHOCID] = item;
@@ -287,8 +313,315 @@ const Transcript = () => {
     };
   }, [isResizing]);
 
+  // Hàm xác thực mật khẩu
+  const requestPasswordAuth = (action, actionName) => {
+    setPendingAction({ action, actionName });
+    setPasswordInput('');
+    setShowPasswordModal(true);
+  };
+
+  const handlePasswordSubmit = () => {
+    if (passwordInput === PASSWORD) {
+      setShowPasswordModal(false);
+      setPasswordInput('');
+      if (pendingAction) {
+        pendingAction.action();
+        setPendingAction(null);
+      }
+    } else {
+      alert('Mật khẩu không đúng!');
+      setPasswordInput('');
+    }
+  };
+
+  const handlePasswordCancel = () => {
+    setShowPasswordModal(false);
+    setPasswordInput('');
+    setPendingAction(null);
+  };
+
+  // Hàm wrapper cho các thao tác cần xác thực
+  const authenticatedAddCourse = () => {
+    requestPasswordAuth(handleAddCourse, 'thêm môn học');
+  };
+
+  const authenticatedUpdateCourse = () => {
+    requestPasswordAuth(handleUpdateCourse, 'cập nhật môn học');
+  };
+
+  const authenticatedDeleteCourse = (courseId) => {
+    requestPasswordAuth(() => handleDeleteCourse(courseId), 'xóa môn học');
+  };
+
+  const authenticatedAddScore = () => {
+    requestPasswordAuth(handleAddScore, 'thêm điểm');
+  };
+
+  const authenticatedUpdateScore = () => {
+    requestPasswordAuth(handleUpdateScore, 'cập nhật điểm');
+  };
+
+  const authenticatedDeleteScore = (monhocId) => {
+    requestPasswordAuth(() => handleDeleteScore(monhocId), 'xóa điểm');
+  };
+
+  const authenticatedSaveToFile = () => {
+    requestPasswordAuth(handleSaveToOriginalFileDirect, 'lưu vào file gốc và commit');
+  };
+
+  // Hàm xử lý CRUD cho môn học
+  const handleAddCourse = () => {
+    if (!courseForm.MAMONHOC || !courseForm.TENMONHOC || !courseForm.SOTC || !courseForm.TENKHOIKIENTHUC) {
+      alert('Vui lòng điền đầy đủ thông tin môn học');
+      return;
+    }
+
+    const newCourse = {
+      ...courseForm,
+      MONHOCID: Date.now(), // Generate unique ID
+      SOTC: parseInt(courseForm.SOTC),
+      KHOIKIENTHUCID: courseForm.KHOIKIENTHUCID || Date.now()
+    };
+
+    setCurrentData(prev => ({
+      ...prev,
+      khoiKienThuc: [...prev.khoiKienThuc, newCourse]
+    }));
+
+    setCourseForm({
+      MAMONHOC: '',
+      TENMONHOC: '',
+      SOTC: '',
+      TENKHOIKIENTHUC: '',
+      KHOIKIENTHUCID: ''
+    });
+
+    alert('Thêm môn học thành công!');
+  };
+
+  const handleEditCourse = (course) => {
+    setEditingCourse(course);
+    setCourseForm({
+      MAMONHOC: course.MAMONHOC,
+      TENMONHOC: course.TENMONHOC,
+      SOTC: course.SOTC.toString(),
+      TENKHOIKIENTHUC: course.TENKHOIKIENTHUC,
+      KHOIKIENTHUCID: course.KHOIKIENTHUCID.toString()
+    });
+  };
+
+  const handleUpdateCourse = () => {
+    if (!courseForm.MAMONHOC || !courseForm.TENMONHOC || !courseForm.SOTC || !courseForm.TENKHOIKIENTHUC) {
+      alert('Vui lòng điền đầy đủ thông tin môn học');
+      return;
+    }
+
+    setCurrentData(prev => ({
+      ...prev,
+      khoiKienThuc: prev.khoiKienThuc.map(course => 
+        course.MONHOCID === editingCourse.MONHOCID 
+          ? { ...course, ...courseForm, SOTC: parseInt(courseForm.SOTC) }
+          : course
+      )
+    }));
+
+    setEditingCourse(null);
+    setCourseForm({
+      MAMONHOC: '',
+      TENMONHOC: '',
+      SOTC: '',
+      TENKHOIKIENTHUC: '',
+      KHOIKIENTHUCID: ''
+    });
+
+    alert('Cập nhật môn học thành công!');
+  };
+
+  const handleDeleteCourse = (courseId) => {
+    if (window.confirm('Bạn có chắc chắn muốn xóa môn học này?')) {
+      setCurrentData(prev => ({
+        ...prev,
+        khoiKienThuc: prev.khoiKienThuc.filter(course => course.MONHOCID !== courseId),
+        diemSinhVien: prev.diemSinhVien.filter(score => score.MONHOCID !== courseId)
+      }));
+      alert('Xóa môn học thành công!');
+    }
+  };
+
+  // Hàm xử lý CRUD cho điểm số
+  const handleAddScore = () => {
+    if (!scoreForm.MONHOCID || !scoreForm.DIEMCHU || !scoreForm.DIEMSO) {
+      alert('Vui lòng điền đầy đủ thông tin điểm');
+      return;
+    }
+
+    const existingScore = diemSinhVien.find(score => score.MONHOCID === parseInt(scoreForm.MONHOCID));
+    if (existingScore) {
+      alert('Môn học này đã có điểm. Vui lòng sử dụng chức năng sửa điểm.');
+      return;
+    }
+
+    const newScore = {
+      MONHOCID: parseInt(scoreForm.MONHOCID),
+      DIEMCHU: scoreForm.DIEMCHU,
+      DIEMSO: parseFloat(scoreForm.DIEMSO)
+    };
+
+    setCurrentData(prev => ({
+      ...prev,
+      diemSinhVien: [...prev.diemSinhVien, newScore]
+    }));
+
+    setScoreForm({
+      MONHOCID: '',
+      DIEMCHU: '',
+      DIEMSO: ''
+    });
+
+    alert('Thêm điểm thành công!');
+  };
+
+  const handleEditScore = (score) => {
+    console.log('Editing score:', score); // Debug log
+    setEditingScore(score);
+    setScoreForm({
+      MONHOCID: score.MONHOCID.toString(),
+      DIEMCHU: score.DIEMCHU,
+      DIEMSO: score.DIEMSO.toString()
+    });
+  };
+
+  const handleUpdateScore = () => {
+    console.log('Updating score:', { editingScore, scoreForm }); // Debug log
+    
+    if (!scoreForm.MONHOCID || !scoreForm.DIEMCHU || !scoreForm.DIEMSO) {
+      alert('Vui lòng điền đầy đủ thông tin điểm');
+      return;
+    }
+
+    setCurrentData(prev => ({
+      ...prev,
+      diemSinhVien: prev.diemSinhVien.map(score => 
+        score.MONHOCID === editingScore.MONHOCID 
+          ? { ...score, DIEMCHU: scoreForm.DIEMCHU, DIEMSO: parseFloat(scoreForm.DIEMSO) }
+          : score
+      )
+    }));
+
+    setEditingScore(null);
+    setScoreForm({
+      MONHOCID: '',
+      DIEMCHU: '',
+      DIEMSO: ''
+    });
+
+    alert('Cập nhật điểm thành công!');
+  };
+
+  const handleDeleteScore = (monhocId) => {
+    if (window.confirm('Bạn có chắc chắn muốn xóa điểm này?')) {
+      setCurrentData(prev => ({
+        ...prev,
+        diemSinhVien: prev.diemSinhVien.filter(score => score.MONHOCID !== monhocId)
+      }));
+      alert('Xóa điểm thành công!');
+    }
+  };
+
+  // Hàm dọn dẹp điểm "mồ côi" (không có môn học tương ứng)
+  const handleCleanOrphanedScores = () => {
+    const orphanedScores = diemSinhVien.filter(score => !khoiKienThuc.find(c => c.MONHOCID === score.MONHOCID));
+    if (orphanedScores.length === 0) {
+      alert('Không có điểm mồ côi nào cần dọn dẹp!');
+      return;
+    }
+
+    if (window.confirm(`Bạn có chắc chắn muốn xóa ${orphanedScores.length} điểm không có môn học tương ứng?`)) {
+      setCurrentData(prev => ({
+        ...prev,
+        diemSinhVien: prev.diemSinhVien.filter(score => khoiKienThuc.find(c => c.MONHOCID === score.MONHOCID))
+      }));
+      alert(`Đã dọn dẹp ${orphanedScores.length} điểm mồ côi!`);
+    }
+  };
+
+  // Hàm xuất dữ liệu JSON
+  const handleExportData = () => {
+    const dataStr = JSON.stringify({ code: "200", msg: "ok", data: currentData }, null, 2);
+    const dataBlob = new Blob([dataStr], { type: 'application/json' });
+    const url = URL.createObjectURL(dataBlob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = 'diem_updated.json';
+    link.click();
+  };
+
+  // Hàm lưu vào file gốc và commit
+  const handleSaveToOriginalFile = async () => {
+    try {
+      const dataStr = JSON.stringify({ code: "200", msg: "ok", data: currentData }, null, 2);
+      
+      // Ghi đè file gốc
+      const response = await fetch('/api/save-transcript', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          data: dataStr,
+          filePath: 'src/data/diem.json'
+        })
+      });
+
+      if (response.ok) {
+        // Tự động commit và push
+        const gitResponse = await fetch('/api/git-commit', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            message: 'Update transcript data - ' + new Date().toLocaleString('vi-VN'),
+            files: ['src/data/diem.json']
+          })
+        });
+
+        if (gitResponse.ok) {
+          alert('✅ Đã lưu thành công và commit lên git!');
+        } else {
+          alert('⚠️ Đã lưu file nhưng commit thất bại. Vui lòng commit thủ công.');
+        }
+      } else {
+        throw new Error('Failed to save file');
+      }
+    } catch (error) {
+      console.error('Error saving file:', error);
+      alert('❌ Lỗi khi lưu file: ' + error.message);
+    }
+  };
+
+  // Hàm lưu vào file gốc bằng cách ghi trực tiếp (fallback)
+  const handleSaveToOriginalFileDirect = () => {
+    if (!window.confirm('⚠️ CẢNH BÁO: Bạn có chắc chắn muốn ghi đè file diem.json gốc?\n\nThao tác này sẽ:\n- Thay thế hoàn toàn dữ liệu hiện tại\n- Tạo commit và push lên git\n- KHÔNG THỂ HOÀN TÁC\n\nHãy đảm bảo bạn đã backup dữ liệu!')) {
+      return;
+    }
+
+    const dataStr = JSON.stringify({ code: "200", msg: "ok", data: currentData }, null, 2);
+    
+    // Download backup trước
+    const backupBlob = new Blob([dataStr], { type: 'application/json' });
+    const backupUrl = URL.createObjectURL(backupBlob);
+    const backupLink = document.createElement('a');
+    backupLink.href = backupUrl;
+    backupLink.download = `diem_backup_${new Date().toISOString().slice(0, 19).replace(/:/g, '-')}.json`;
+    backupLink.click();
+
+    // Thông báo cho người dùng về việc cần manual save
+    alert('📄 Đã tạo file backup.\n\n🔧 Để lưu vào file gốc, vui lòng:\n1. Copy nội dung từ file backup\n2. Paste vào src/data/diem.json\n3. Commit và push thủ công\n\nHoặc sử dụng tính năng "Xuất JSON" để lưu thành file riêng.');
+  };
+
   return (
-    <div className="flex min-h-screen bg-gray-50">
+    <div className="flex min-h-screen bg-gray-50 mt-[100px]">
       {/* Sidebar */}
       <div 
         className={`fixed inset-y-0 left-0 z-50 bg-white shadow-lg transform transition-transform duration-300 ease-in-out ${
@@ -324,8 +657,12 @@ const Transcript = () => {
             <h3 className="text-sm font-semibold text-gray-800 mb-2">💡 Hướng dẫn đọc biểu đồ</h3>
             <div className="space-y-2 text-xs text-gray-700">
               <div className="flex items-start gap-2">
-                <span className="text-blue-600 font-medium">📊 Chất lượng:</span>
-                <span>Điểm TB theo khối → Bạn học tốt ở khối nào (chỉ tính môn xét điểm)</span>
+                <span className="text-indigo-600 font-medium">� Tổng quan:</span>
+                <span>Điểm TB các khối → So sánh nhanh chất lượng học tập giữa các khối</span>
+              </div>
+              <div className="flex items-start gap-2">
+                <span className="text-blue-600 font-medium">📊 Chi tiết:</span>
+                <span>Điểm TB theo khối (ngang) → Xem chi tiết từng khối (chỉ tính môn xét điểm)</span>
               </div>
               <div className="flex items-start gap-2">
                 <span className="text-green-600 font-medium">📈 Tiến độ:</span>
@@ -382,6 +719,71 @@ const Transcript = () => {
                 <Bar dataKey="count" fill="#3B82F6" />
               </BarChart>
             </ResponsiveContainer>
+          </div>
+
+          {/* Biểu đồ cột - Điểm trung bình các khối kiến thức (Tổng quan) */}
+          <div className="mb-6">
+            <h3 className="text-lg font-semibold mb-2 flex items-center">
+              📈 Điểm trung bình các khối
+              <span className="ml-2 text-xs bg-indigo-100 text-indigo-800 px-2 py-1 rounded">Tổng quan</span>
+            </h3>
+            <div className="text-sm text-gray-600 mb-3 bg-indigo-50 p-3 rounded-lg">
+              <div className="font-medium text-indigo-800">Tổng quan chất lượng học tập:</div>
+              <div>• So sánh nhanh điểm TB giữa các khối kiến thức</div>
+              <div>• Chỉ hiển thị khối có ít nhất 1 môn xét điểm</div>
+              <div>• Giúp xác định khối mạnh/yếu của bản thân</div>
+            </div>
+            {kktData.filter(item => item.hasScore).length > 0 ? (
+              <ResponsiveContainer width="100%" height={250}>
+                <BarChart data={kktData.filter(item => item.hasScore).slice(0, 8)}>
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis 
+                    dataKey="name" 
+                    tick={{ fontSize: 9 }}
+                    angle={-45}
+                    textAnchor="end"
+                    height={80}
+                  />
+                  <YAxis domain={[0, 10]} />
+                  <Tooltip 
+                    content={({ active, payload, label }) => {
+                      if (active && payload && payload.length) {
+                        const data = payload[0].payload;
+                        return (
+                          <div className="bg-white p-3 border border-gray-300 rounded shadow-lg">
+                            <p className="font-semibold text-gray-800 mb-2">{data.fullName}</p>
+                            <div className="space-y-1">
+                              <p className="text-indigo-600 font-medium">
+                                📊 Điểm TB: {data.avgScore}/10
+                              </p>
+                              <p className="text-green-600">🎯 Môn xét điểm: {data.gradedCount}</p>
+                              <p className="text-gray-600">📚 Tổng môn: {data.count}</p>
+                              <div className="mt-2 pt-2 border-t border-gray-200">
+                                <p className="text-xs text-gray-500">
+                                  💡 Thứ hạng: #{kktData.filter(item => item.hasScore).findIndex(item => item.fullName === data.fullName) + 1} / {kktData.filter(item => item.hasScore).length}
+                                </p>
+                              </div>
+                            </div>
+                          </div>
+                        );
+                      }
+                      return null;
+                    }}
+                  />
+                  <Bar 
+                    dataKey="avgScore" 
+                    fill="#6366F1"
+                    radius={[4, 4, 0, 0]}
+                  />
+                </BarChart>
+              </ResponsiveContainer>
+            ) : (
+              <div className="text-center py-8 text-gray-500">
+                <div className="text-4xl mb-2">📈</div>
+                <p>Chưa có dữ liệu điểm để hiển thị</p>
+                <p className="text-xs mt-1">Cần có ít nhất một khối có môn xét điểm</p>
+              </div>
+            )}
           </div>
 
           {/* Biểu đồ cột - Điểm TB theo khối kiến thức */}
@@ -657,6 +1059,23 @@ const Transcript = () => {
                 <span className="font-semibold">{pieData.reduce((sum, item) => sum + item.value, 0)}</span>
               </div>
               <div className="flex justify-between">
+                <span>Điểm TB tổng các khối:</span>
+                <span className="font-semibold text-purple-600">
+                  {(() => {
+                    const validKKT = kktData.filter(item => item.hasScore && item.avgScore > 0);
+                    if (validKKT.length === 0) return 'N/A';
+                    const totalAvg = validKKT.reduce((sum, item) => sum + item.avgScore, 0) / validKKT.length;
+                    return `${totalAvg.toFixed(2)}/10`;
+                  })()}
+                </span>
+              </div>
+              <div className="flex justify-between">
+                <span>Số khối có điểm:</span>
+                <span className="font-semibold text-indigo-600">
+                  {kktData.filter(item => item.hasScore).length} / {kktData.length}
+                </span>
+              </div>
+              <div className="flex justify-between">
                 <span>Số môn điểm A+/A:</span>
                 <span className="font-semibold text-green-600">
                   {(gradeAnalysis.gradeCount["A+"] || 0) + (gradeAnalysis.gradeCount["A"] || 0)}
@@ -835,6 +1254,25 @@ const Transcript = () => {
                 </div>
               )}
               <button
+                onClick={() => setShowManagementModal(true)}
+                className="flex items-center gap-2 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
+              >
+                ⚙️ Quản lý dữ liệu
+              </button>
+              <button
+                onClick={handleExportData}
+                className="flex items-center gap-2 px-3 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors"
+              >
+                💾 Xuất JSON
+              </button>
+              <button
+                onClick={() => requestPasswordAuth(handleSaveToOriginalFileDirect, 'lưu vào file gốc và commit')}
+                className="flex items-center gap-2 px-3 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
+                title="Ghi đè file diem.json gốc và tự động commit"
+              >
+                🔄 Lưu & Commit
+              </button>
+              <button
                 onClick={() => setSidebarOpen(!sidebarOpen)}
                 className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
               >
@@ -844,8 +1282,8 @@ const Transcript = () => {
           </div>
           
           {/* Thống kê tổng quan */}
-          <div className="mb-6 p-4 bg-blue-50 rounded-lg">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div className="mb-6 p-3 bg-blue-50 rounded-lg">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
               <div>
                 <p className="text-sm text-gray-600">Tổng số tín chỉ tích lũy</p>
                 <p className="text-xl font-bold text-blue-600">{totalCredits}</p>
@@ -1016,6 +1454,435 @@ const Transcript = () => {
           )}
         </div>
       </div>
+
+      {/* Modal quản lý dữ liệu */}
+      {showManagementModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+          <div className="bg-white rounded-lg shadow-xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+            <div className="sticky top-0 bg-white border-b border-gray-200 p-4">
+              <div className="flex justify-between items-center">
+                <h2 className="text-xl font-bold text-gray-800">⚙️ Quản lý dữ liệu</h2>
+                <button
+                  onClick={() => {
+                    setShowManagementModal(false);
+                    setEditingCourse(null);
+                    setEditingScore(null);
+                    setCourseForm({
+                      MAMONHOC: '',
+                      TENMONHOC: '',
+                      SOTC: '',
+                      TENKHOIKIENTHUC: '',
+                      KHOIKIENTHUCID: ''
+                    });
+                    setScoreForm({
+                      MONHOCID: '',
+                      DIEMCHU: '',
+                      DIEMSO: ''
+                    });
+                    console.log('Modal closed, states reset'); // Debug log
+                  }}
+                  className="p-2 hover:bg-gray-100 rounded-lg"
+                >
+                  ✕
+                </button>
+              </div>
+              
+              {/* Tabs */}
+              <div className="flex mt-4 border-b">
+                <button
+                  onClick={() => setActiveTab('courses')}
+                  className={`px-4 py-2 font-medium ${
+                    activeTab === 'courses' 
+                      ? 'text-blue-600 border-b-2 border-blue-600' 
+                      : 'text-gray-500 hover:text-gray-700'
+                  }`}
+                >
+                  📚 Quản lý môn học
+                </button>
+                <button
+                  onClick={() => setActiveTab('scores')}
+                  className={`px-4 py-2 font-medium ${
+                    activeTab === 'scores' 
+                      ? 'text-blue-600 border-b-2 border-blue-600' 
+                      : 'text-gray-500 hover:text-gray-700'
+                  }`}
+                >
+                  📊 Quản lý điểm số
+                </button>
+              </div>
+            </div>
+
+            <div className="p-4">
+              {/* Tab Quản lý môn học */}
+              {activeTab === 'courses' && (
+                <div>
+                  {/* Form thêm/sửa môn học */}
+                  <div className="mb-6 p-4 bg-blue-50 rounded-lg">
+                    <h3 className="text-lg font-semibold mb-4">
+                      {editingCourse ? '✏️ Sửa môn học' : '➕ Thêm môn học mới'}
+                    </h3>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">Mã môn học</label>
+                        <input
+                          type="text"
+                          value={courseForm.MAMONHOC}
+                          onChange={(e) => setCourseForm({...courseForm, MAMONHOC: e.target.value})}
+                          className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500"
+                          placeholder="VD: CO1007"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">Tên môn học</label>
+                        <input
+                          type="text"
+                          value={courseForm.TENMONHOC}
+                          onChange={(e) => setCourseForm({...courseForm, TENMONHOC: e.target.value})}
+                          className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500"
+                          placeholder="VD: Cấu trúc Rời rạc cho Khoa học Máy tính"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">Số tín chỉ</label>
+                        <input
+                          type="number"
+                          value={courseForm.SOTC}
+                          onChange={(e) => setCourseForm({...courseForm, SOTC: e.target.value})}
+                          className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500"
+                          placeholder="VD: 3"
+                          min="1"
+                          max="10"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">Khối kiến thức</label>
+                        <select
+                          value={courseForm.TENKHOIKIENTHUC}
+                          onChange={(e) => setCourseForm({...courseForm, TENKHOIKIENTHUC: e.target.value})}
+                          className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500"
+                        >
+                          <option value="">Chọn khối kiến thức</option>
+                          {[...new Set(khoiKienThuc.map(c => c.TENKHOIKIENTHUC))].map(kkt => (
+                            <option key={kkt} value={kkt}>{kkt}</option>
+                          ))}
+                        </select>
+                      </div>
+                    </div>
+                    <div className="mt-4 flex gap-2">
+                      {editingCourse ? (
+                        <>
+                          <button
+                            onClick={authenticatedUpdateCourse}
+                            className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+                          >
+                            💾 Cập nhật
+                          </button>
+                          <button
+                            onClick={() => {
+                              setEditingCourse(null);
+                              setCourseForm({
+                                MAMONHOC: '',
+                                TENMONHOC: '',
+                                SOTC: '',
+                                TENKHOIKIENTHUC: '',
+                                KHOIKIENTHUCID: ''
+                              });
+                            }}
+                            className="px-4 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600"
+                          >
+                            ❌ Hủy
+                          </button>
+                        </>
+                      ) : (
+                        <button
+                          onClick={authenticatedAddCourse}
+                          className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700"
+                        >
+                          ➕ Thêm môn học
+                        </button>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* Danh sách môn học */}
+                  <div>
+                    <h3 className="text-lg font-semibold mb-4">📋 Danh sách môn học</h3>
+                    <div className="overflow-x-auto">
+                      <table className="min-w-full table-auto border border-gray-300">
+                        <thead className="bg-gray-100">
+                          <tr>
+                            <th className="border px-4 py-2 text-left">Mã môn</th>
+                            <th className="border px-4 py-2 text-left">Tên môn</th>
+                            <th className="border px-4 py-2">Số TC</th>
+                            <th className="border px-4 py-2 text-left">Khối kiến thức</th>
+                            <th className="border px-4 py-2">Thao tác</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {khoiKienThuc.map((course, index) => (
+                            <tr key={course.MONHOCID} className="even:bg-gray-50 hover:bg-blue-50">
+                              <td className="border px-4 py-2 font-mono">{course.MAMONHOC}</td>
+                              <td className="border px-4 py-2">{course.TENMONHOC}</td>
+                              <td className="border px-4 py-2 text-center">{course.SOTC}</td>
+                              <td className="border px-4 py-2">{course.TENKHOIKIENTHUC}</td>
+                              <td className="border px-4 py-2 text-center">
+                                <div className="flex gap-2 justify-center">
+                                  <button
+                                    onClick={() => handleEditCourse(course)}
+                                    className="px-2 py-1 bg-blue-500 text-white rounded text-xs hover:bg-blue-600"
+                                  >
+                                    ✏️ Sửa
+                                  </button>
+                                  <button
+                                    onClick={() => authenticatedDeleteCourse(course.MONHOCID)}
+                                    className="px-2 py-1 bg-red-500 text-white rounded text-xs hover:bg-red-600"
+                                  >
+                                    🗑️ Xóa
+                                  </button>
+                                </div>
+                              </td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* Tab Quản lý điểm số */}
+              {activeTab === 'scores' && (
+                <div>
+                  {/* Form thêm/sửa điểm */}
+                  <div className="mb-6 p-4 bg-green-50 rounded-lg">
+                    <h3 className="text-lg font-semibold mb-4">
+                      {editingScore ? '✏️ Sửa điểm' : '➕ Thêm điểm mới'}
+                    </h3>
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">Môn học</label>
+                        <select
+                          value={scoreForm.MONHOCID}
+                          onChange={(e) => setScoreForm({...scoreForm, MONHOCID: e.target.value})}
+                          className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-green-500"
+                          disabled={!!editingScore}
+                        >
+                          <option value="">Chọn môn học</option>
+                          {khoiKienThuc.map(course => (
+                            <option key={course.MONHOCID} value={course.MONHOCID}>
+                              {course.MAMONHOC} - {course.TENMONHOC}
+                            </option>
+                          ))}
+                        </select>
+                        {editingScore && (
+                          <div className="mt-1 text-xs text-gray-500">
+                            💡 Không thể thay đổi môn học khi sửa điểm
+                          </div>
+                        )}
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">Điểm chữ</label>
+                        <select
+                          value={scoreForm.DIEMCHU}
+                          onChange={(e) => setScoreForm({...scoreForm, DIEMCHU: e.target.value})}
+                          className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-green-500"
+                        >
+                          <option value="">Chọn điểm chữ</option>
+                          <option value="A+">A+</option>
+                          <option value="A">A</option>
+                          <option value="B+">B+</option>
+                          <option value="B">B</option>
+                          <option value="C+">C+</option>
+                          <option value="C">C</option>
+                          <option value="D+">D+</option>
+                          <option value="D">D</option>
+                          <option value="F">F</option>
+                        </select>
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">Điểm số</label>
+                        <input
+                          type="number"
+                          value={scoreForm.DIEMSO}
+                          onChange={(e) => setScoreForm({...scoreForm, DIEMSO: e.target.value})}
+                          className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-green-500"
+                          placeholder="VD: 8.5"
+                          min="0"
+                          max="10"
+                          step="0.1"
+                        />
+                      </div>
+                    </div>
+                    <div className="mt-4 flex gap-2">
+                      {editingScore ? (
+                        <>
+                          <button
+                            onClick={authenticatedUpdateScore}
+                            className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+                          >
+                            💾 Cập nhật
+                          </button>
+                          <button
+                            onClick={() => {
+                              setEditingScore(null);
+                              setScoreForm({
+                                MONHOCID: '',
+                                DIEMCHU: '',
+                                DIEMSO: ''
+                              });
+                              console.log('Cancelled editing score'); // Debug log
+                            }}
+                            className="px-4 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600"
+                          >
+                            ❌ Hủy
+                          </button>
+                        </>
+                      ) : (
+                        <button
+                          onClick={authenticatedAddScore}
+                          className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700"
+                        >
+                          ➕ Thêm điểm
+                        </button>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* Danh sách điểm */}
+                  <div>
+                    <div className="flex justify-between items-center mb-4">
+                      <h3 className="text-lg font-semibold">📊 Danh sách điểm</h3>
+                      {/* Nút dọn dẹp điểm mồ côi */}
+                      {diemSinhVien.filter(score => !khoiKienThuc.find(c => c.MONHOCID === score.MONHOCID)).length > 0 && (
+                        <button
+                          onClick={handleCleanOrphanedScores}
+                          className="px-3 py-1 bg-yellow-500 text-white rounded text-sm hover:bg-yellow-600"
+                          title="Xóa các điểm không có môn học tương ứng"
+                        >
+                          🧹 Dọn dẹp điểm mồ côi ({diemSinhVien.filter(score => !khoiKienThuc.find(c => c.MONHOCID === score.MONHOCID)).length})
+                        </button>
+                      )}
+                    </div>
+                    <div className="overflow-x-auto">
+                      <table className="min-w-full table-auto border border-gray-300">
+                        <thead className="bg-gray-100">
+                          <tr>
+                            <th className="border px-4 py-2 text-left">Mã môn</th>
+                            <th className="border px-4 py-2 text-left">Tên môn</th>
+                            <th className="border px-4 py-2">Điểm chữ</th>
+                            <th className="border px-4 py-2">Điểm số</th>
+                            <th className="border px-4 py-2">Thao tác</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {diemSinhVien
+                            .filter(score => {
+                              // Chỉ hiển thị điểm có môn học tương ứng
+                              const course = khoiKienThuc.find(c => c.MONHOCID === score.MONHOCID);
+                              return course; // Loại bỏ những điểm không có môn học
+                            })
+                            .map((score) => {
+                            const course = khoiKienThuc.find(c => c.MONHOCID === score.MONHOCID);
+                            return (
+                              <tr key={score.MONHOCID} className="even:bg-gray-50 hover:bg-green-50">
+                                <td className="border px-4 py-2 font-mono">{course.MAMONHOC}</td>
+                                <td className="border px-4 py-2">{course.TENMONHOC}</td>
+                                <td className="border px-4 py-2 text-center">
+                                  <span className={`px-2 py-1 rounded text-sm font-semibold ${
+                                    score.DIEMCHU === 'A+' || score.DIEMCHU === 'A' ? 'bg-green-100 text-green-800' :
+                                    score.DIEMCHU === 'B+' || score.DIEMCHU === 'B' ? 'bg-blue-100 text-blue-800' :
+                                    score.DIEMCHU === 'C+' || score.DIEMCHU === 'C' ? 'bg-yellow-100 text-yellow-800' :
+                                    score.DIEMCHU === 'D+' || score.DIEMCHU === 'D' ? 'bg-orange-100 text-orange-800' :
+                                    score.DIEMCHU === 'F' ? 'bg-red-100 text-red-800' : 'bg-gray-100 text-gray-800'
+                                  }`}>
+                                    {score.DIEMCHU}
+                                  </span>
+                                </td>
+                                <td className="border px-4 py-2 text-center font-semibold">{score.DIEMSO}</td>
+                                <td className="border px-4 py-2 text-center">
+                                  <div className="flex gap-2 justify-center">
+                                    <button
+                                      onClick={() => handleEditScore(score)}
+                                      className="px-2 py-1 bg-blue-500 text-white rounded text-xs hover:bg-blue-600"
+                                    >
+                                      ✏️ Sửa
+                                    </button>
+                                    <button
+                                      onClick={() => authenticatedDeleteScore(score.MONHOCID)}
+                                      className="px-2 py-1 bg-red-500 text-white rounded text-xs hover:bg-red-600"
+                                    >
+                                      🗑️ Xóa
+                                    </button>
+                                  </div>
+                                </td>
+                              </tr>
+                            );
+                          })}
+                          {/* Thông báo nếu có điểm bị "mồ côi" */}
+                          {diemSinhVien.filter(score => !khoiKienThuc.find(c => c.MONHOCID === score.MONHOCID)).length > 0 && (
+                            <tr>
+                              <td colSpan="5" className="border px-4 py-2 text-center bg-yellow-50">
+                                <div className="text-yellow-800 text-sm">
+                                  ⚠️ Có {diemSinhVien.filter(score => !khoiKienThuc.find(c => c.MONHOCID === score.MONHOCID)).length} điểm không có môn học tương ứng (đã bị ẩn)
+                                  <br />
+                                  <span className="text-xs">Có thể do môn học đã bị xóa. Hãy xóa những điểm này để dọn dẹp dữ liệu.</span>
+                                </div>
+                              </td>
+                            </tr>
+                          )}
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Modal xác thực mật khẩu */}
+      {showPasswordModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-lg p-6 w-96 max-w-90% mx-4">
+            <h2 className="text-xl font-bold mb-4 text-center">🔐 Xác thực mật khẩu</h2>
+            <p className="text-gray-600 mb-4 text-center">
+              Vui lòng nhập mật khẩu để {pendingAction?.actionName}
+            </p>
+            
+            <div className="mb-4">
+              <input
+                type="password"
+                value={passwordInput}
+                onChange={(e) => setPasswordInput(e.target.value)}
+                placeholder="Nhập mật khẩu..."
+                className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                onKeyPress={(e) => {
+                  if (e.key === 'Enter') {
+                    handlePasswordSubmit();
+                  }
+                }}
+                autoFocus
+              />
+            </div>
+            
+            <div className="flex gap-3 justify-end">
+              <button
+                onClick={handlePasswordCancel}
+                className="px-4 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600 transition-colors"
+              >
+                ❌ Hủy
+              </button>
+              <button
+                onClick={handlePasswordSubmit}
+                className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors"
+              >
+                ✅ Xác nhận
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
