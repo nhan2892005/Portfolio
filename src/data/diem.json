@@ -709,10 +709,10 @@
             {
                 "KHOIKIENTHUCID": 27893,
                 "TENKHOIKIENTHUC": "Tự chọn tự do",
-                "MONHOCID": null,
-                "MAMONHOC": null,
-                "TENMONHOC": null,
-                "SOTC": null
+                "MONHOCID": 37628,
+                "MAMONHOC": "IM1021",
+                "TENMONHOC": "Khởi nghiệp",
+                "SOTC": 3
             }
         ],
         "khoiKienThucMoRong": null,
@@ -958,30 +958,6 @@
                 "UUTIEN": 7.3
             },
             {
-                "MONHOCID": 20212,
-                "MONHOCTUONGDUONG": null,
-                "MAMONHOC": "PE1017",
-                "TENMONHOC": "Cầu lông (Học phần 1)",
-                "SOTC": 0,
-                "DIEMDAT": "1",
-                "DIEM": "7.00",
-                "DIEMSO": 7,
-                "DIEMCHU": "B",
-                "UUTIEN": 7
-            },
-            {
-                "MONHOCID": 61702,
-                "MONHOCTUONGDUONG": null,
-                "MAMONHOC": "PE1039",
-                "TENMONHOC": "Bóng rổ (Học phần 2)",
-                "SOTC": 0,
-                "DIEMDAT": "1",
-                "DIEM": "7.00",
-                "DIEMSO": 7,
-                "DIEMCHU": "B",
-                "UUTIEN": 7
-            },
-            {
                 "MONHOCID": 6657,
                 "MONHOCTUONGDUONG": null,
                 "MAMONHOC": "PH1007",
@@ -994,16 +970,16 @@
                 "UUTIEN": 6
             },
             {
-                "MONHOCID": 38530,
+                "MONHOCID": 6733,
                 "MONHOCTUONGDUONG": null,
-                "MAMONHOC": "LA1041",
-                "TENMONHOC": "Anh văn 3A",
+                "MAMONHOC": "LA1007",
+                "TENMONHOC": "Anh văn 3",
                 "SOTC": 0,
                 "DIEMDAT": "1",
-                "DIEM": "7.20",
-                "DIEMSO": 7.2,
-                "DIEMCHU": "B",
-                "UUTIEN": 2
+                "DIEM": "MT",
+                "DIEMSO": 12,
+                "DIEMCHU": "--",
+                "UUTIEN": 1
             },
             {
                 "MONHOCID": 6649,

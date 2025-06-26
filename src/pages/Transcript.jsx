@@ -532,7 +532,7 @@ const Transcript = () => {
   const handleCleanOrphanedScores = () => {
     const orphanedScores = diemSinhVien.filter(score => !khoiKienThuc.find(c => c.MONHOCID === score.MONHOCID));
     if (orphanedScores.length === 0) {
-      alert('Không có điểm mồ côi nào cần dọn dẹp!');
+      alert('Không có Dữ liệu khuyết nào cần dọn dẹp!');
       return;
     }
 
@@ -541,7 +541,7 @@ const Transcript = () => {
         ...prev,
         diemSinhVien: prev.diemSinhVien.filter(score => khoiKienThuc.find(c => c.MONHOCID === score.MONHOCID))
       }));
-      alert(`Đã dọn dẹp ${orphanedScores.length} điểm mồ côi!`);
+      alert(`Đã dọn dẹp ${orphanedScores.length} Dữ liệu khuyết!`);
     }
   };
 
@@ -1059,7 +1059,7 @@ const Transcript = () => {
           
           {/* Thống kê tổng quan */}
           <div className="mb-6 p-3 bg-blue-50 rounded-lg">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3">
               <div>
                 <p className="text-sm text-gray-600">Tổng số tín chỉ tích lũy</p>
                 <p className="text-xl font-bold text-blue-600">{totalCredits}</p>
@@ -1071,6 +1071,19 @@ const Transcript = () => {
               <div>
                 <p className="text-sm text-gray-600">Điểm trung bình hệ 10</p>
                 <p className="text-xl font-bold text-purple-600">{avg10}</p>
+              </div>
+              <div>
+                <p className="text-sm text-gray-600">Dữ liệu khuyết</p>
+                <p className={`text-xl font-bold ${
+                  diemSinhVien.filter(score => !khoiKienThuc.find(c => c.MONHOCID === score.MONHOCID)).length > 0 
+                    ? 'text-red-600' 
+                    : 'text-green-600'
+                }`}>
+                  {diemSinhVien.filter(score => !khoiKienThuc.find(c => c.MONHOCID === score.MONHOCID)).length}
+                </p>
+                {diemSinhVien.filter(score => !khoiKienThuc.find(c => c.MONHOCID === score.MONHOCID)).length > 0 && (
+                  <p className="text-xs text-red-500">⚠️ Cần dọn dẹp</p>
+                )}
               </div>
             </div>
           </div>
@@ -1279,11 +1292,26 @@ const Transcript = () => {
                   onClick={() => setActiveTab('scores')}
                   className={`px-4 py-2 font-medium ${
                     activeTab === 'scores' 
-                      ? 'text-blue-600 border-b-2 border-blue-600' 
+                      ? 'text-green-600 border-b-2 border-green-600' 
                       : 'text-gray-500 hover:text-gray-700'
                   }`}
                 >
                   📊 Quản lý điểm số
+                </button>
+                <button
+                  onClick={() => setActiveTab('orphaned')}
+                  className={`px-4 py-2 font-medium relative ${
+                    activeTab === 'orphaned' 
+                      ? 'text-yellow-600 border-b-2 border-yellow-600' 
+                      : 'text-gray-500 hover:text-yellow-600'
+                  }`}
+                >
+                  🧹 Dữ liệu khuyết
+                  {diemSinhVien.filter(score => !khoiKienThuc.find(c => c.MONHOCID === score.MONHOCID)).length > 0 && (
+                    <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full px-1 min-w-[16px] h-4 flex items-center justify-center">
+                      {diemSinhVien.filter(score => !khoiKienThuc.find(c => c.MONHOCID === score.MONHOCID)).length}
+                    </span>
+                  )}
                 </button>
               </div>
             </div>
@@ -1429,6 +1457,76 @@ const Transcript = () => {
               {/* Tab Quản lý điểm số */}
               {activeTab === 'scores' && (
                 <div>
+                  {/* Thông báo Dữ liệu khuyết */}
+                  {diemSinhVien.filter(score => !khoiKienThuc.find(c => c.MONHOCID === score.MONHOCID)).length > 0 && (
+                    <div className="mb-6 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
+                      <div className="flex justify-between items-center mb-3">
+                        <h3 className="text-lg font-semibold text-yellow-800">
+                          ⚠️ Phát hiện {diemSinhVien.filter(score => !khoiKienThuc.find(c => c.MONHOCID === score.MONHOCID)).length} Dữ liệu khuyết
+                        </h3>
+                        <button
+                          onClick={handleCleanOrphanedScores}
+                          className="px-3 py-1 bg-yellow-500 text-white rounded text-sm hover:bg-yellow-600"
+                          title="Xóa tất cả Dữ liệu khuyết"
+                        >
+                          🧹 Dọn dẹp tất cả
+                        </button>
+                      </div>
+                      <p className="text-yellow-700 text-sm mb-3">
+                        Những điểm này không có môn học tương ứng (có thể do môn học đã bị xóa). 
+                        Bạn nên xóa chúng để dọn dẹp dữ liệu.
+                      </p>
+                      
+                      <div className="text-xs text-yellow-600 mb-3 space-y-1">
+                        <div>• <strong>MONHOCID màu đỏ:</strong> ID môn học không tồn tại trong danh sách môn học</div>
+                        <div>• <strong>Nguyên nhân:</strong> Môn học đã bị xóa nhưng điểm vẫn còn trong hệ thống</div>
+                        <div>• <strong>Giải pháp:</strong> Xóa từng điểm hoặc dọn dẹp tất cả cùng lúc</div>
+                      </div>
+                      
+                      {/* Danh sách Dữ liệu khuyết */}
+                      <div className="overflow-x-auto">
+                        <table className="min-w-full table-auto border border-yellow-300 bg-white">
+                          <thead className="bg-yellow-100">
+                            <tr>
+                              <th className="border border-yellow-300 px-3 py-2 text-left">MONHOCID</th>
+                              <th className="border border-yellow-300 px-3 py-2">Điểm chữ</th>
+                              <th className="border border-yellow-300 px-3 py-2">Điểm số</th>
+                              <th className="border border-yellow-300 px-3 py-2">Thao tác</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {diemSinhVien
+                              .filter(score => !khoiKienThuc.find(c => c.MONHOCID === score.MONHOCID))
+                              .map((score, index) => (
+                                <tr key={`orphan-${score.MONHOCID}-${index}`} className="even:bg-yellow-50">
+                                  <td className="border border-yellow-300 px-3 py-2 font-mono text-red-600">
+                                    {score.MONHOCID}
+                                  </td>
+                                  <td className="border border-yellow-300 px-3 py-2 text-center">
+                                    <span className="px-2 py-1 rounded text-sm font-semibold bg-gray-100 text-gray-800">
+                                      {score.DIEMCHU}
+                                    </span>
+                                  </td>
+                                  <td className="border border-yellow-300 px-3 py-2 text-center font-semibold">
+                                    {score.DIEMSO}
+                                  </td>
+                                  <td className="border border-yellow-300 px-3 py-2 text-center">
+                                    <button
+                                      onClick={() => authenticatedDeleteScore(score.MONHOCID)}
+                                      className="px-2 py-1 bg-red-500 text-white rounded text-xs hover:bg-red-600"
+                                      title="Xóa Dữ liệu khuyết này"
+                                    >
+                                      🗑️ Xóa
+                                    </button>
+                                  </td>
+                                </tr>
+                              ))}
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  )}
+
                   {/* Form thêm/sửa điểm */}
                   <div className="mb-6 p-4 bg-green-50 rounded-lg">
                     <h3 className="text-lg font-semibold mb-4">
@@ -1528,14 +1626,14 @@ const Transcript = () => {
                   <div>
                     <div className="flex justify-between items-center mb-4">
                       <h3 className="text-lg font-semibold">📊 Danh sách điểm</h3>
-                      {/* Nút dọn dẹp điểm mồ côi */}
+                      {/* Nút dọn dẹp Dữ liệu khuyết */}
                       {diemSinhVien.filter(score => !khoiKienThuc.find(c => c.MONHOCID === score.MONHOCID)).length > 0 && (
                         <button
                           onClick={handleCleanOrphanedScores}
                           className="px-3 py-1 bg-yellow-500 text-white rounded text-sm hover:bg-yellow-600"
                           title="Xóa các điểm không có môn học tương ứng"
                         >
-                          🧹 Dọn dẹp điểm mồ côi ({diemSinhVien.filter(score => !khoiKienThuc.find(c => c.MONHOCID === score.MONHOCID)).length})
+                          🧹 Dọn dẹp Dữ liệu khuyết ({diemSinhVien.filter(score => !khoiKienThuc.find(c => c.MONHOCID === score.MONHOCID)).length})
                         </button>
                       )}
                     </div>
@@ -1610,6 +1708,156 @@ const Transcript = () => {
                       </table>
                     </div>
                   </div>
+                </div>
+              )}
+
+              {/* Tab Quản lý Dữ liệu khuyết */}
+              {activeTab === 'orphaned' && (
+                <div>
+                  {diemSinhVien.filter(score => !khoiKienThuc.find(c => c.MONHOCID === score.MONHOCID)).length === 0 ? (
+                    <div className="text-center py-8">
+                      <div className="text-6xl mb-4">✅</div>
+                      <h3 className="text-xl font-semibold text-green-600 mb-2">Dữ liệu sạch!</h3>
+                      <p className="text-gray-600">Không có Dữ liệu khuyết nào trong hệ thống.</p>
+                      <p className="text-sm text-gray-500 mt-2">
+                        Tất cả điểm đều có môn học tương ứng.
+                      </p>
+                    </div>
+                  ) : (
+                    <div>
+                      {/* Header */}
+                      <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg">
+                        <div className="flex justify-between items-center mb-3">
+                          <h3 className="text-xl font-semibold text-red-800">
+                            🚨 Phát hiện {diemSinhVien.filter(score => !khoiKienThuc.find(c => c.MONHOCID === score.MONHOCID)).length} Dữ liệu khuyết
+                          </h3>
+                          <button
+                            onClick={handleCleanOrphanedScores}
+                            className="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600"
+                            title="Xóa tất cả Dữ liệu khuyết"
+                          >
+                            🧹 Dọn dẹp tất cả
+                          </button>
+                        </div>
+                        
+                        <div className="space-y-2 text-red-700">
+                          <p className="font-medium">
+                            ⚠️ Những điểm này không có môn học tương ứng trong hệ thống!
+                          </p>
+                          <div className="text-sm space-y-1">
+                            <div>• <strong>Nguyên nhân:</strong> Môn học đã bị xóa nhưng điểm vẫn còn</div>
+                            <div>• <strong>Hậu quả:</strong> Gây lỗi hiển thị, dữ liệu không đồng bộ</div>
+                            <div>• <strong>Giải pháp:</strong> Xóa từng điểm hoặc dọn dẹp tất cả</div>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Danh sách Dữ liệu khuyết chi tiết */}
+                      <div className="bg-white rounded-lg border border-red-200">
+                        <div className="p-4 border-b border-red-200 bg-red-50">
+                          <h4 className="font-semibold text-red-800">📋 Danh sách chi tiết</h4>
+                        </div>
+                        <div className="overflow-x-auto">
+                          <table className="min-w-full table-auto">
+                            <thead className="bg-red-100">
+                              <tr>
+                                <th className="border border-red-300 px-4 py-3 text-left font-semibold text-red-800">
+                                  MONHOCID
+                                </th>
+                                <th className="border border-red-300 px-4 py-3 text-center font-semibold text-red-800">
+                                  Điểm chữ
+                                </th>
+                                <th className="border border-red-300 px-4 py-3 text-center font-semibold text-red-800">
+                                  Điểm số
+                                </th>
+                                <th className="border border-red-300 px-4 py-3 text-center font-semibold text-red-800">
+                                  Thông tin bổ sung
+                                </th>
+                                <th className="border border-red-300 px-4 py-3 text-center font-semibold text-red-800">
+                                  Thao tác
+                                </th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              {diemSinhVien
+                                .filter(score => !khoiKienThuc.find(c => c.MONHOCID === score.MONHOCID))
+                                .map((score, index) => (
+                                  <tr key={`orphan-detail-${score.MONHOCID}-${index}`} className="even:bg-red-50 hover:bg-red-100">
+                                    <td className="border border-red-300 px-4 py-3">
+                                      <div className="font-mono text-red-700 font-bold">
+                                        {score.MONHOCID}
+                                      </div>
+                                      <div className="text-xs text-red-500">
+                                        ID không tồn tại
+                                      </div>
+                                    </td>
+                                    <td className="border border-red-300 px-4 py-3 text-center">
+                                      <span className={`px-3 py-1 rounded-full text-sm font-semibold ${
+                                        score.DIEMCHU === 'A+' || score.DIEMCHU === 'A' ? 'bg-green-100 text-green-800' :
+                                        score.DIEMCHU === 'B+' || score.DIEMCHU === 'B' ? 'bg-blue-100 text-blue-800' :
+                                        score.DIEMCHU === 'C+' || score.DIEMCHU === 'C' ? 'bg-yellow-100 text-yellow-800' :
+                                        score.DIEMCHU === 'D+' || score.DIEMCHU === 'D' ? 'bg-orange-100 text-orange-800' :
+                                        score.DIEMCHU === 'F' ? 'bg-red-100 text-red-800' : 'bg-gray-100 text-gray-800'
+                                      }`}>
+                                        {score.DIEMCHU}
+                                      </span>
+                                    </td>
+                                    <td className="border border-red-300 px-4 py-3 text-center">
+                                      <span className="font-semibold text-lg">
+                                        {score.DIEMSO}
+                                      </span>
+                                    </td>
+                                    <td className="border border-red-300 px-4 py-3 text-center">
+                                      <div className="text-xs space-y-1">
+                                        {score.MAMONHOC && (
+                                          <div className="text-gray-600">
+                                            Mã: <span className="font-mono">{score.MAMONHOC}</span>
+                                          </div>
+                                        )}
+                                        {score.TENMONHOC && (
+                                          <div className="text-gray-600 max-w-32 truncate" title={score.TENMONHOC}>
+                                            {score.TENMONHOC}
+                                          </div>
+                                        )}
+                                        {score.SOTC && (
+                                          <div className="text-gray-600">
+                                            {score.SOTC} TC
+                                          </div>
+                                        )}
+                                        <div className="text-red-500 font-medium">
+                                          ❌ Môn học đã xóa
+                                        </div>
+                                      </div>
+                                    </td>
+                                    <td className="border border-red-300 px-4 py-3 text-center">
+                                      <button
+                                        onClick={() => authenticatedDeleteScore(score.MONHOCID)}
+                                        className="px-3 py-2 bg-red-500 text-white rounded-lg text-sm hover:bg-red-600 transition-colors"
+                                        title="Xóa Dữ liệu khuyết này"
+                                      >
+                                        🗑️ Xóa ngay
+                                      </button>
+                                    </td>
+                                  </tr>
+                                ))}
+                            </tbody>
+                          </table>
+                        </div>
+                        
+                        {/* Footer với thống kê */}
+                        <div className="p-4 border-t border-red-200 bg-red-50">
+                          <div className="flex justify-between items-center text-sm">
+                            <div className="text-red-700">
+                              <strong>Tổng cộng:</strong> {diemSinhVien.filter(score => !khoiKienThuc.find(c => c.MONHOCID === score.MONHOCID)).length} Dữ liệu khuyết
+                            </div>
+                            <div className="text-red-600">
+                              💡 <strong>Khuyến nghị:</strong> Nên dọn dẹp tất cả để tránh lỗi hệ thống
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  )}
                 </div>
               )}
             </div>
