@@ -672,10 +672,6 @@ const Transcript = () => {
                 <span className="text-purple-600 font-medium">🎯 Mẹo:</span>
                 <span> Khối có điểm TB cao nhưng tiến độ thấp = cần học thêm môn</span>
               </div>
-              <div className="mt-2 pt-1 border-t border-gray-300">
-                <span className="text-orange-600 font-medium">⚠️ Lưu ý:</span>
-                <span> Môn không xét điểm (điểm {'>'}10) như thực tập được loại khỏi phân tích chất lượng</span>
-              </div>
             </div>
           </div>
 
@@ -796,8 +792,6 @@ const Transcript = () => {
               <div className="font-medium text-blue-800">Ý nghĩa:</div>
               <div>• Điểm trung bình của các môn học <strong>xét điểm</strong> trong từng khối kiến thức (thang điểm 10)</div>
               <div>• Phản ánh <strong>chất lượng học tập</strong> - bạn học tốt ở khối nào</div>
-              <div>• <strong>Loại trừ</strong> môn không xét điểm (điểm {'>'}10) như thực tập, seminar</div>
-              <div>• Chỉ tính các môn đã có điểm và điểm ≤ 10</div>
             </div>
             {kktData.length > 0 ? (
               <ResponsiveContainer width="100%" height={300}>
@@ -900,7 +894,6 @@ const Transcript = () => {
               <div className="font-medium text-green-800">Ý nghĩa:</div>
               <div>• Số tín chỉ <strong>đã hoàn thành</strong> (xanh) và <strong>còn lại</strong> (đỏ) cho từng khối kiến thức</div>
               <div>• Phản ánh <strong>tiến độ học tập</strong> - bạn đã hoàn thành bao nhiêu % ở mỗi khối</div>
-              <div>• Tính cả môn đã có điểm và chưa có điểm (miễn là đã đăng ký học)</div>
             </div>
             {creditProgressData.length > 0 ? (
               <ResponsiveContainer width="100%" height={400}>
@@ -963,53 +956,6 @@ const Transcript = () => {
           <div className="mb-4">
             <h3 className="text-lg font-semibold mb-2">📈 So sánh Chất lượng vs Tiến độ</h3>
             
-            {/* Top 3 khối có điểm TB cao nhất */}
-            <div className="bg-blue-50 p-3 rounded-lg mb-3">
-              <h4 className="font-medium text-blue-800 mb-2">🏆 Top khối điểm TB cao nhất</h4>
-              <div className="space-y-1 text-sm">
-                {kktData
-                  .filter(item => item.hasScore && item.avgScore > 0)
-                  .sort((a, b) => b.avgScore - a.avgScore)
-                  .slice(0, 3)
-                  .map((item, index) => (
-                    <div key={index} className="flex justify-between items-center">
-                      <span className="text-gray-700">
-                        #{index + 1} {item.name}
-                      </span>
-                      <span className="font-semibold text-blue-600">
-                        {item.avgScore}/10
-                      </span>
-                    </div>
-                  ))}
-                {kktData.filter(item => item.hasScore && item.avgScore > 0).length === 0 && (
-                  <div className="text-gray-500 text-center py-2">Chưa có dữ liệu điểm</div>
-                )}
-              </div>
-            </div>
-
-            {/* Top 3 khối có tiến độ cao nhất */}
-            <div className="bg-green-50 p-3 rounded-lg mb-3">
-              <h4 className="font-medium text-green-800 mb-2">📊 Top khối tiến độ cao nhất</h4>
-              <div className="space-y-1 text-sm">
-                {creditProgressData
-                  .sort((a, b) => b.percentage - a.percentage)
-                  .slice(0, 3)
-                  .map((item, index) => (
-                    <div key={index} className="flex justify-between items-center">
-                      <span className="text-gray-700">
-                        #{index + 1} {item.name}
-                      </span>
-                      <span className="font-semibold text-green-600">
-                        {item.percentage}%
-                      </span>
-                    </div>
-                  ))}
-                {creditProgressData.length === 0 && (
-                  <div className="text-gray-500 text-center py-2">Chưa có dữ liệu tín chỉ</div>
-                )}
-              </div>
-            </div>
-
             {/* Khuyến nghị */}
             <div className="bg-purple-50 p-3 rounded-lg">
               <h4 className="font-medium text-purple-800 mb-2">💡 Gợi ý cải thiện</h4>
@@ -1141,13 +1087,13 @@ const Transcript = () => {
               </div>
             </div>
 
-            {/* Top khối kiến thức hoàn thành tốt nhất */}
+            {/* Xếp hạng khối kiến thức hoàn thành tốt nhất */}
             <div className="space-y-2 text-sm border-t pt-4">
-              <h4 className="font-medium text-gray-700">🏆 Top khối kiến thức hoàn thành</h4>
+              <h4 className="font-medium text-gray-700">🏆 Xếp hạng khối kiến thức hoàn thành</h4>
               <div className="text-xs text-gray-500 mb-2">
                 Xếp hạng theo tỷ lệ % tín chỉ đã hoàn thành
               </div>
-              {creditProgressData.slice(0, 5).map((kkt, index) => (
+              {creditProgressData.slice(0, 15).map((kkt, index) => (
                 <div key={kkt.fullName} className="flex justify-between items-center py-1">
                   <div className="flex-1">
                     <span className="text-xs font-medium">{index + 1}. {kkt.name}</span>
@@ -1177,11 +1123,11 @@ const Transcript = () => {
 
             {/* Thống kê điểm TB theo khối */}
             <div className="space-y-2 text-sm border-t pt-4">
-              <h4 className="font-medium text-gray-700">📊 Top điểm trung bình</h4>
+              <h4 className="font-medium text-gray-700">📊 Xếp hạng điểm trung bình</h4>
               <div className="text-xs text-gray-500 mb-2">
                 Khối kiến thức có điểm TB cao nhất
               </div>
-              {kktData.filter(item => item.avgScore > 0).slice(0, 3).map((kkt, index) => (
+              {kktData.filter(item => item.avgScore > 0).slice(0, 15).map((kkt, index) => (
                 <div key={kkt.fullName} className="flex justify-between items-center">
                   <span className="text-xs">{index + 1}. {kkt.name}</span>
                   <span className="font-semibold text-xs text-green-600">
