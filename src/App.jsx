@@ -4,6 +4,7 @@ import { About, Contact, Home, Projects, SorryPage } from "./pages";
 import Photobooth from "./pages/Photobooth"; // Giả sử bạn lưu Photobooth.jsx trong folder pages
 //import VintageCakePage from "./pages/VintageCakePage"; // Giả sử bạn lưu VintageCakePage.jsx trong folder pages
 import ChatBtn from "./components/ChatBtn";
+import TranscriptPage from "./pages/Transcript";
 
 const App = () => {
   return (
@@ -23,6 +24,7 @@ const App = () => {
                   <Route path="/projects" element={<Projects />} />
                   <Route path="/contact" element={<Contact />} />
                   <Route path="/sorry" element={<SorryPage />} />
+                  <Route path="/transcript" element={<TranscriptPage />} />
                 </Routes>
               </>
             }
