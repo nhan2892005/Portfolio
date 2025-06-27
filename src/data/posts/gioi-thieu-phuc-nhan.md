@@ -1,7 +1,7 @@
 ---
 title: "Giới thiệu về Phúc Nhân - Lập trình viên & Kỹ sư Dữ liệu"
-description: "Tìm hiểu về hành trình của Phúc Nhân (Nguyễn Phúc Nhân) trong lĩnh vực lập trình, HPC, Big Data và AI. Từ những ngày đầu học lập trình đến trở thành chuyên gia về Data Science và Quantum Computing."
-date: "2024-12-27"
+description: "Tìm hiểu về hành trình của Phúc Nhân (Nguyễn Phúc Nhân) trong lĩnh vực lập trình, HPC, Big Data và AI."
+date: "27-06-2025"
 tags: ["Phúc Nhân", "portfolio", "career", "programming", "data-science", "AI", "HPC"]
 author: "Phúc Nhân"
 slug: "gioi-thieu-phuc-nhan"
@@ -23,14 +23,7 @@ Tôi chuyên về các lĩnh vực:
 
 ## 💼 Kinh nghiệm
 
-Với nhiều năm kinh nghiệm trong ngành, tôi đã tham gia vào nhiều dự án thú vị từ phát triển ứng dụng web đến nghiên cứu thuật toán Machine Learning phức tạp.
-
-### Các công nghệ tôi sử dụng:
-- **Languages**: Python, JavaScript, C++, Java
-- **Frameworks**: React, Node.js, TensorFlow, PyTorch
-- **Databases**: MongoDB, PostgreSQL, Redis
-- **Cloud**: AWS, GCP, Azure
-- **Tools**: Docker, Kubernetes, Git
+Với một số "kiến thức, kinh nghiệm, trải nghiệm", tôi đã tham gia vào nhiều dự án thú vị từ phát triển ứng dụng web, xây dựng hệ thống phân tích dữ liệu thời gian thực, đến nghiên cứu thuật toán Machine Learning (đặc biệt là Reinforcement Learning).
 
 ## 🎯 Tầm nhìn
 
