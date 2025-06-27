@@ -326,7 +326,7 @@ export const projects = [
         theme: 'btn-back-red',
         name: 'Library for Multilayer Perceptron',
         description: 'A deep learning library designed for ANN models, built with C/C++. It supports multidimensional arrays and OOP principles. Source code available in Dec 2024.',
-        link: '/sorry',
+        link: 'https://github.com/nhan2892005/DSA_and_MLP',
         livesite: '',
     },
     {
