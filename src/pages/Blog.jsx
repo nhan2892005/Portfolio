@@ -12,6 +12,46 @@ const Blog = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedTag, setSelectedTag] = useState('');
 
+  // SEO: Thêm meta tags khi component mount
+  useEffect(() => {
+    // Cập nhật title
+    document.title = "Blog của Phúc Nhân - Chia sẻ kiến thức về Lập trình & Data Science";
+    
+    // Cập nhật meta description
+    const metaDescription = document.querySelector('meta[name="description"]');
+    if (metaDescription) {
+      metaDescription.content = "Blog cá nhân của Phúc Nhân (Nguyễn Phúc Nhân) - Chia sẻ kiến thức về HPC, Big Data, AI, Machine Learning và các công nghệ tiên tiến. Đọc các bài viết chuyên sâu về lập trình và data science.";
+    }
+    
+    // Thêm structured data cho Blog
+    const blogSchema = {
+      "@context": "https://schema.org",
+      "@type": "Blog",
+      "name": "Blog của Phúc Nhân",
+      "description": "Blog cá nhân về lập trình, data science và công nghệ",
+      "url": "https://phucnhan.vercel.app/blog",
+      "author": {
+        "@type": "Person",
+        "name": "Phúc Nhân",
+        "url": "https://phucnhan.vercel.app"
+      },
+      "inLanguage": "vi-VN"
+    };
+    
+    // Thêm schema vào head
+    const script = document.createElement('script');
+    script.type = 'application/ld+json';
+    script.text = JSON.stringify(blogSchema);
+    document.head.appendChild(script);
+    
+    // Cleanup function
+    return () => {
+      // Restore original title
+      document.title = "Phúc Nhân - Lập trình viên & Kỹ sư Dữ liệu | HPC | Big Data | AI";
+      document.head.removeChild(script);
+    };
+  }, []);
+
   useEffect(() => {
     const loadPosts = () => {
       try {

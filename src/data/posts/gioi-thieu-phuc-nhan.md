@@ -1,0 +1,63 @@
+---
+title: "Giới thiệu về Phúc Nhân - Lập trình viên & Kỹ sư Dữ liệu"
+description: "Tìm hiểu về hành trình của Phúc Nhân (Nguyễn Phúc Nhân) trong lĩnh vực lập trình, HPC, Big Data và AI. Từ những ngày đầu học lập trình đến trở thành chuyên gia về Data Science và Quantum Computing."
+date: "2024-12-27"
+tags: ["Phúc Nhân", "portfolio", "career", "programming", "data-science", "AI", "HPC"]
+author: "Phúc Nhân"
+slug: "gioi-thieu-phuc-nhan"
+---
+
+# Xin chào, tôi là Phúc Nhân! 👋
+
+Chào mừng bạn đến với blog cá nhân của tôi! Tôi là **Phúc Nhân** (tên đầy đủ: **Nguyễn Phúc Nhân**), một lập trình viên và kỹ sư dữ liệu đam mê công nghệ.
+
+## 🚀 Về tôi
+
+Tôi chuyên về các lĩnh vực:
+
+- **High Performance Computing (HPC)** - Tối ưu hiệu suất tính toán
+- **Big Data Engineering** - Xử lý và phân tích dữ liệu lớn  
+- **Quantum Computing** - Nghiên cứu tính toán lượng tử
+- **Machine Learning & AI** - Phát triển các mô hình AI
+- **Green Energy Solutions** - Giải pháp năng lượng xanh
+
+## 💼 Kinh nghiệm
+
+Với nhiều năm kinh nghiệm trong ngành, tôi đã tham gia vào nhiều dự án thú vị từ phát triển ứng dụng web đến nghiên cứu thuật toán Machine Learning phức tạp.
+
+### Các công nghệ tôi sử dụng:
+- **Languages**: Python, JavaScript, C++, Java
+- **Frameworks**: React, Node.js, TensorFlow, PyTorch
+- **Databases**: MongoDB, PostgreSQL, Redis
+- **Cloud**: AWS, GCP, Azure
+- **Tools**: Docker, Kubernetes, Git
+
+## 🎯 Tầm nhìn
+
+Tôi luôn tìm cách áp dụng công nghệ để giải quyết các vấn đề thực tế, đặc biệt trong lĩnh vực:
+- Tối ưu hóa năng lượng
+- Phân tích dữ liệu cho business intelligence
+- Phát triển ứng dụng AI có tác động tích cực
+
+## 📫 Liên hệ với Phúc Nhân
+
+Bạn có thể tìm hiểu thêm về tôi và các dự án của tôi qua:
+
+- **Portfolio**: [phucnhan.vercel.app](https://phucnhan.vercel.app)
+- **LinkedIn**: [linkedin.com/in/nguyenphucnhan](https://linkedin.com/in/nguyenphucnhan)  
+- **GitHub**: [github.com/nguyenphucnhan](https://github.com/nguyenphucnhan)
+- **Email**: [contact@phucnhan.dev](mailto:contact@phucnhan.dev)
+
+## 🎨 Sở thích
+
+Ngoài lập trình, tôi còn thích:
+- Đọc sách về công nghệ và khoa học
+- Chụp ảnh và thiết kế
+- Du lịch và khám phá văn hóa mới
+- Chia sẻ kiến thức qua blog này
+
+---
+
+Cảm ơn bạn đã ghé thăm blog của **Phúc Nhân**! Hãy theo dõi để cập nhật những bài viết mới nhất về công nghệ, lập trình và những trải nghiệm thú vị trong hành trình phát triển sự nghiệp của tôi.
+
+**#PhúcNhân #LậpTrìnhViên #DataScience #AI #HPC #BigData**

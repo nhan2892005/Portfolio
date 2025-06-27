@@ -1,0 +1,35 @@
+<!-- public/og-image.svg -->
+<svg width="1200" height="630" viewBox="0 0 1200 630" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background gradient -->
+  <defs>
+    <linearGradient id="background" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#3B82F6;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#8B5CF6;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <rect width="1200" height="630" fill="url(#background)"/>
+  
+  <!-- Main content -->
+  <text x="600" y="250" font-family="Arial, sans-serif" font-size="72" font-weight="bold" text-anchor="middle" fill="white">
+    Phúc Nhân
+  </text>
+  
+  <text x="600" y="320" font-family="Arial, sans-serif" font-size="36" text-anchor="middle" fill="rgba(255,255,255,0.9)">
+    Lập trình viên &amp; Kỹ sư Dữ liệu
+  </text>
+  
+  <text x="600" y="380" font-family="Arial, sans-serif" font-size="24" text-anchor="middle" fill="rgba(255,255,255,0.8)">
+    HPC • Big Data • AI • Quantum Computing
+  </text>
+  
+  <text x="600" y="480" font-family="Arial, sans-serif" font-size="28" text-anchor="middle" fill="rgba(255,255,255,0.7)">
+    phucnhan.vercel.app
+  </text>
+  
+  <!-- Decorative elements -->
+  <circle cx="100" cy="100" r="30" fill="rgba(255,255,255,0.1)"/>
+  <circle cx="1100" cy="530" r="40" fill="rgba(255,255,255,0.1)"/>
+  <circle cx="200" cy="500" r="20" fill="rgba(255,255,255,0.1)"/>
+  <circle cx="1000" cy="150" r="25" fill="rgba(255,255,255,0.1)"/>
+</svg>

@@ -1,0 +1,32 @@
+User-agent: *
+Allow: /
+
+# Ưu tiên các trang quan trọng
+Allow: /about
+Allow: /projects  
+Allow: /blog
+Allow: /contact
+
+# Chặn các trang không cần thiết (nếu có)
+Disallow: /admin
+Disallow: /private
+Disallow: /sorry
+
+# Sitemap
+Sitemap: https://phucnhan.vercel.app/mapsite.xml
+
+# Crawl delay (tùy chọn)
+Crawl-delay: 1
+
+# Tăng cường cho search engines chính
+User-agent: Googlebot
+Allow: /
+Crawl-delay: 0
+
+User-agent: Bingbot  
+Allow: /
+Crawl-delay: 1
+
+User-agent: Baiduspider
+Allow: /
+Crawl-delay: 2
