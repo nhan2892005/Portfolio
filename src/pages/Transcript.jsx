@@ -52,7 +52,7 @@ const Transcript = () => {
   const [showPasswordModal, setShowPasswordModal] = useState(false);
   const [passwordInput, setPasswordInput] = useState('');
   const [pendingAction, setPendingAction] = useState(null);
-  const PASSWORD = import.meta.env.TRANSCRIPT_PASSWORD;
+  const PASSWORD = import.meta.env.VITE_TRANSCRIPT_PASSWORD;
 
   const scoreMap = diemSinhVien.reduce((acc, item) => {
     acc[item.MONHOCID] = item;
