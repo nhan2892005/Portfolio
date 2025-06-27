@@ -1,5 +1,6 @@
 import React, { useState, useMemo } from "react";
 import transcriptData from "../data/diem.json";
+import semesterData from "../data/semester.json";
 import { PieChart, Pie, Cell, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 
 const gradeToGPA = {
@@ -41,6 +42,7 @@ const isValidNumericalScore = (diemSo) => {
 const Transcript = () => {
   // State cho dữ liệu (có thể chỉnh sửa)
   const [currentData, setCurrentData] = useState(transcriptData.data);
+  const [semesterScores, setSemesterScores] = useState(semesterData.data.diem);
   const { diemSinhVien, khoiKienThuc } = currentData;
   
   // State cho search và filter
@@ -56,9 +58,11 @@ const Transcript = () => {
 
   // State cho quản lý môn học và điểm
   const [showManagementModal, setShowManagementModal] = useState(false);
-  const [activeTab, setActiveTab] = useState('courses'); // 'courses' hoặc 'scores'
+  const [activeTab, setActiveTab] = useState('courses'); // 'courses', 'scores', 'semesters', 'components'
   const [editingCourse, setEditingCourse] = useState(null);
   const [editingScore, setEditingScore] = useState(null);
+  const [editingSemesterScore, setEditingSemesterScore] = useState(null);
+  const [editingComponent, setEditingComponent] = useState(null);
   const [courseForm, setCourseForm] = useState({
     MAMONHOC: '',
     TENMONHOC: '',
@@ -71,6 +75,25 @@ const Transcript = () => {
     DIEMCHU: '',
     DIEMSO: ''
   });
+  const [semesterForm, setSemesterForm] = useState({
+    mamh: '',
+    tenmhvn: '',
+    tc: '',
+    diem: '',
+    diemchu: '',
+    hocky: '',
+    tenhk: ''
+  });
+  const [componentForm, setComponentForm] = useState({
+    ma: '',
+    ten: '',
+    diem: '',
+    tyLe: ''
+  });
+
+  // State cho view học kỳ
+  const [selectedSemester, setSelectedSemester] = useState('');
+  const [selectedCourseComponents, setSelectedCourseComponents] = useState(null);
 
   // State cho xác thực mật khẩu
   const [showPasswordModal, setShowPasswordModal] = useState(false);
@@ -119,6 +142,17 @@ const Transcript = () => {
       }
     }
 
+    // Tìm điểm thành phần từ semester data
+    let components = [];
+    const semesterScore = semesterScores?.find(semScore => semScore.mamh === course.MAMONHOC);
+    if (semesterScore?.diemthanhphanjson) {
+      try {
+        components = JSON.parse(semesterScore.diemthanhphanjson);
+      } catch (e) {
+        console.error('Error parsing components for', course.MAMONHOC, ':', e);
+      }
+    }
+
     const mon = {
       ...course,
       diemChu,
@@ -126,6 +160,7 @@ const Transcript = () => {
       diemHe4,
       isSpecial,
       specialInfo,
+      components, // Thêm điểm thành phần
     };
 
     if (!groupedByKKT[course.TENKHOIKIENTHUC]) {
@@ -172,6 +207,61 @@ const Transcript = () => {
 
     return filtered;
   }, [groupedByKKT, searchTerm, selectedKKT, minScore, maxScore, minCredits, maxCredits]);
+
+  // Dữ liệu hiển thị - có thể là view tổng hợp hoặc view học kỳ
+  const displayData = useMemo(() => {
+    if (!selectedSemester) {
+      // View tổng hợp - sử dụng dữ liệu từ file diem.json
+      return filteredGroupedByKKT;
+    } else {
+      // View học kỳ - sử dụng dữ liệu từ file semester.json
+      const semesterCourses = semesterScores?.filter(score => 
+        score.hocky === parseInt(selectedSemester) && score.mamh
+      ) || [];
+      
+      const grouped = {};
+      semesterCourses.forEach(semesterScore => {
+        // Tìm môn học tương ứng trong khoiKienThuc để lấy thông tin khối
+        const courseInfo = khoiKienThuc.find(course => course.MAMONHOC === semesterScore.mamh);
+        const kktName = courseInfo?.TENKHOIKIENTHUC || "Khác";
+        
+        if (!grouped[kktName]) {
+          grouped[kktName] = [];
+        }
+        
+        // Parse điểm thành phần
+        let components = [];
+        if (semesterScore.diemthanhphanjson) {
+          try {
+            components = JSON.parse(semesterScore.diemthanhphanjson);
+          } catch (e) {
+            console.error('Error parsing components:', e);
+          }
+        }
+        
+        const course = {
+          MAMONHOC: semesterScore.mamh,
+          TENMONHOC: semesterScore.tenmhvn,
+          SOTC: semesterScore.tc,
+          diemChu: semesterScore.diemchu,
+          diemSo: semesterScore.diemso,
+          diemHe4: semesterScore.diemchu && gradeToGPA[semesterScore.diemchu] || "--",
+          isSpecial: semesterScore.diem && !isNaN(parseFloat(semesterScore.diem)) ? false : true,
+          components: components,
+          semesterInfo: {
+            hocky: semesterScore.hocky,
+            tenhk: semesterScore.tenhk,
+            nhomlop: semesterScore.nhomlop,
+            ghichu: semesterScore.ghichu
+          }
+        };
+        
+        grouped[kktName].push(course);
+      });
+      
+      return grouped;
+    }
+  }, [filteredGroupedByKKT, selectedSemester, semesterScores, khoiKienThuc]);
 
   const avgGPA = (totalWeightedGPA / totalCredits).toFixed(2);
   const avg10 = (totalWeightedScore10 / totalCredits).toFixed(2);
@@ -621,6 +711,282 @@ const Transcript = () => {
       }));
       alert(`Đã dọn dẹp ${orphanedScores.length} Dữ liệu khuyết!`);
     }
+  };
+
+  // ============ Hàm xử lý CRUD cho học kỳ và điểm thành phần ============
+
+  // Lấy danh sách học kỳ unique
+  const getUniqueSemesters = () => {
+    const semesters = [...new Set(semesterScores.map(item => item.hocky))];
+    return semesters.sort((a, b) => b - a); // Sort desc, học kỳ mới nhất trước
+  };
+
+  // Lấy dữ liệu theo học kỳ
+  const getScoresBySemester = (hocky) => {
+    return semesterScores.filter(item => item.hocky === hocky);
+  };
+
+  // Hàm xử lý CRUD cho điểm học kỳ
+  const handleAddSemesterScore = () => {
+    if (!semesterForm.mamh || !semesterForm.tenmhvn || !semesterForm.tc || !semesterForm.diem || !semesterForm.hocky) {
+      alert('Vui lòng điền đầy đủ thông tin môn học');
+      return;
+    }
+
+    const newScore = {
+      id: `${semesterForm.hocky}.${semesterForm.mamh}.2312438`,
+      mahk: semesterForm.hocky.toString().substring(3),
+      hocky: parseInt(semesterForm.hocky),
+      tenhk: semesterForm.tenhk || `Học kỳ ${semesterForm.hocky}`,
+      mamh: semesterForm.mamh,
+      tenmhvn: semesterForm.tenmhvn,
+      tc: parseInt(semesterForm.tc),
+      diem: semesterForm.diem,
+      diemso: parseFloat(semesterForm.diem) || null,
+      diemcu: parseFloat(semesterForm.diem) || null,
+      diemchu: semesterForm.diemchu || "--",
+      diemdat: "1",
+      ghichu: null,
+      tctlhk: "--",
+      dtbhk: "--",
+      dtbtl: "--",
+      capnhat: new Date().toLocaleDateString('vi-VN'),
+      nhomlop: "L01",
+      diemthanhphanjson: null,
+      tinhtrangdiem: "CTH"
+    };
+
+    setSemesterScores(prev => [...prev, newScore]);
+    setSemesterForm({
+      mamh: '',
+      tenmhvn: '',
+      tc: '',
+      diem: '',
+      diemchu: '',
+      hocky: '',
+      tenhk: ''
+    });
+    alert('Thêm điểm học kỳ thành công!');
+  };
+
+  const handleEditSemesterScore = (score) => {
+    setEditingSemesterScore(score);
+    setSemesterForm({
+      mamh: score.mamh,
+      tenmhvn: score.tenmhvn,
+      tc: score.tc.toString(),
+      diem: score.diem,
+      diemchu: score.diemchu,
+      hocky: score.hocky.toString(),
+      tenhk: score.tenhk
+    });
+  };
+
+  const handleUpdateSemesterScore = () => {
+    if (!semesterForm.mamh || !semesterForm.tenmhvn || !semesterForm.tc || !semesterForm.diem) {
+      alert('Vui lòng điền đầy đủ thông tin');
+      return;
+    }
+
+    setSemesterScores(prev => prev.map(score => 
+      score.id === editingSemesterScore.id 
+        ? {
+            ...score,
+            mamh: semesterForm.mamh,
+            tenmhvn: semesterForm.tenmhvn,
+            tc: parseInt(semesterForm.tc),
+            diem: semesterForm.diem,
+            diemso: parseFloat(semesterForm.diem) || null,
+            diemcu: parseFloat(semesterForm.diem) || null,
+            diemchu: semesterForm.diemchu,
+            hocky: parseInt(semesterForm.hocky),
+            tenhk: semesterForm.tenhk,
+            capnhat: new Date().toLocaleDateString('vi-VN')
+          }
+        : score
+    ));
+
+    setEditingSemesterScore(null);
+    setSemesterForm({
+      mamh: '',
+      tenmhvn: '',
+      tc: '',
+      diem: '',
+      diemchu: '',
+      hocky: '',
+      tenhk: ''
+    });
+    alert('Cập nhật điểm học kỳ thành công!');
+  };
+
+  const handleDeleteSemesterScore = (scoreId) => {
+    if (window.confirm('Bạn có chắc chắn muốn xóa điểm này?')) {
+      setSemesterScores(prev => prev.filter(score => score.id !== scoreId));
+      alert('Xóa điểm thành công!');
+    }
+  };
+
+  // Hàm xử lý điểm thành phần
+  const parseComponents = (diemthanhphanjson) => {
+    if (!diemthanhphanjson) return [];
+    try {
+      return JSON.parse(diemthanhphanjson);
+    } catch (e) {
+      return [];
+    }
+  };
+
+  const handleViewComponents = (score) => {
+    const components = parseComponents(score.diemthanhphanjson);
+    setSelectedCourseComponents({
+      course: score,
+      components: components
+    });
+  };
+
+  const handleAddComponent = (courseData) => {
+    if (!componentForm.ma || !componentForm.ten || !componentForm.diem || !componentForm.tyLe) {
+      alert('Vui lòng điền đầy đủ thông tin thành phần điểm');
+      return;
+    }
+
+    const newComponent = {
+      ma: componentForm.ma,
+      ten: componentForm.ten,
+      stt: selectedCourseComponents?.components?.length + 1 || 1,
+      diem: parseFloat(componentForm.diem),
+      tyLe: parseInt(componentForm.tyLe)
+    };
+
+    setSemesterScores(prev => prev.map(score => {
+      // Tìm score bằng mã môn học thay vì id
+      if (score.mamh === courseData.MAMONHOC || score.id === courseData.id) {
+        const currentComponents = parseComponents(score.diemthanhphanjson);
+        const updatedComponents = [...currentComponents, newComponent];
+        
+        return {
+          ...score,
+          diemthanhphanjson: JSON.stringify(updatedComponents),
+          capnhat: new Date().toLocaleDateString('vi-VN')
+        };
+      }
+      return score;
+    }));
+
+    // Cập nhật selectedCourseComponents để hiển thị ngay lập tức
+    if (selectedCourseComponents) {
+      setSelectedCourseComponents({
+        ...selectedCourseComponents,
+        components: [...selectedCourseComponents.components, newComponent]
+      });
+    }
+
+    setComponentForm({
+      ma: '',
+      ten: '',
+      diem: '',
+      tyLe: ''
+    });
+    alert('Thêm thành phần điểm thành công!');
+  };
+
+  const handleUpdateComponent = (courseData, componentIndex) => {
+    if (!componentForm.ma || !componentForm.ten || !componentForm.diem || !componentForm.tyLe) {
+      alert('Vui lòng điền đầy đủ thông tin');
+      return;
+    }
+
+    setSemesterScores(prev => prev.map(score => {
+      // Tìm score bằng mã môn học thay vì id
+      if (score.mamh === courseData.MAMONHOC || score.id === courseData.id) {
+        const currentComponents = parseComponents(score.diemthanhphanjson);
+        currentComponents[componentIndex] = {
+          ...currentComponents[componentIndex],
+          ma: componentForm.ma,
+          ten: componentForm.ten,
+          diem: parseFloat(componentForm.diem),
+          tyLe: parseInt(componentForm.tyLe)
+        };
+        
+        return {
+          ...score,
+          diemthanhphanjson: JSON.stringify(currentComponents),
+          capnhat: new Date().toLocaleDateString('vi-VN')
+        };
+      }
+      return score;
+    }));
+
+    // Cập nhật selectedCourseComponents để hiển thị ngay lập tức
+    if (selectedCourseComponents) {
+      const updatedComponents = [...selectedCourseComponents.components];
+      updatedComponents[componentIndex] = {
+        ...updatedComponents[componentIndex],
+        ma: componentForm.ma,
+        ten: componentForm.ten,
+        diem: parseFloat(componentForm.diem),
+        tyLe: parseInt(componentForm.tyLe)
+      };
+      
+      setSelectedCourseComponents({
+        ...selectedCourseComponents,
+        components: updatedComponents
+      });
+    }
+
+    setEditingComponent(null);
+    setComponentForm({
+      ma: '',
+      ten: '',
+      diem: '',
+      tyLe: ''
+    });
+    alert('Cập nhật thành phần điểm thành công!');
+  };
+
+  const handleDeleteComponent = (courseData, componentIndex) => {
+    if (window.confirm('Bạn có chắc chắn muốn xóa thành phần điểm này?')) {
+      setSemesterScores(prev => prev.map(score => {
+        // Tìm score bằng mã môn học thay vì id
+        if (score.mamh === courseData.MAMONHOC || score.id === courseData.id) {
+          const currentComponents = parseComponents(score.diemthanhphanjson);
+          currentComponents.splice(componentIndex, 1);
+          
+          return {
+            ...score,
+            diemthanhphanjson: currentComponents.length > 0 ? JSON.stringify(currentComponents) : null,
+            capnhat: new Date().toLocaleDateString('vi-VN')
+          };
+        }
+        return score;
+      }));
+
+      // Cập nhật selectedCourseComponents để hiển thị ngay lập tức
+      if (selectedCourseComponents) {
+        const updatedComponents = [...selectedCourseComponents.components];
+        updatedComponents.splice(componentIndex, 1);
+        
+        setSelectedCourseComponents({
+          ...selectedCourseComponents,
+          components: updatedComponents
+        });
+      }
+
+      alert('Xóa thành phần điểm thành công!');
+    }
+  };
+
+  // Wrapper functions cho xác thực
+  const authenticatedAddSemesterScore = () => {
+    requestPasswordAuth(handleAddSemesterScore, 'thêm điểm học kỳ');
+  };
+
+  const authenticatedUpdateSemesterScore = () => {
+    requestPasswordAuth(handleUpdateSemesterScore, 'cập nhật điểm học kỳ');
+  };
+
+  const authenticatedDeleteSemesterScore = (scoreId) => {
+    requestPasswordAuth(() => handleDeleteSemesterScore(scoreId), 'xóa điểm học kỳ');
   };
 
   // Hàm xuất dữ liệu JSON
@@ -1090,7 +1456,7 @@ const Transcript = () => {
                   <div className="space-y-1 text-blue-700">
                     <div>• <strong>MT:</strong> Miễn thi (có chứng chỉ tương đương)</div>
                     <div>• <strong>DT:</strong> Đạt (môn không xét điểm số)</div>
-                    <div>• <strong>CT:</strong> Chuyển tín chỉ từ trường khác</div>
+                    <div>• <strong>CT:</strong> Cấm thi</div>
                     <div>• <strong>VT/VP/KD:</strong> Các trường hợp đặc biệt</div>
                     <div className="text-xs text-blue-600 italic mt-2">
                       ⚠️ Điểm đặc biệt không được tính vào GPA và điểm trung bình
@@ -1161,198 +1527,282 @@ const Transcript = () => {
               )}
               <button
                 onClick={() => setShowManagementModal(true)}
-                className="flex items-center gap-2 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
+                className="flex items-center gap-1 px-2 py-1 bg-green-600 text-white rounded text-xs hover:bg-green-700 transition-colors"
               >
-                ⚙️ Quản lý dữ liệu
+                ⚙️ Quản lý
               </button>
               <button
                 onClick={handleExportData}
-                className="flex items-center gap-2 px-3 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors"
+                className="flex items-center gap-1 px-2 py-1 bg-purple-600 text-white rounded text-xs hover:bg-purple-700 transition-colors"
               >
-                💾 Xuất JSON
+                💾 Xuất
               </button>
               <button
                 onClick={() => requestPasswordAuth(handleSaveToOriginalFileDirect, 'lưu vào file gốc và commit')}
-                className="flex items-center gap-2 px-3 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
+                className="flex items-center gap-1 px-2 py-1 bg-red-600 text-white rounded text-xs hover:bg-red-700 transition-colors"
                 title="Ghi đè file diem.json gốc và tự động commit"
               >
-                🔄 Lưu & Commit
+                🔄 Lưu
               </button>
               <button
                 onClick={() => setSidebarOpen(!sidebarOpen)}
-                className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                className="flex items-center gap-1 px-2 py-1 bg-blue-600 text-white rounded text-xs hover:bg-blue-700 transition-colors"
               >
-                📊 {sidebarOpen ? 'Ẩn phân tích' : 'Xem phân tích'}
+                📊 {sidebarOpen ? 'Ẩn' : 'Phân tích'}
               </button>
+            </div>
+          </div>
+
+          {/* Tab View Selector và Tìm kiếm */}
+          <div className="mb-6 bg-white rounded-lg shadow-sm border">
+            {/* Hàng đầu: Tabs + Tìm kiếm */}
+            <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between p-4 border-b bg-gray-50">
+              {/* Tabs */}
+              <div className="flex mb-3 lg:mb-0">
+                <button
+                  onClick={() => setSelectedSemester('')}
+                  className={`px-3 py-2 font-medium text-xs border-b-2 transition-colors ${
+                    !selectedSemester 
+                      ? 'border-blue-500 text-blue-600 bg-blue-50' 
+                      : 'border-transparent text-gray-500 hover:text-gray-700 hover:bg-gray-50'
+                  }`}
+                >
+                  📊 Tổng hợp
+                </button>
+                <div className="relative group">
+                  <button
+                    className={`px-3 py-2 font-medium text-xs border-b-2 transition-colors ${
+                      selectedSemester 
+                        ? 'border-indigo-500 text-indigo-600 bg-indigo-50' 
+                        : 'border-transparent text-gray-400 hover:text-gray-600 hover:bg-gray-50'
+                    }`}
+                  >
+                    🗓️ {selectedSemester ? 
+                      `${semesterScores?.find(s => s.hocky === parseInt(selectedSemester))?.tenhk?.replace('Năm học ', '').replace(' - ', ' ') || 'Theo học kỳ'}` 
+                      : 'Theo học kỳ'
+                    }
+                    <span className="ml-1 text-xs">▼</span>
+                  </button>
+                  
+                  {/* Dropdown menu */}
+                  <div className="absolute top-full left-0 mt-1 bg-white border border-gray-200 rounded-lg shadow-lg z-10 min-w-[280px] opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
+                    <div className="p-2">
+                      <div className="text-xs text-gray-500 px-3 py-1 border-b">Chọn học kỳ</div>
+                      {semesterScores && [...new Set(semesterScores.map(s => s.hocky))].filter(hk => hk).sort((a, b) => b - a).map(hocky => {
+                        const semesterInfo = semesterScores.find(s => s.hocky === hocky);
+                        const semesterStats = semesterScores.filter(s => s.hocky === hocky);
+                        return (
+                          <button
+                            key={hocky}
+                            onClick={() => setSelectedSemester(hocky.toString())}
+                            className={`w-full text-left px-3 py-1.5 text-xs hover:bg-gray-50 rounded transition-colors ${
+                              selectedSemester === hocky.toString() ? 'bg-indigo-50 text-indigo-700' : 'text-gray-700'
+                            }`}
+                          >
+                            <div className="font-medium">{semesterInfo?.tenhk?.replace('Năm học ', '') || `Học kỳ ${hocky}`}</div>
+                            <div className="text-xs text-gray-500">{semesterStats.length} môn</div>
+                          </button>
+                        );
+                      })}
+                      {(!semesterScores || semesterScores.length === 0) && (
+                        <div className="px-3 py-1.5 text-xs text-gray-500">Không có dữ liệu</div>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Tìm kiếm */}
+              <div className="lg:max-w-sm w-full">
+                <input
+                  type="text"
+                  placeholder="🔍 Tìm mã/tên môn..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="w-full px-2 py-1.5 text-sm border border-gray-300 rounded focus:ring-1 focus:ring-blue-500 focus:border-transparent"
+                />
+              </div>
+            </div>
+
+            {/* Hàng thứ hai: Bộ lọc chi tiết */}
+            <div className="px-4 py-2">
+              <div className="flex flex-wrap items-end gap-3">
+                {/* Khối kiến thức filter */}
+                <div className="min-w-[160px]">
+                  <label className="block text-xs font-medium text-gray-700 mb-1">Khối kiến thức</label>
+                  <select
+                    value={selectedKKT}
+                    onChange={(e) => setSelectedKKT(e.target.value)}
+                    className="w-full px-2 py-1 text-sm border border-gray-300 rounded focus:ring-1 focus:ring-blue-500"
+                  >
+                    <option value="">Tất cả</option>
+                    {uniqueKKT.map(kkt => (
+                      <option key={kkt} value={kkt}>{kkt}</option>
+                    ))}
+                  </select>
+                </div>
+
+                {/* Điểm số filter */}
+                <div className="min-w-[140px]">
+                  <label className="block text-xs font-medium text-gray-700 mb-1">Điểm số</label>
+                  <div className="flex space-x-1">
+                    <input
+                      type="number"
+                      placeholder="Từ"
+                      value={minScore}
+                      onChange={(e) => setMinScore(e.target.value)}
+                      className="w-1/2 px-1 py-1 text-sm border border-gray-300 rounded focus:ring-1 focus:ring-blue-500"
+                      min="0"
+                      max="10"
+                      step="0.1"
+                    />
+                    <input
+                      type="number"
+                      placeholder="Đến"
+                      value={maxScore}
+                      onChange={(e) => setMaxScore(e.target.value)}
+                      className="w-1/2 px-1 py-1 text-sm border border-gray-300 rounded focus:ring-1 focus:ring-blue-500"
+                      min="0"
+                      max="10"
+                      step="0.1"
+                    />
+                  </div>
+                </div>
+
+                {/* Số tín chỉ filter */}
+                <div className="min-w-[120px]">
+                  <label className="block text-xs font-medium text-gray-700 mb-1">Tín chỉ</label>
+                  <div className="flex space-x-1">
+                    <input
+                      type="number"
+                      placeholder="Từ"
+                      value={minCredits}
+                      onChange={(e) => setMinCredits(e.target.value)}
+                      className="w-1/2 px-1 py-1 text-sm border border-gray-300 rounded focus:ring-1 focus:ring-blue-500"
+                      min="0"
+                    />
+                    <input
+                      type="number"
+                      placeholder="Đến"
+                      value={maxCredits}
+                      onChange={(e) => setMaxCredits(e.target.value)}
+                      className="w-1/2 px-1 py-1 text-sm border border-gray-300 rounded focus:ring-1 focus:ring-blue-500"
+                      min="0"
+                    />
+                  </div>
+                </div>
+
+                {/* Clear filters button */}
+                <div>
+                  <button
+                    onClick={() => {
+                      setSearchTerm("");
+                      setSelectedKKT("");
+                      setMinScore("");
+                      setMaxScore("");
+                      setMinCredits("");
+                      setMaxCredits("");
+                    }}
+                    className="px-2 py-1 bg-gray-500 text-white rounded hover:bg-gray-600 transition-colors text-xs"
+                  >
+                    🗑️ Xóa lọc
+                  </button>
+                </div>
+              </div>
             </div>
           </div>
           
           {/* Thống kê tổng quan */}
           <div className="mb-6 p-3 bg-blue-50 rounded-lg">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3">
+            {selectedSemester ? (
+              // Thống kê cho view học kỳ
               <div>
-                <p className="text-sm text-gray-600">Tổng số tín chỉ tích lũy</p>
-                <p className="text-xl font-bold text-blue-600">{totalCredits}</p>
-              </div>
-              <div>
-                <p className="text-sm text-gray-600">Điểm trung bình hệ 4</p>
-                <p className="text-xl font-bold text-green-600">{avgGPA}</p>
-              </div>
-              <div>
-                <p className="text-sm text-gray-600">Điểm trung bình hệ 10</p>
-                <p className="text-xl font-bold text-purple-600">{avg10}</p>
-              </div>
-              <div>
-                <p className="text-sm text-gray-600">Dữ liệu khuyết</p>
-                <p className={`text-xl font-bold ${
-                  diemSinhVien.filter(score => !khoiKienThuc.find(c => c.MONHOCID === score.MONHOCID)).length > 0 
-                    ? 'text-red-600' 
-                    : 'text-green-600'
-                }`}>
-                  {diemSinhVien.filter(score => !khoiKienThuc.find(c => c.MONHOCID === score.MONHOCID)).length}
-                </p>
-                {diemSinhVien.filter(score => !khoiKienThuc.find(c => c.MONHOCID === score.MONHOCID)).length > 0 && (
-                  <p className="text-xs text-red-500">⚠️ Cần dọn dẹp</p>
-                )}
-              </div>
-            </div>
-            
-            {/* Thống kê điểm đặc biệt nếu có */}
-            {Object.keys(gradeAnalysis.specialScoreCount).length > 0 && (
-              <div className="mt-4 pt-3 border-t border-blue-200">
-                <h4 className="text-sm font-semibold text-blue-800 mb-2">🔸 Điểm đặc biệt</h4>
-                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-2 text-xs">
-                  {Object.entries(gradeAnalysis.specialScoreCount).map(([scoreType, count]) => (
-                    <div key={scoreType} className="bg-white rounded p-2 text-center">
-                      <div className={`font-semibold text-xs mb-1
-                        ${scoreType === 'MT' ? 'text-purple-600' :
-                          scoreType === 'DT' ? 'text-green-600' :
-                          scoreType === 'CT' ? 'text-indigo-600' :
-                          'text-gray-600'
-                        }`}>
-                        {scoreType}
-                      </div>
-                      <div className="text-gray-500">{count} môn</div>
-                    </div>
-                  ))}
+                <h3 className="text-lg font-semibold text-blue-800 mb-3">
+                  📊 Thống kê học kỳ {semesterScores?.find(s => s.hocky === parseInt(selectedSemester))?.tenhk}
+                </h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+                  <div>
+                    <p className="text-sm text-gray-600">Tổng số môn học</p>
+                    <p className="text-xl font-bold text-blue-600">
+                      {Object.values(displayData).reduce((sum, courses) => sum + courses.length, 0)}
+                    </p>
+                  </div>
+                  <div>
+                    <p className="text-sm text-gray-600">Tổng tín chỉ</p>
+                    <p className="text-xl font-bold text-green-600">
+                      {Object.values(displayData).reduce((sum, courses) => 
+                        sum + courses.reduce((tc, course) => tc + (course.SOTC || 0), 0), 0
+                      )}
+                    </p>
+                  </div>
+                  <div>
+                    <p className="text-sm text-gray-600">Điểm TB học kỳ</p>
+                    <p className="text-xl font-bold text-purple-600">
+                      {(() => {
+                        const validCourses = Object.values(displayData).flat()
+                          .filter(course => course.diemSo && !isNaN(course.diemSo) && course.SOTC > 0);
+                        if (validCourses.length === 0) return "N/A";
+                        const totalWeighted = validCourses.reduce((sum, course) => sum + course.diemSo * course.SOTC, 0);
+                        const totalCredits = validCourses.reduce((sum, course) => sum + course.SOTC, 0);
+                        return (totalWeighted / totalCredits).toFixed(2);
+                      })()}
+                    </p>
+                  </div>
                 </div>
-                <div className="text-xs text-blue-600 mt-2 italic">
-                  💡 Hover vào điểm đặc biệt trong bảng để xem chi tiết
+              </div>
+            ) : (
+              // Thống kê cho view tổng hợp
+              <div>
+                <h3 className="text-lg font-semibold text-blue-800 mb-3">📊 Thống kê tổng hợp</h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-3">
+                  <div>
+                    <p className="text-sm text-gray-600">Tổng số tín chỉ tích lũy</p>
+                    <p className="text-xl font-bold text-blue-600">{totalCredits}</p>
+                  </div>
+                  <div>
+                    <p className="text-sm text-gray-600">Điểm trung bình hệ 4</p>
+                    <p className="text-xl font-bold text-green-600">{avgGPA}</p>
+                  </div>
+                  <div>
+                    <p className="text-sm text-gray-600">Điểm trung bình hệ 10</p>
+                    <p className="text-xl font-bold text-purple-600">{avg10}</p>
+                  </div>
+                  <div>
+                    <p className="text-sm text-gray-600">Dữ liệu khuyết</p>
+                    <p className={`text-xl font-bold ${
+                      diemSinhVien.filter(score => !khoiKienThuc.find(c => c.MONHOCID === score.MONHOCID)).length > 0 
+                        ? 'text-red-600' 
+                        : 'text-green-600'
+                    }`}>
+                      {diemSinhVien.filter(score => !khoiKienThuc.find(c => c.MONHOCID === score.MONHOCID)).length}
+                    </p>
+                    {diemSinhVien.filter(score => !khoiKienThuc.find(c => c.MONHOCID === score.MONHOCID)).length > 0 && (
+                      <p className="text-xs text-red-500">⚠️ Cần dọn dẹp</p>
+                    )}
+                  </div>
                 </div>
               </div>
             )}
           </div>
 
-          {/* Search và Filter */}
-          <div className="mb-6 p-4 bg-gray-50 rounded-lg">
-            <h2 className="text-lg font-semibold mb-4">🔍 Tìm kiếm và Lọc</h2>
-            
-            {/* Search bar */}
-            <div className="mb-4">
-              <input
-                type="text"
-                placeholder="Tìm kiếm mã môn hoặc tên môn..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              />
-            </div>
 
-            {/* Filters */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {/* Khối kiến thức filter */}
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Khối kiến thức</label>
-                <select
-                  value={selectedKKT}
-                  onChange={(e) => setSelectedKKT(e.target.value)}
-                  className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500"
-                >
-                  <option value="">Tất cả</option>
-                  {uniqueKKT.map(kkt => (
-                    <option key={kkt} value={kkt}>{kkt}</option>
-                  ))}
-                </select>
-              </div>
-
-              {/* Điểm số filter */}
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Điểm số</label>
-                <div className="flex space-x-2">
-                  <input
-                    type="number"
-                    placeholder="Từ"
-                    value={minScore}
-                    onChange={(e) => setMinScore(e.target.value)}
-                    className="w-1/2 p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500"
-                    min="0"
-                    max="10"
-                    step="0.1"
-                  />
-                  <input
-                    type="number"
-                    placeholder="Đến"
-                    value={maxScore}
-                    onChange={(e) => setMaxScore(e.target.value)}
-                    className="w-1/2 p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500"
-                    min="0"
-                    max="10"
-                    step="0.1"
-                  />
-                </div>
-              </div>
-
-              {/* Số tín chỉ filter */}
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Số tín chỉ</label>
-                <div className="flex space-x-2">
-                  <input
-                    type="number"
-                    placeholder="Từ"
-                    value={minCredits}
-                    onChange={(e) => setMinCredits(e.target.value)}
-                    className="w-1/2 p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500"
-                    min="0"
-                  />
-                  <input
-                    type="number"
-                    placeholder="Đến"
-                    value={maxCredits}
-                    onChange={(e) => setMaxCredits(e.target.value)}
-                    className="w-1/2 p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500"
-                    min="0"
-                  />
-                </div>
-              </div>
-            </div>
-
-            {/* Clear filters button */}
-            <div className="mt-4">
-              <button
-                onClick={() => {
-                  setSearchTerm("");
-                  setSelectedKKT("");
-                  setMinScore("");
-                  setMaxScore("");
-                  setMinCredits("");
-                  setMaxCredits("");
-                }}
-                className="px-4 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600 transition-colors"
-              >
-                🗑️ Xóa bộ lọc
-              </button>
-            </div>
-          </div>
 
           {/* Kết quả */}
-          {Object.keys(filteredGroupedByKKT).length === 0 ? (
+          {Object.keys(displayData).length === 0 ? (
             <div className="text-center py-8">
               <p className="text-gray-500 text-lg">Không tìm thấy kết quả phù hợp</p>
             </div>
           ) : (
-            Object.entries(filteredGroupedByKKT).map(([tenKKT, courses]) => (
+            Object.entries(displayData).map(([tenKKT, courses]) => (
               <div key={tenKKT} className="mb-8">
-                <h2 className="text-xl font-semibold mb-2">📚 {tenKKT} ({courses.length} môn)</h2>
+                <h2 className="text-xl font-semibold mb-2">
+                  📚 {tenKKT} ({courses.length} môn)
+                  {selectedSemester && courses[0]?.semesterInfo && (
+                    <span className="ml-2 text-sm font-normal text-indigo-600">
+                      - {courses[0].semesterInfo.tenhk}
+                    </span>
+                  )}
+                </h2>
                 <div className="overflow-x-auto">
                   <table className="min-w-full table-auto border border-gray-300">
                     <thead className="bg-gray-100">
@@ -1363,6 +1813,7 @@ const Transcript = () => {
                         <th className="border px-4 py-2">Điểm chữ</th>
                         <th className="border px-4 py-2">Điểm số</th>
                         <th className="border px-4 py-2">Điểm hệ 4</th>
+                        <th className="border px-4 py-2">Điểm thành phần</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -1417,6 +1868,39 @@ const Transcript = () => {
                           </td>
                           <td className="border px-4 py-2 text-center font-semibold">
                             {course.diemHe4 !== "--" ? course.diemHe4 : "--"}
+                          </td>
+                          <td className="border px-4 py-2">
+                            {course.components && course.components.length > 0 ? (
+                              <div className="space-y-1">
+                                {course.components
+                                  .filter(comp => comp.ten !== "Tổng kết" && comp.ten !== "Tổng kết HP")
+                                  .slice(0, 2)
+                                  .map((comp, idx) => (
+                                  <div key={idx} className="text-xs bg-gray-50 p-1 rounded flex justify-between">
+                                    <span className="font-medium">{comp.ten}:</span>
+                                    <span className="text-blue-600 font-semibold">
+                                      {comp.diem} ({comp.tyLe}%)
+                                    </span>
+                                  </div>
+                                ))}
+                                {course.components.filter(comp => comp.ten !== "Tổng kết" && comp.ten !== "Tổng kết HP").length > 2 && (
+                                  <button
+                                    onClick={() => setSelectedCourseComponents({
+                                      course: course,
+                                      components: course.components.filter(comp => comp.ten !== "Tổng kết" && comp.ten !== "Tổng kết HP")
+                                    })}
+                                    className="text-xs text-blue-600 hover:text-blue-800 underline"
+                                  >
+                                    Xem tất cả ({course.components.filter(comp => comp.ten !== "Tổng kết" && comp.ten !== "Tổng kết HP").length})
+                                  </button>
+                                )}
+                                {course.components.filter(comp => comp.ten !== "Tổng kết" && comp.ten !== "Tổng kết HP").length === 0 && (
+                                  <span className="text-gray-400 italic text-xs">Không có điểm thành phần</span>
+                                )}
+                              </div>
+                            ) : (
+                              <span className="text-gray-400 italic text-xs">Không có điểm thành phần</span>
+                            )}
                           </td>
                         </tr>
                       ))}
@@ -1482,6 +1966,26 @@ const Transcript = () => {
                   }`}
                 >
                   📊 Quản lý điểm số
+                </button>
+                <button
+                  onClick={() => setActiveTab('semesters')}
+                  className={`px-4 py-2 font-medium ${
+                    activeTab === 'semesters' 
+                      ? 'text-indigo-600 border-b-2 border-indigo-600' 
+                      : 'text-gray-500 hover:text-gray-700'
+                  }`}
+                >
+                  🗓️ Quản lý học kỳ
+                </button>
+                <button
+                  onClick={() => setActiveTab('components')}
+                  className={`px-4 py-2 font-medium ${
+                    activeTab === 'components' 
+                      ? 'text-purple-600 border-b-2 border-purple-600' 
+                      : 'text-gray-500 hover:text-gray-700'
+                  }`}
+                >
+                  🧮 Điểm thành phần
                 </button>
                 <button
                   onClick={() => setActiveTab('orphaned')}
@@ -1761,7 +2265,7 @@ const Transcript = () => {
                           <optgroup label="Điểm đặc biệt">
                             <option value="MT">MT - Miễn thi</option>
                             <option value="DT">DT - Đạt</option>
-                            <option value="CT">CT - Chuyển tín chỉ</option>
+                            <option value="CT">CT - Cấm thi</option>
                             <option value="VT">VT - Vắng thi</option>
                             <option value="VP">VP - Vi phạm</option>
                             <option value="HT">HT - Hoãn thi</option>
@@ -2076,6 +2580,595 @@ const Transcript = () => {
                   )}
                 </div>
               )}
+
+              {/* Tab Quản lý học kỳ */}
+              {activeTab === 'semesters' && (
+                <div>
+                  {/* Form thêm/sửa điểm học kỳ */}
+                  <div className="mb-6 p-4 bg-indigo-50 rounded-lg">
+                    <h3 className="text-lg font-semibold mb-4">
+                      {editingSemesterScore ? '✏️ Sửa điểm học kỳ' : '➕ Thêm điểm học kỳ mới'}
+                    </h3>
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">Mã môn học</label>
+                        <input
+                          type="text"
+                          value={semesterForm.mamh}
+                          onChange={(e) => setSemesterForm({...semesterForm, mamh: e.target.value})}
+                          className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-indigo-500"
+                          placeholder="CO1005"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">Tên môn học</label>
+                        <input
+                          type="text"
+                          value={semesterForm.tenmhvn}
+                          onChange={(e) => setSemesterForm({...semesterForm, tenmhvn: e.target.value})}
+                          className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-indigo-500"
+                          placeholder="Nhập môn Điện toán"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">Số tín chỉ</label>
+                        <input
+                          type="number"
+                          value={semesterForm.tc}
+                          onChange={(e) => setSemesterForm({...semesterForm, tc: e.target.value})}
+                          className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-indigo-500"
+                          placeholder="3"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">Điểm</label>
+                        <input
+                          type="text"
+                          value={semesterForm.diem}
+                          onChange={(e) => setSemesterForm({...semesterForm, diem: e.target.value})}
+                          className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-indigo-500"
+                          placeholder="8.5 hoặc MT, DT"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">Điểm chữ</label>
+                        <select
+                          value={semesterForm.diemchu}
+                          onChange={(e) => setSemesterForm({...semesterForm, diemchu: e.target.value})}
+                          className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-indigo-500"
+                        >
+                          <option value="">Chọn điểm chữ</option>
+                          <option value="A+">A+</option>
+                          <option value="A">A</option>
+                          <option value="B+">B+</option>
+                          <option value="B">B</option>
+                          <option value="C+">C+</option>
+                          <option value="C">C</option>
+                          <option value="D+">D+</option>
+                          <option value="D">D</option>
+                          <option value="F">F</option>
+                          <option value="--">-- (Điểm đặc biệt)</option>
+                        </select>
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">Học kỳ</label>
+                        <input
+                          type="number"
+                          value={semesterForm.hocky}
+                          onChange={(e) => setSemesterForm({...semesterForm, hocky: e.target.value})}
+                          className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-indigo-500"
+                          placeholder="20241"
+                        />
+                      </div>
+                    </div>
+                    <div className="flex gap-3 mt-4">
+                      {editingSemesterScore ? (
+                        <>
+                          <button
+                            onClick={authenticatedUpdateSemesterScore}
+                            className="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700"
+                          >
+                            ✏️ Cập nhật
+                          </button>
+                          <button
+                            onClick={() => {
+                              setEditingSemesterScore(null);
+                              setSemesterForm({
+                                mamh: '',
+                                tenmhvn: '',
+                                tc: '',
+                                diem: '',
+                                diemchu: '',
+                                hocky: '',
+                                tenhk: ''
+                              });
+                            }}
+                            className="px-4 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600"
+                          >
+                            ❌ Hủy
+                          </button>
+                        </>
+                      ) : (
+                        <button
+                          onClick={authenticatedAddSemesterScore}
+                          className="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700"
+                        >
+                          ➕ Thêm điểm học kỳ
+                        </button>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* Danh sách điểm học kỳ */}
+                  <div>
+                    <h3 className="text-lg font-semibold mb-4">🗓️ Danh sách điểm theo học kỳ</h3>
+                    {getUniqueSemesters().map(semester => (
+                      <div key={semester} className="mb-6 border border-gray-200 rounded-lg">
+                        <div className="bg-indigo-50 p-3 font-semibold border-b">
+                          📅 {getScoresBySemester(semester)[0]?.tenhk || `Học kỳ ${semester}`}
+                        </div>
+                        <div className="overflow-x-auto">
+                          <table className="min-w-full table-auto">
+                            <thead className="bg-gray-50">
+                              <tr>
+                                <th className="border px-4 py-2 text-left">Mã môn</th>
+                                <th className="border px-4 py-2 text-left">Tên môn</th>
+                                <th className="border px-4 py-2">TC</th>
+                                <th className="border px-4 py-2">Điểm</th>
+                                <th className="border px-4 py-2">Điểm chữ</th>
+                                <th className="border px-4 py-2">Điểm thành phần</th>
+                                <th className="border px-4 py-2">Thao tác</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              {getScoresBySemester(semester).map(score => (
+                                <tr key={score.id} className="even:bg-gray-50">
+                                  <td className="border px-4 py-2 font-mono">{score.mamh}</td>
+                                  <td className="border px-4 py-2">{score.tenmhvn}</td>
+                                  <td className="border px-4 py-2 text-center">{score.tc}</td>
+                                  <td className="border px-4 py-2 text-center font-semibold">{score.diem}</td>
+                                  <td className="border px-4 py-2 text-center">
+                                    <span className={`px-2 py-1 rounded text-sm font-semibold ${
+                                      score.diemchu === 'A+' || score.diemchu === 'A' ? 'bg-green-100 text-green-800' :
+                                      score.diemchu === 'B+' || score.diemchu === 'B' ? 'bg-blue-100 text-blue-800' :
+                                      score.diemchu === 'C+' || score.diemchu === 'C' ? 'bg-yellow-100 text-yellow-800' :
+                                      score.diemchu === 'D+' || score.diemchu === 'D' ? 'bg-orange-100 text-orange-800' :
+                                      score.diemchu === 'F' ? 'bg-red-100 text-red-800' : 'bg-gray-100 text-gray-800'
+                                    }`}>
+                                      {score.diemchu}
+                                    </span>
+                                  </td>
+                                  <td className="border px-4 py-2 text-center">
+                                    {score.diemthanhphanjson ? (
+                                      <button
+                                        onClick={() => handleViewComponents(score)}
+                                        className="px-2 py-1 bg-purple-100 text-purple-700 rounded text-sm hover:bg-purple-200"
+                                      >
+                                        📋 Xem ({parseComponents(score.diemthanhphanjson).length})
+                                      </button>
+                                    ) : (
+                                      <span className="text-gray-400 text-sm">Chưa có</span>
+                                    )}
+                                  </td>
+                                  <td className="border px-4 py-2 text-center">
+                                    <div className="flex gap-2 justify-center">
+                                      <button
+                                        onClick={() => handleEditSemesterScore(score)}
+                                        className="px-2 py-1 bg-yellow-500 text-white rounded text-sm hover:bg-yellow-600"
+                                      >
+                                        ✏️
+                                      </button>
+                                      <button
+                                        onClick={() => authenticatedDeleteSemesterScore(score.id)}
+                                        className="px-2 py-1 bg-red-500 text-white rounded text-sm hover:bg-red-600"
+                                      >
+                                        🗑️
+                                      </button>
+                                    </div>
+                                  </td>
+                                </tr>
+                              ))}
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Tab Điểm thành phần */}
+              {activeTab === 'components' && (
+                <div>
+                  {selectedCourseComponents ? (
+                    <div>
+                      {/* Header với thông tin môn học */}
+                      <div className="mb-6 p-4 bg-purple-50 rounded-lg">
+                        <div className="flex justify-between items-center mb-4">
+                          <div>
+                            <h3 className="text-lg font-semibold text-purple-800">
+                              🧮 Điểm thành phần: {selectedCourseComponents.course.mamh}
+                            </h3>
+                            <p className="text-gray-600">{selectedCourseComponents.course.tenmhvn}</p>
+                            <p className="text-sm text-gray-500">
+                              Học kỳ: {selectedCourseComponents.course.tenhk} | Điểm tổng: {selectedCourseComponents.course.diem}
+                            </p>
+                          </div>
+                          <button
+                            onClick={() => setSelectedCourseComponents(null)}
+                            className="px-4 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600"
+                          >
+                            ← Quay lại
+                          </button>
+                        </div>
+
+                        {/* Form thêm thành phần điểm */}
+                        <div className="border-t pt-4">
+                          <h4 className="font-medium mb-3">
+                            {editingComponent !== null ? '✏️ Sửa thành phần điểm' : '➕ Thêm thành phần điểm mới'}
+                          </h4>
+                          <div className="grid grid-cols-1 md:grid-cols-4 gap-3">
+                            <div>
+                              <label className="block text-sm font-medium text-gray-700 mb-1">Mã thành phần</label>
+                              <input
+                                type="text"
+                                value={componentForm.ma}
+                                onChange={(e) => setComponentForm({...componentForm, ma: e.target.value})}
+                                className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-purple-500"
+                                placeholder="thi, kiemTra..."
+                              />
+                            </div>
+                            <div>
+                              <label className="block text-sm font-medium text-gray-700 mb-1">Tên thành phần</label>
+                              <input
+                                type="text"
+                                value={componentForm.ten}
+                                onChange={(e) => setComponentForm({...componentForm, ten: e.target.value})}
+                                className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-purple-500"
+                                placeholder="Thi cuối kỳ, Kiểm tra..."
+                              />
+                            </div>
+                            <div>
+                              <label className="block text-sm font-medium text-gray-700 mb-1">Điểm</label>
+                              <input
+                                type="number"
+                                step="0.1"
+                                value={componentForm.diem}
+                                onChange={(e) => setComponentForm({...componentForm, diem: e.target.value})}
+                                className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-purple-500"
+                                placeholder="8.5"
+                              />
+                            </div>
+                            <div>
+                              <label className="block text-sm font-medium text-gray-700 mb-1">Tỷ lệ (%)</label>
+                              <input
+                                type="number"
+                                value={componentForm.tyLe}
+                                onChange={(e) => setComponentForm({...componentForm, tyLe: e.target.value})}
+                                className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-purple-500"
+                                placeholder="40"
+                              />
+                            </div>
+                          </div>
+                          <div className="flex gap-3 mt-3">
+                            {editingComponent !== null ? (
+                              <>
+                                <button
+                                  onClick={() => handleUpdateComponent(selectedCourseComponents.course, editingComponent)}
+                                  className="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 text-sm"
+                                >
+                                  ✏️ Cập nhật
+                                </button>
+                                <button
+                                  onClick={() => {
+                                    setEditingComponent(null);
+                                    setComponentForm({ ma: '', ten: '', diem: '', tyLe: '' });
+                                  }}
+                                  className="px-4 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600 text-sm"
+                                >
+                                  ❌ Hủy
+                                </button>
+                              </>
+                            ) : (
+                              <button
+                                onClick={() => handleAddComponent(selectedCourseComponents.course)}
+                                className="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 text-sm"
+                              >
+                                ➕ Thêm thành phần
+                              </button>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Danh sách thành phần điểm */}
+                      <div className="overflow-x-auto">
+                        <table className="min-w-full table-auto border border-gray-300">
+                          <thead className="bg-purple-50">
+                            <tr>
+                              <th className="border px-4 py-2">STT</th>
+                              <th className="border px-4 py-2 text-left">Mã</th>
+                              <th className="border px-4 py-2 text-left">Tên thành phần</th>
+                              <th className="border px-4 py-2">Điểm</th>
+                              <th className="border px-4 py-2">Tỷ lệ (%)</th>
+                              <th className="border px-4 py-2">Thao tác</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {selectedCourseComponents.components.map((component, index) => (
+                              <tr key={index} className="even:bg-gray-50">
+                                <td className="border px-4 py-2 text-center">{component.stt || index + 1}</td>
+                                <td className="border px-4 py-2 font-mono">{component.ma}</td>
+                                <td className="border px-4 py-2">{component.ten}</td>
+                                <td className="border px-4 py-2 text-center font-semibold">{component.diem}</td>
+                                <td className="border px-4 py-2 text-center">{component.tyLe}%</td>
+                                <td className="border px-4 py-2 text-center">
+                                  <div className="flex gap-2 justify-center">
+                                    <button
+                                      onClick={() => {
+                                        setEditingComponent(index);
+                                        setComponentForm({
+                                          ma: component.ma,
+                                          ten: component.ten,
+                                          diem: component.diem.toString(),
+                                          tyLe: component.tyLe.toString()
+                                        });
+                                      }}
+                                      className="px-2 py-1 bg-yellow-500 text-white rounded text-sm hover:bg-yellow-600"
+                                    >
+                                      ✏️
+                                    </button>
+                                    <button
+                                      onClick={() => handleDeleteComponent(selectedCourseComponents.course, index)}
+                                      className="px-2 py-1 bg-red-500 text-white rounded text-sm hover:bg-red-600"
+                                    >
+                                      🗑️
+                                    </button>
+                                  </div>
+                                </td>
+                              </tr>
+                            ))}
+                            {selectedCourseComponents.components.length === 0 && (
+                              <tr>
+                                <td colSpan="6" className="border px-4 py-8 text-center text-gray-500">
+                                  Chưa có thành phần điểm nào. Hãy thêm thành phần đầu tiên!
+                                </td>
+                              </tr>
+                            )}
+                          </tbody>
+                        </table>
+                      </div>
+
+                      {/* Tính toán điểm tự động */}
+                      {selectedCourseComponents.components.length > 0 && (
+                        <div className="mt-4 p-3 bg-blue-50 rounded-lg">
+                          <h4 className="font-medium text-blue-800 mb-2">📊 Tính toán điểm tự động</h4>
+                          <div className="text-sm space-y-1">
+                            {selectedCourseComponents.components.map((comp, idx) => (
+                              <div key={idx} className="flex justify-between">
+                                <span>{comp.ten}:</span>
+                                <span>{comp.diem} × {comp.tyLe}% = {(comp.diem * comp.tyLe / 100).toFixed(2)}</span>
+                              </div>
+                            ))}
+                            <div className="border-t pt-2 font-semibold text-blue-800">
+                              <div className="flex justify-between">
+                                <span>Tổng điểm:</span>
+                                <span>
+                                  {selectedCourseComponents.components.reduce((sum, comp) => sum + (comp.diem * comp.tyLe / 100), 0).toFixed(2)}
+                                  /10
+                                </span>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  ) : (
+                    <div className="text-center py-8">
+                      <div className="text-6xl mb-4">🧮</div>
+                      <h3 className="text-xl font-semibold text-gray-600 mb-2">Quản lý điểm thành phần</h3>
+                      <p className="text-gray-500 mb-4">
+                        Chọn một môn học từ tab "Quản lý học kỳ" để xem và chỉnh sửa điểm thành phần.
+                      </p>
+                      <button
+                        onClick={() => setActiveTab('semesters')}
+                        className="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700"
+                      >
+                        🗓️ Đi tới quản lý học kỳ
+                      </button>
+                    </div>
+                  )}
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Modal chi tiết điểm thành phần */}
+      {selectedCourseComponents && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+          <div className="bg-white rounded-lg shadow-xl max-w-2xl w-full max-h-[80vh] overflow-y-auto">
+            <div className="p-6">
+              <div className="flex justify-between items-center mb-4">
+                <h3 className="text-xl font-semibold text-gray-800">
+                  📋 Chi tiết điểm thành phần
+                </h3>
+                <button
+                  onClick={() => setSelectedCourseComponents(null)}
+                  className="text-gray-500 hover:text-gray-700 text-2xl"
+                >
+                  ×
+                </button>
+              </div>
+              
+              <div className="mb-4 p-3 bg-gray-50 rounded">
+                <h4 className="font-semibold text-lg">{selectedCourseComponents.course.MAMONHOC} - {selectedCourseComponents.course.TENMONHOC}</h4>
+                <div className="text-sm text-gray-600 mt-1">
+                  <span>Số tín chỉ: {selectedCourseComponents.course.SOTC}</span>
+                  <span className="ml-4">Điểm tổng kết: {selectedCourseComponents.course.diemSo} ({selectedCourseComponents.course.diemChu})</span>
+                </div>
+              </div>
+
+              <div className="space-y-3">
+                <div className="flex justify-between items-center">
+                  <h5 className="font-medium text-gray-700">Điểm các thành phần:</h5>
+                  <button
+                    onClick={() => {
+                      setEditingComponent('new');
+                      setComponentForm({
+                        ma: '',
+                        ten: '',
+                        diem: '',
+                        tyLe: ''
+                      });
+                    }}
+                    className="px-3 py-1 bg-green-500 text-white text-sm rounded hover:bg-green-600 transition-colors"
+                  >
+                    ➕ Thêm thành phần
+                  </button>
+                </div>
+
+                {/* Form thêm/sửa thành phần */}
+                {editingComponent !== null && (
+                  <div className="p-3 bg-blue-50 border border-blue-200 rounded">
+                    <h6 className="font-medium text-blue-800 mb-2">
+                      {editingComponent === 'new' ? '➕ Thêm thành phần mới' : '✏️ Sửa thành phần'}
+                    </h6>
+                    <div className="grid grid-cols-2 gap-2 mb-3">
+                      <div>
+                        <label className="block text-xs font-medium text-gray-700 mb-1">Mã thành phần</label>
+                        <input
+                          type="text"
+                          value={componentForm.ma}
+                          onChange={(e) => setComponentForm({...componentForm, ma: e.target.value})}
+                          className="w-full p-2 text-sm border border-gray-300 rounded focus:ring-2 focus:ring-blue-500"
+                          placeholder="VD: kiemTra"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-xs font-medium text-gray-700 mb-1">Tên thành phần</label>
+                        <input
+                          type="text"
+                          value={componentForm.ten}
+                          onChange={(e) => setComponentForm({...componentForm, ten: e.target.value})}
+                          className="w-full p-2 text-sm border border-gray-300 rounded focus:ring-2 focus:ring-blue-500"
+                          placeholder="VD: Kiểm tra"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-xs font-medium text-gray-700 mb-1">Điểm</label>
+                        <input
+                          type="number"
+                          value={componentForm.diem}
+                          onChange={(e) => setComponentForm({...componentForm, diem: e.target.value})}
+                          className="w-full p-2 text-sm border border-gray-300 rounded focus:ring-2 focus:ring-blue-500"
+                          placeholder="0-10"
+                          min="0"
+                          max="10"
+                          step="0.1"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-xs font-medium text-gray-700 mb-1">Tỷ lệ (%)</label>
+                        <input
+                          type="number"
+                          value={componentForm.tyLe}
+                          onChange={(e) => setComponentForm({...componentForm, tyLe: e.target.value})}
+                          className="w-full p-2 text-sm border border-gray-300 rounded focus:ring-2 focus:ring-blue-500"
+                          placeholder="0-100"
+                          min="0"
+                          max="100"
+                        />
+                      </div>
+                    </div>
+                    <div className="flex gap-2">
+                      <button
+                        onClick={() => {
+                          if (editingComponent === 'new') {
+                            handleAddComponent(selectedCourseComponents.course);
+                          } else {
+                            handleUpdateComponent(selectedCourseComponents.course, editingComponent);
+                          }
+                        }}
+                        className="px-3 py-1 bg-blue-500 text-white text-sm rounded hover:bg-blue-600 transition-colors"
+                      >
+                        {editingComponent === 'new' ? '✅ Thêm' : '✅ Cập nhật'}
+                      </button>
+                      <button
+                        onClick={() => {
+                          setEditingComponent(null);
+                          setComponentForm({
+                            ma: '',
+                            ten: '',
+                            diem: '',
+                            tyLe: ''
+                          });
+                        }}
+                        className="px-3 py-1 bg-gray-500 text-white text-sm rounded hover:bg-gray-600 transition-colors"
+                      >
+                        ❌ Hủy
+                      </button>
+                    </div>
+                  </div>
+                )}
+
+                {selectedCourseComponents.components.length > 0 ? (
+                  <div className="space-y-2">
+                    {selectedCourseComponents.components
+                      .sort((a, b) => a.stt - b.stt)
+                      .map((comp, idx) => (
+                      <div key={idx} className="flex justify-between items-center p-3 bg-gray-50 rounded border">
+                        <div className="flex-1">
+                          <div className="font-medium">{comp.ten}</div>
+                          <div className="text-xs text-gray-500">STT: {comp.stt} | Mã: {comp.ma}</div>
+                        </div>
+                        <div className="text-right mr-4">
+                          <div className="text-lg font-semibold text-blue-600">{comp.diem}</div>
+                          <div className="text-sm text-gray-600">Tỷ lệ: {comp.tyLe}%</div>
+                        </div>
+                        <div className="flex gap-2">
+                          <button
+                            onClick={() => {
+                              setEditingComponent(idx);
+                              setComponentForm({
+                                ma: comp.ma,
+                                ten: comp.ten,
+                                diem: comp.diem.toString(),
+                                tyLe: comp.tyLe.toString()
+                              });
+                            }}
+                            className="px-2 py-1 bg-yellow-500 text-white text-xs rounded hover:bg-yellow-600 transition-colors"
+                            title="Sửa thành phần này"
+                          >
+                            ✏️
+                          </button>
+                          <button
+                            onClick={() => handleDeleteComponent(selectedCourseComponents.course, idx)}
+                            className="px-2 py-1 bg-red-500 text-white text-xs rounded hover:bg-red-600 transition-colors"
+                            title="Xóa thành phần này"
+                          >
+                            🗑️
+                          </button>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <div className="text-center py-4 text-gray-500">
+                    Không có điểm thành phần nào được ghi nhận
+                  </div>
+                )}
+              </div>
+
+              <div className="mt-6 flex justify-end">
+                <button
+                  onClick={() => setSelectedCourseComponents(null)}
+                  className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors"
+                >
+                  ✅ Đóng
+                </button>
+              </div>
             </div>
           </div>
         </div>

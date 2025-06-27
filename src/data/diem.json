@@ -990,7 +990,7 @@
                 "DIEMDAT": "1",
                 "DIEM": "DT",
                 "DIEMSO": 21,
-                "DIEMCHU": "--",
+                "DIEMCHU": "DT",
                 "UUTIEN": 1
             },
             {
@@ -1014,7 +1014,7 @@
                 "DIEMDAT": "-1",
                 "DIEM": "DT",
                 "DIEMSO": 21,
-                "DIEMCHU": "--",
+                "DIEMCHU": "DT",
                 "UUTIEN": -100
             },
             {
