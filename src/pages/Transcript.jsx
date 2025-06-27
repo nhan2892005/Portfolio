@@ -15,28 +15,112 @@ const gradeToGPA = {
   "F": 0.0,
 };
 
+// Hàm chuyển đổi điểm số (hệ 10) sang điểm chữ
+const scoreToGrade = (score) => {
+  if (score >= 9.45) return "A+";
+  if (score >= 8.45) return "A";
+  if (score >= 7.95) return "B+";
+  if (score >= 6.95) return "B";
+  if (score >= 6.45) return "C+";
+  if (score >= 5.45) return "C";
+  if (score >= 4.95) return "D+";
+  if (score >= 3.95) return "D";
+  return "F";
+};
+
+// Hàm tính điểm học phần từ điểm thành phần
+const calculateCourseScore = (components) => {
+  if (!components || components.length === 0) return null;
+  
+  // Lọc bỏ các thành phần "Tổng kết" và "Tổng kết HP"
+  const validComponents = components.filter(comp => 
+    comp.ten !== "Tổng kết" && comp.ten !== "Tổng kết HP"
+  );
+  
+  if (validComponents.length === 0) return null;
+  
+  // Tính tổng trọng số
+  const totalWeight = validComponents.reduce((sum, comp) => sum + (comp.tyLe || 0), 0);
+  
+  if (totalWeight === 0) return null;
+  
+  // Tính điểm trung bình có trọng số
+  const weightedSum = validComponents.reduce((sum, comp) => {
+    return sum + (comp.diem || 0) * (comp.tyLe || 0);
+  }, 0);
+  
+  const finalScore = weightedSum / totalWeight;
+  
+  // Làm tròn lên 1 chữ số thập phân, sau đó làm tròn tiếp để hiển thị 2 chữ số
+  const roundedScore = Math.ceil(finalScore * 10) / 10; // Làm tròn lên 1 chữ số
+  const displayScore = Math.round(roundedScore * 100) / 100; // Đảm bảo 2 chữ số thập phân
+  
+  return {
+    score: displayScore,
+    grade: scoreToGrade(finalScore), // Dùng điểm gốc để xác định grade
+    gpa: gradeToGPA[scoreToGrade(finalScore)], // Dùng điểm gốc để xác định GPA
+    components: validComponents,
+    totalWeight
+  };
+};
+
 // Các loại điểm đặc biệt và ý nghĩa
 const SPECIAL_SCORES = {
-  "CT": { label: "Cấm thi", description: "Tính điểm 0.0", includeInGPA: false },
-  "MT": { label: "Miễn thi", description: "Được miễn thi do có chứng chỉ tương đương", includeInGPA: false },
-  "VT": { label: "Vắng thi", description: "Vắng mặt trong kỳ thi", includeInGPA: false },
-  "VP": { label: "Vi phạm", description: "Vi phạm quy chế thi", includeInGPA: false },
-  "HT": { label: "Hoãn thi", description: "Hoãn thi có lý do chính đáng", includeInGPA: false },
-  "CH": { label: "Chưa có điểm", description: "Chưa có kết quả điểm", includeInGPA: false },
-  "RT": { label: "Rút môn", description: "Rút khỏi môn học trong thời gian cho phép", includeInGPA: false },
-  "KD": { label: "Không đủ điều kiện thi", description: "Không đủ điều kiện dự thi", includeInGPA: false },
-  "DT": { label: "Đạt", description: "Môn học đạt yêu cầu (không tính điểm số)", includeInGPA: false },
-  "KDT": { label: "Không đạt", description: "Môn học không đạt yêu cầu", includeInGPA: false }
+  "CT": { label: "Cấm thi", description: "Tính điểm 0.0", includeInGPA: true, scoreValue: 0.0, numericCode: 11 },
+  "MT": { label: "Miễn học, miễn thi", description: "Đạt, không tính vào điểm trung bình", includeInGPA: false, numericCode: 12 },
+  "VT": { label: "Vắng thi", description: "Tính điểm 0.0", includeInGPA: true, scoreValue: 0.0, numericCode: 13 },
+  "VP": { label: "Vắng thi có phép", description: "Chưa đạt, không tính vào điểm trung bình", includeInGPA: false, numericCode: 22 },
+  "HT": { label: "Hoãn thi", description: "Chưa đạt, không tính vào điểm trung bình", includeInGPA: false, numericCode: 14 },
+  "CH": { label: "Chưa có điểm", description: "Chưa tính số tín chỉ tích luỹ, điểm trung bình", includeInGPA: false, numericCode: 15 },
+  "RT": { label: "Rút môn học", description: "Không ghi vào bảng điểm", includeInGPA: false, numericCode: 17 },
+  "KD": { label: "Không đạt", description: "Tính điểm 0.0", includeInGPA: true, scoreValue: 0.0, numericCode: 20 },
+  "DT": { label: "Đạt", description: "Đạt", includeInGPA: false, numericCode: 21 }
 };
 
 // Hàm kiểm tra xem có phải là điểm đặc biệt không
-const isSpecialScore = (diemChu) => {
-  return SPECIAL_SCORES.hasOwnProperty(diemChu);
+const isSpecialScore = (diemChu, diemSo) => {
+  // Kiểm tra theo điểm chữ trước
+  if (SPECIAL_SCORES.hasOwnProperty(diemChu)) {
+    return true;
+  }
+  
+  // Kiểm tra theo điểm số (các mã số đặc biệt)
+  if (typeof diemSo === 'number') {
+    const specialCodes = Object.values(SPECIAL_SCORES).map(s => s.numericCode);
+    return specialCodes.includes(diemSo);
+  }
+  
+  return false;
+};
+
+// Hàm lấy thông tin điểm đặc biệt
+const getSpecialScoreInfo = (diemChu, diemSo) => {
+  // Ưu tiên theo điểm chữ
+  if (SPECIAL_SCORES.hasOwnProperty(diemChu)) {
+    return SPECIAL_SCORES[diemChu];
+  }
+  
+  // Tìm theo điểm số
+  if (typeof diemSo === 'number') {
+    const entry = Object.entries(SPECIAL_SCORES).find(([_, info]) => info.numericCode === diemSo);
+    if (entry) {
+      return { ...entry[1], displayCode: entry[0] };
+    }
+  }
+  
+  return null;
 };
 
 // Hàm kiểm tra xem có phải là điểm số hợp lệ (0-10) không
 const isValidNumericalScore = (diemSo) => {
   return typeof diemSo === 'number' && diemSo >= 0 && diemSo <= 10;
+};
+
+// Hàm format điểm số để hiển thị đúng 2 chữ số thập phân (cho điểm từ thành phần)
+const formatScore = (score) => {
+  if (score === null || score === undefined) return "--";
+  if (typeof score !== 'number') return score;
+  return score.toFixed(2);
 };
 
 const Transcript = () => {
@@ -125,21 +209,24 @@ const Transcript = () => {
       diemSo = score.DIEMSO;
       
       // Kiểm tra xem có phải là điểm đặc biệt không
-      if (isSpecialScore(score.DIEM)) {
+      if (isSpecialScore(score.DIEMCHU, score.DIEMSO)) {
         isSpecial = true;
-        specialInfo = SPECIAL_SCORES[score.DIEM];
-        diemChu = score.DIEM; // Hiển thị mã điểm đặc biệt thay vì DIEMCHU
+        specialInfo = getSpecialScoreInfo(score.DIEMCHU, score.DIEMSO);
+        
+        // Hiển thị mã điểm đặc biệt
+        if (score.DIEM && SPECIAL_SCORES.hasOwnProperty(score.DIEM)) {
+          diemChu = score.DIEM;
+        } else if (specialInfo?.displayCode) {
+          diemChu = specialInfo.displayCode;
+        }
+        
         diemHe4 = "--";
       } else {
         diemHe4 = gradeToGPA[diemChu] ?? "--";
       }
 
-      // Chỉ tính vào điểm trung bình nếu không phải điểm đặc biệt và là điểm số hợp lệ
-      if (!isSpecial && course.SOTC > 0 && typeof diemHe4 === "number" && isValidNumericalScore(diemSo)) {
-        totalCredits += course.SOTC;
-        totalWeightedGPA += diemHe4 * course.SOTC;
-        totalWeightedScore10 += diemSo * course.SOTC;
-      }
+      // Ghi chú: Không tính tín chỉ và điểm ở đây nữa
+      // Sẽ tính sau khi xử lý điểm thành phần để tránh tính trùng
     }
 
     // Tìm điểm thành phần từ semester data
@@ -153,14 +240,53 @@ const Transcript = () => {
       }
     }
 
+    // Tính điểm từ thành phần nếu có
+    const calculatedScore = calculateCourseScore(components);
+    let finalDiemSo = diemSo;
+    let finalDiemChu = diemChu;
+    let finalDiemHe4 = diemHe4;
+    let isCalculated = false;
+
+    // Nếu có điểm thành phần và tính được điểm, sử dụng điểm tính toán
+    if (calculatedScore && !isSpecial) {
+      finalDiemSo = calculatedScore.score;
+      finalDiemChu = calculatedScore.grade;
+      finalDiemHe4 = calculatedScore.gpa;
+      isCalculated = true;
+    }
+
+    // Chỉ tính vào tín chỉ tích lũy và điểm trung bình nếu môn có điểm (score không null)
+    const hasScore = score !== null;
+    
+    // Chỉ tính vào điểm trung bình nếu:
+    // 1. Môn có điểm
+    // 2. Không phải điểm đặc biệt HOẶC là điểm đặc biệt nhưng includeInGPA = true
+    // 3. Là điểm số hợp lệ trong khoảng 0-10
+    // 4. Có số tín chỉ > 0
+    if (hasScore) {
+      const shouldIncludeInGPA = !isSpecial || (isSpecial && specialInfo?.includeInGPA);
+      const actualScore = isSpecial && specialInfo?.scoreValue !== undefined ? specialInfo.scoreValue : finalDiemSo;
+      
+      if (shouldIncludeInGPA && course.SOTC > 0 && typeof finalDiemHe4 === "number" && 
+          actualScore !== null && actualScore >= 0 && actualScore <= 10) {
+        totalCredits += course.SOTC;
+        totalWeightedGPA += finalDiemHe4 * course.SOTC;
+        totalWeightedScore10 += actualScore * course.SOTC;
+      }
+    }
+
     const mon = {
       ...course,
-      diemChu,
-      diemSo,
-      diemHe4,
+      diemChu: finalDiemChu,
+      diemSo: finalDiemSo,
+      diemHe4: finalDiemHe4,
+      originalDiemChu: diemChu, // Giữ lại điểm gốc
+      originalDiemSo: diemSo,   // Giữ lại điểm gốc
       isSpecial,
       specialInfo,
       components, // Thêm điểm thành phần
+      calculatedScore, // Thêm thông tin tính toán
+      isCalculated, // Đánh dấu là điểm được tính từ thành phần
     };
 
     if (!groupedByKKT[course.TENKHOIKIENTHUC]) {
@@ -239,15 +365,46 @@ const Transcript = () => {
           }
         }
         
+        // Kiểm tra và xử lý điểm đặc biệt
+        const isSpecial = isSpecialScore(semesterScore.diemchu, semesterScore.diemso);
+        let specialInfo = null;
+        let displayDiemChu = semesterScore.diemchu;
+        let diemHe4 = "--";
+        let finalDiemSo = semesterScore.diemso;
+        let isCalculated = false;
+        
+        if (isSpecial) {
+          specialInfo = getSpecialScoreInfo(semesterScore.diemchu, semesterScore.diemso);
+          if (specialInfo?.displayCode) {
+            displayDiemChu = specialInfo.displayCode;
+          }
+        } else {
+          diemHe4 = gradeToGPA[semesterScore.diemchu] || "--";
+        }
+        
+        // Tính điểm từ thành phần nếu có và không phải điểm đặc biệt
+        const calculatedScore = calculateCourseScore(components);
+        if (calculatedScore && !isSpecial) {
+          finalDiemSo = calculatedScore.score;
+          displayDiemChu = calculatedScore.grade;
+          diemHe4 = calculatedScore.gpa;
+          isCalculated = true;
+        }
+        
         const course = {
           MAMONHOC: semesterScore.mamh,
           TENMONHOC: semesterScore.tenmhvn,
           SOTC: semesterScore.tc,
-          diemChu: semesterScore.diemchu,
-          diemSo: semesterScore.diemso,
-          diemHe4: semesterScore.diemchu && gradeToGPA[semesterScore.diemchu] || "--",
-          isSpecial: semesterScore.diem && !isNaN(parseFloat(semesterScore.diem)) ? false : true,
+          diemChu: displayDiemChu,
+          diemSo: finalDiemSo,
+          diemHe4: diemHe4,
+          originalDiemChu: semesterScore.diemchu, // Giữ lại điểm gốc
+          originalDiemSo: semesterScore.diemso,   // Giữ lại điểm gốc
+          isSpecial: isSpecial,
+          specialInfo: specialInfo,
           components: components,
+          calculatedScore: calculatedScore, // Thêm thông tin tính toán
+          isCalculated: isCalculated, // Đánh dấu là điểm được tính từ thành phần
           semesterInfo: {
             hocky: semesterScore.hocky,
             tenhk: semesterScore.tenhk,
@@ -284,15 +441,28 @@ const Transcript = () => {
     
     Object.values(groupedByKKT).forEach(courses => {
       courses.forEach(course => {
-        // Kiểm tra xem có phải môn xét điểm không (điểm số hợp lệ và không phải điểm đặc biệt)
-        const isGradedCourse = !course.isSpecial && isValidNumericalScore(course.diemSo);
+        // Kiểm tra xem có phải môn xét điểm không
+        const isSpecialCourse = course.isSpecial;
+        const shouldIncludeInGPA = !isSpecialCourse || (isSpecialCourse && course.specialInfo?.includeInGPA);
+        const hasValidScore = course.diemSo !== null && course.diemSo >= 0 && course.diemSo <= 10;
+        const isGradedCourse = shouldIncludeInGPA && hasValidScore;
         
-        if (course.isSpecial) {
+        if (isSpecialCourse) {
           // Thống kê điểm đặc biệt
           const specialType = course.diemChu;
           specialScoreCount[specialType] = (specialScoreCount[specialType] || 0) + 1;
           // Thống kê tín chỉ theo điểm đặc biệt
           creditAnalysis.creditsBySpecial[specialType] = (creditAnalysis.creditsBySpecial[specialType] || 0) + course.SOTC;
+          
+          // Nếu điểm đặc biệt có includeInGPA = true, đếm vào điểm chữ tương ứng
+          if (course.specialInfo?.includeInGPA && course.specialInfo?.scoreValue !== undefined) {
+            const scoreValue = course.specialInfo.scoreValue;
+            if (scoreValue === 0) {
+              gradeCount["F"] = (gradeCount["F"] || 0) + 1;
+              creditAnalysis.creditsByGrade["F"] = (creditAnalysis.creditsByGrade["F"] || 0) + course.SOTC;
+              scoreRanges["<5.0"]++;
+            }
+          }
         } else {
           // Đếm điểm chữ (chỉ với môn xét điểm thường)
           if (course.diemChu && course.diemChu !== "--" && isGradedCourse) {
@@ -320,8 +490,14 @@ const Transcript = () => {
         }
         kktAnalysis[kkt].count++; // Tổng số môn (bao gồm cả điểm đặc biệt)
         
-        if (course.isSpecial) {
+        if (isSpecialCourse) {
           kktAnalysis[kkt].specialCount++; // Số môn có điểm đặc biệt
+          
+          // Nếu điểm đặc biệt có includeInGPA = true, tính vào điểm TB
+          if (course.specialInfo?.includeInGPA && course.specialInfo?.scoreValue !== undefined) {
+            kktAnalysis[kkt].totalScore += course.specialInfo.scoreValue;
+            kktAnalysis[kkt].gradedCount++;
+          }
         } else if (isGradedCourse) {
           // Chỉ tính điểm TB với môn xét điểm thường
           kktAnalysis[kkt].totalScore += course.diemSo;
@@ -334,8 +510,12 @@ const Transcript = () => {
         }
         creditAnalysis.creditsByKKT[kkt].total += course.SOTC;
         
-        // Tín chỉ hoàn thành: môn có điểm chữ hoặc điểm đặc biệt (trừ các loại không đạt)
-        if ((course.diemChu && course.diemChu !== "--") || (course.isSpecial && !["VT", "VP", "KD", "KDT"].includes(course.diemChu))) {
+        // Tín chỉ hoàn thành: môn có điểm chữ hoặc điểm đặc biệt đạt
+        const isCompletedCourse = (course.diemChu && course.diemChu !== "--") || 
+                                 (isSpecialCourse && course.specialInfo && 
+                                  !["VT", "VP", "HT", "CH", "RT", "KD"].includes(course.diemChu));
+        
+        if (isCompletedCourse) {
           creditAnalysis.creditsByKKT[kkt].completed += course.SOTC;
         }
       });
@@ -346,7 +526,7 @@ const Transcript = () => {
       if (kktAnalysis[kkt].gradedCount > 0 && kktAnalysis[kkt].totalScore > 0) {
         kktAnalysis[kkt].avgScore = (kktAnalysis[kkt].totalScore / kktAnalysis[kkt].gradedCount).toFixed(2);
       } else {
-        kktAnalysis[kkt].avgScore = 0; // Không có điểm hoặc chưa có môn nào xét điểm
+        kktAnalysis[kkt].avgScore = "0.00"; // Không có điểm hoặc chưa có môn nào xét điểm
       }
     });
 
@@ -1720,7 +1900,7 @@ const Transcript = () => {
                 <h3 className="text-lg font-semibold text-blue-800 mb-3">
                   📊 Thống kê học kỳ {semesterScores?.find(s => s.hocky === parseInt(selectedSemester))?.tenhk}
                 </h3>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3">
                   <div>
                     <p className="text-sm text-gray-600">Tổng số môn học</p>
                     <p className="text-xl font-bold text-blue-600">
@@ -1736,15 +1916,95 @@ const Transcript = () => {
                     </p>
                   </div>
                   <div>
-                    <p className="text-sm text-gray-600">Điểm TB học kỳ</p>
+                    <p className="text-sm text-gray-600">Điểm TB hệ 10</p>
                     <p className="text-xl font-bold text-purple-600">
                       {(() => {
                         const validCourses = Object.values(displayData).flat()
-                          .filter(course => course.diemSo && !isNaN(course.diemSo) && course.SOTC > 0);
+                          .filter(course => {
+                            // Kiểm tra xem có phải là điểm đặc biệt không
+                            const isSpecial = isSpecialScore(course.diemChu, course.diemSo);
+                            
+                            if (isSpecial) {
+                              const specialInfo = getSpecialScoreInfo(course.diemChu, course.diemSo);
+                              // Chỉ tính nếu includeInGPA = true và có scoreValue
+                              if (!specialInfo?.includeInGPA || specialInfo?.scoreValue === undefined) {
+                                return false;
+                              }
+                              // Kiểm tra scoreValue trong khoảng 0-10
+                              return course.SOTC > 0 && specialInfo.scoreValue >= 0 && specialInfo.scoreValue <= 10;
+                            } else {
+                              // Điểm thường: phải có điểm số hợp lệ trong khoảng 0-10
+                              return course.diemSo !== null && 
+                                     !isNaN(course.diemSo) && 
+                                     course.diemSo >= 0 && 
+                                     course.diemSo <= 10 && 
+                                     course.SOTC > 0;
+                            }
+                          });
+                        
                         if (validCourses.length === 0) return "N/A";
-                        const totalWeighted = validCourses.reduce((sum, course) => sum + course.diemSo * course.SOTC, 0);
+                        
+                        const totalWeighted = validCourses.reduce((sum, course) => {
+                          const isSpecial = isSpecialScore(course.diemChu, course.diemSo);
+                          let scoreToUse = course.diemSo;
+                          
+                          if (isSpecial) {
+                            const specialInfo = getSpecialScoreInfo(course.diemChu, course.diemSo);
+                            scoreToUse = specialInfo?.scoreValue || 0;
+                          }
+                          
+                          return sum + scoreToUse * course.SOTC;
+                        }, 0);
+                        
                         const totalCredits = validCourses.reduce((sum, course) => sum + course.SOTC, 0);
                         return (totalWeighted / totalCredits).toFixed(2);
+                      })()}
+                    </p>
+                  </div>
+                  <div>
+                    <p className="text-sm text-gray-600">Điểm TB hệ 4</p>
+                    <p className="text-xl font-bold text-orange-600">
+                      {(() => {
+                        const validCourses = Object.values(displayData).flat()
+                          .filter(course => {
+                            // Kiểm tra xem có phải là điểm đặc biệt không
+                            const isSpecial = isSpecialScore(course.diemChu, course.diemSo);
+                            
+                            if (isSpecial) {
+                              const specialInfo = getSpecialScoreInfo(course.diemChu, course.diemSo);
+                              // Chỉ tính nếu includeInGPA = true
+                              return specialInfo?.includeInGPA && course.SOTC > 0;
+                            } else {
+                              // Điểm thường: phải có điểm hệ 4 hợp lệ
+                              return course.diemHe4 !== null && 
+                                     course.diemHe4 !== "--" && 
+                                     typeof course.diemHe4 === "number" && 
+                                     course.SOTC > 0;
+                            }
+                          });
+                        
+                        if (validCourses.length === 0) return "N/A";
+                        
+                        const totalWeightedGPA = validCourses.reduce((sum, course) => {
+                          const isSpecial = isSpecialScore(course.diemChu, course.diemSo);
+                          let gpaToUse = course.diemHe4;
+                          
+                          if (isSpecial) {
+                            const specialInfo = getSpecialScoreInfo(course.diemChu, course.diemSo);
+                            // Điểm đặc biệt có includeInGPA = true thì dùng GPA tương ứng với scoreValue
+                            if (specialInfo?.includeInGPA && specialInfo?.scoreValue !== undefined) {
+                              const grade = scoreToGrade(specialInfo.scoreValue);
+                              gpaToUse = gradeToGPA[grade] || 0;
+                            } else {
+                              gpaToUse = 0;
+                            }
+                          }
+                          
+                          return sum + gpaToUse * course.SOTC;
+                        }, 0);
+                        
+                        const totalCredits = validCourses.reduce((sum, course) => sum + course.SOTC, 0);
+                        return (totalWeightedGPA / totalCredits).toFixed(2);
                       })()}
                     </p>
                   </div>
@@ -1863,7 +2123,18 @@ const Transcript = () => {
                             {course.isSpecial ? (
                               <span className="text-gray-500 italic">--</span>
                             ) : (
-                              course.diemSo !== null ? course.diemSo : "--"
+                              <div className="flex items-center justify-center gap-1">
+                                <span>{formatScore(course.diemSo)}</span>
+                                {course.isCalculated && (
+                                  <div className="group relative">
+                                    <span className="text-blue-500 text-xs cursor-help">🧮</span>
+                                    <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-2 py-1 bg-blue-900 text-white text-xs rounded shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none z-10 whitespace-nowrap">
+                                      Điểm tính từ thành phần
+                                      <div className="absolute top-full left-1/2 transform -translate-x-1/2 border-4 border-transparent border-t-blue-900"></div>
+                                    </div>
+                                  </div>
+                                )}
+                              </div>
                             )}
                           </td>
                           <td className="border px-4 py-2 text-center font-semibold">
@@ -2944,20 +3215,47 @@ const Transcript = () => {
                         <div className="mt-4 p-3 bg-blue-50 rounded-lg">
                           <h4 className="font-medium text-blue-800 mb-2">📊 Tính toán điểm tự động</h4>
                           <div className="text-sm space-y-1">
-                            {selectedCourseComponents.components.map((comp, idx) => (
+                            {selectedCourseComponents.components
+                              .filter(comp => comp.ten !== "Tổng kết" && comp.ten !== "Tổng kết HP")
+                              .map((comp, idx) => (
                               <div key={idx} className="flex justify-between">
                                 <span>{comp.ten}:</span>
                                 <span>{comp.diem} × {comp.tyLe}% = {(comp.diem * comp.tyLe / 100).toFixed(2)}</span>
                               </div>
                             ))}
                             <div className="border-t pt-2 font-semibold text-blue-800">
-                              <div className="flex justify-between">
-                                <span>Tổng điểm:</span>
-                                <span>
-                                  {selectedCourseComponents.components.reduce((sum, comp) => sum + (comp.diem * comp.tyLe / 100), 0).toFixed(2)}
-                                  /10
-                                </span>
-                              </div>
+                              {(() => {
+                                const calculation = calculateCourseScore(selectedCourseComponents.components);
+                                if (calculation) {
+                                  return (
+                                    <div className="space-y-1">
+                                      <div className="flex justify-between">
+                                        <span>Điểm hệ 10:</span>
+                                        <span>{formatScore(calculation.score)}</span>
+                                      </div>
+                                      <div className="flex justify-between">
+                                        <span>Điểm chữ:</span>
+                                        <span>{calculation.grade}</span>
+                                      </div>
+                                      <div className="flex justify-between">
+                                        <span>Điểm hệ 4:</span>
+                                        <span>{calculation.gpa.toFixed(1)}</span>
+                                      </div>
+                                      <div className="flex justify-between text-xs">
+                                        <span>Tổng trọng số:</span>
+                                        <span>{calculation.totalWeight}%</span>
+                                      </div>
+                                    </div>
+                                  );
+                                } else {
+                                  return (
+                                    <div className="flex justify-between text-red-600">
+                                      <span>Không thể tính toán:</span>
+                                      <span>Chưa đủ dữ liệu</span>
+                                    </div>
+                                  );
+                                }
+                              })()}
                             </div>
                           </div>
                         </div>
@@ -3160,6 +3458,37 @@ const Transcript = () => {
                   </div>
                 )}
               </div>
+
+              {/* Phần tính toán điểm */}
+              {selectedCourseComponents.course.calculatedScore && (
+                <div className="mt-6 p-4 bg-green-50 border border-green-200 rounded-lg">
+                  <h5 className="font-medium text-green-800 mb-3">📊 Kết quả tính toán từ điểm thành phần</h5>
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                    <div className="text-center">
+                      <div className="text-2xl font-bold text-green-600">
+                        {selectedCourseComponents.course.calculatedScore.score}
+                      </div>
+                      <div className="text-sm text-gray-600">Điểm số (hệ 10)</div>
+                    </div>
+                    <div className="text-center">
+                      <div className="text-2xl font-bold text-blue-600">
+                        {selectedCourseComponents.course.calculatedScore.grade}
+                      </div>
+                      <div className="text-sm text-gray-600">Điểm chữ</div>
+                    </div>
+                    <div className="text-center">
+                      <div className="text-2xl font-bold text-purple-600">
+                        {selectedCourseComponents.course.calculatedScore.gpa}
+                      </div>
+                      <div className="text-sm text-gray-600">Điểm GPA (hệ 4)</div>
+                    </div>
+                  </div>
+                  <div className="mt-3 text-xs text-gray-600">
+                    <div>🔢 Tổng trọng số: {selectedCourseComponents.course.calculatedScore.totalWeight}%</div>
+                    <div>📋 Số thành phần tính: {selectedCourseComponents.course.calculatedScore.components.length}</div>
+                  </div>
+                </div>
+              )}
 
               <div className="mt-6 flex justify-end">
                 <button

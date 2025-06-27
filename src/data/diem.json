@@ -1,1035 +1,1118 @@
 {
-    "code": "200",
-    "msg": "ok",
-    "data": {
-        "thongTinCTDT": {
-            "ID": 2512,
-            "MACTDT": "DH_CQ_MT_KHM_2023",
-            "TENCTDT": "NGUYỄN PHÚC NHÂN (2312438) - MT23KHM3 | 2023 - DH_CQ_MT_KHM_2023 - Khoa học Máy tính (Computer Science)",
-            "SOTINCHI": 128,
-            "KHOIKIENTHUC": "[{\"id\":25684,\"tuchon\":\"B\",\"sothutu\":11,\"sotc\":7,\"somh\":2,\"sotcdat\":7,\"somhdat\":2,\"hoanthanh\":\"1\",\"danhsachmondat\":\"6633,6916,\",\"danhsachmonkhongdat\":null},{\"id\":25685,\"tuchon\":\"B\",\"sothutu\":12,\"sotc\":15,\"somh\":4,\"sotcdat\":11,\"somhdat\":3,\"hoanthanh\":\"0\",\"danhsachmondat\":\"6650,6652,6699,\",\"danhsachmonkhongdat\":null},{\"id\":25686,\"tuchon\":\"B\",\"sothutu\":13,\"sotc\":8,\"somh\":3,\"sotcdat\":5,\"somhdat\":2,\"hoanthanh\":\"0\",\"danhsachmondat\":\"6655,6657,\",\"danhsachmonkhongdat\":null},{\"id\":25687,\"tuchon\":\"B\",\"sothutu\":14,\"sotc\":13,\"somh\":6,\"sotcdat\":7,\"somhdat\":3,\"hoanthanh\":\"0\",\"danhsachmondat\":\"6786,28799,28800,\",\"danhsachmonkhongdat\":null},{\"id\":25688,\"tuchon\":\"B\",\"sothutu\":20,\"sotc\":8,\"somh\":4,\"sotcdat\":6,\"somhdat\":3,\"hoanthanh\":\"0\",\"danhsachmondat\":\"6646,6662,6733,\",\"danhsachmonkhongdat\":null},{\"id\":25689,\"tuchon\":\"B\",\"sothutu\":30,\"sotc\":3,\"somh\":1,\"sotcdat\":3,\"somhdat\":1,\"hoanthanh\":\"1\",\"danhsachmondat\":\"6631,\",\"danhsachmonkhongdat\":null},{\"id\":25690,\"tuchon\":\"C\",\"sothutu\":31,\"sotc\":3,\"somh\":0,\"sotcdat\":0,\"somhdat\":0,\"hoanthanh\":\"0\",\"danhsachmondat\":null,\"danhsachmonkhongdat\":null},{\"id\":25691,\"tuchon\":\"B\",\"sothutu\":33,\"sotc\":3,\"somh\":1,\"sotcdat\":0,\"somhdat\":0,\"hoanthanh\":\"0\",\"danhsachmondat\":null,\"danhsachmonkhongdat\":null},{\"id\":25692,\"tuchon\":\"B\",\"sothutu\":42,\"sotc\":21,\"somh\":6,\"sotcdat\":17,\"somhdat\":5,\"hoanthanh\":\"0\",\"danhsachmondat\":\"6762,6764,20627,20928,21147,\",\"danhsachmonkhongdat\":null},{\"id\":25694,\"tuchon\":\"C\",\"sothutu\":50,\"sotc\":1,\"somh\":0,\"sotcdat\":0,\"somhdat\":0,\"hoanthanh\":\"0\",\"danhsachmondat\":null,\"danhsachmonkhongdat\":null},{\"id\":25695,\"tuchon\":\"C\",\"sothutu\":50,\"sotc\":1,\"somh\":0,\"sotcdat\":0,\"somhdat\":0,\"hoanthanh\":\"0\",\"danhsachmondat\":null,\"danhsachmonkhongdat\":null},{\"id\":25696,\"tuchon\":\"C\",\"sothutu\":50,\"sotc\":15,\"somh\":0,\"sotcdat\":0,\"somhdat\":0,\"hoanthanh\":\"0\",\"danhsachmondat\":null,\"danhsachmonkhongdat\":null},{\"id\":25693,\"tuchon\":\"B\",\"sothutu\":50,\"sotc\":13,\"somh\":4,\"sotcdat\":3,\"somhdat\":1,\"hoanthanh\":\"0\",\"danhsachmondat\":\"6919,\",\"danhsachmonkhongdat\":null},{\"id\":25697,\"tuchon\":\"B\",\"sothutu\":67,\"sotc\":8,\"somh\":3,\"sotcdat\":0,\"somhdat\":0,\"hoanthanh\":\"0\",\"danhsachmondat\":null,\"danhsachmonkhongdat\":null},{\"id\":27893,\"tuchon\":\"TUDO\",\"sothutu\":191,\"sotc\":9,\"somh\":0,\"sotcdat\":3,\"somhdat\":1,\"hoanthanh\":\"0\",\"danhsachmondat\":\"37628,\"},{\"id\":25699,\"tuchon\":\"DKTN\",\"sothutu\":60,\"sotc\":0,\"somh\":1,\"sotcdat\":0,\"somhdat\":1,\"hoanthanh\":\"1\",\"danhsachmondat\":\"328000,\",\"danhsachmonkhongdat\":\"\"},{\"id\":25700,\"tuchon\":\"DKTN\",\"sothutu\":61,\"sotc\":0,\"somh\":1,\"sotcdat\":0,\"somhdat\":1,\"hoanthanh\":\"1\",\"danhsachmondat\":\"6649,\",\"danhsachmonkhongdat\":\"\"},{\"id\":25698,\"tuchon\":\"DKTN\",\"sothutu\":68,\"sotc\":0,\"somh\":2,\"sotcdat\":0,\"somhdat\":1,\"hoanthanh\":\"0\",\"danhsachmondat\":\"335091,\",\"danhsachmonkhongdat\":\"\"}]",
-            "TICHLUYNGANH": "{\"tbtlhe10\":\"8.40\",\"tbtlhe4\":\"3.6\",\"tctl\":62,\"hoanthanhctdt\":\"0\",\"dieukientotnghiep\":\"0\"}",
-            "TICHLUYCHUNG": "{\"tbtlhe10\":\"8.39\",\"tbtlhe4\":\"3.5\",\"tctl\":64}",
-            "MONHOCNGOAICTDT": "37628,",
-            "KHOIKIENTHUCMORONG": null,
-            "TICHLUYNGANHMORONG": null,
-            "GHICHUMONHOC": "[{\"monhocid\":37628,\"ghichu\":\"Đặc cách chung TCTD\"}]",
-            "THOIGIANLAYDIEM": "12/06/2025 08:00:00",
-            "CAPNHAT": "26/06/2025 16:31:05"
-        },
-        "khoiKienThuc": [
-            {
-                "KHOIKIENTHUCID": 25684,
-                "TENKHOIKIENTHUC": "Toán và KH tự nhiên khác",
-                "MONHOCID": 6633,
-                "MAMONHOC": "CO1007",
-                "TENMONHOC": "Cấu trúc Rời rạc cho Khoa học Máy tính",
-                "SOTC": 4
-            },
-            {
-                "KHOIKIENTHUCID": 25684,
-                "TENKHOIKIENTHUC": "Toán và KH tự nhiên khác",
-                "MONHOCID": 6916,
-                "MAMONHOC": "CO2011",
-                "TENMONHOC": "Mô hình hóa Toán học",
-                "SOTC": 3
-            },
-            {
-                "KHOIKIENTHUCID": 25685,
-                "TENKHOIKIENTHUC": "Toán",
-                "MONHOCID": 6650,
-                "MAMONHOC": "MT1003",
-                "TENMONHOC": "Giải tích 1",
-                "SOTC": 4
-            },
-            {
-                "KHOIKIENTHUCID": 25685,
-                "TENKHOIKIENTHUC": "Toán",
-                "MONHOCID": 6699,
-                "MAMONHOC": "MT1005",
-                "TENMONHOC": "Giải tích 2",
-                "SOTC": 4
-            },
-            {
-                "KHOIKIENTHUCID": 25685,
-                "TENKHOIKIENTHUC": "Toán",
-                "MONHOCID": 6652,
-                "MAMONHOC": "MT1007",
-                "TENMONHOC": "Đại số Tuyến tính",
-                "SOTC": 3
-            },
-            {
-                "KHOIKIENTHUCID": 25685,
-                "TENKHOIKIENTHUC": "Toán",
-                "MONHOCID": 28892,
-                "MAMONHOC": "MT2013",
-                "TENMONHOC": "Xác suất và Thống kê",
-                "SOTC": 4
-            },
-            {
-                "KHOIKIENTHUCID": 25686,
-                "TENKHOIKIENTHUC": "Khoa học tự nhiên",
-                "MONHOCID": 6622,
-                "MAMONHOC": "CH1003",
-                "TENMONHOC": "Hóa đại cương",
-                "SOTC": 3
-            },
-            {
-                "KHOIKIENTHUCID": 25686,
-                "TENKHOIKIENTHUC": "Khoa học tự nhiên",
-                "MONHOCID": 6655,
-                "MAMONHOC": "PH1003",
-                "TENMONHOC": "Vật lý 1",
-                "SOTC": 4
-            },
-            {
-                "KHOIKIENTHUCID": 25686,
-                "TENKHOIKIENTHUC": "Khoa học tự nhiên",
-                "MONHOCID": 6657,
-                "MAMONHOC": "PH1007",
-                "TENMONHOC": "Thí nghiệm Vật lý",
-                "SOTC": 1
-            },
-            {
-                "KHOIKIENTHUCID": 25687,
-                "TENKHOIKIENTHUC": "Kinh tế- Chính trị- Xã hội- Luật",
-                "MONHOCID": 6786,
-                "MAMONHOC": "SP1007",
-                "TENMONHOC": "Pháp luật Việt Nam Đại cương",
-                "SOTC": 2
-            },
-            {
-                "KHOIKIENTHUCID": 25687,
-                "TENKHOIKIENTHUC": "Kinh tế- Chính trị- Xã hội- Luật",
-                "MONHOCID": 28799,
-                "MAMONHOC": "SP1031",
-                "TENMONHOC": "Triết học Mác - Lênin",
-                "SOTC": 3
-            },
-            {
-                "KHOIKIENTHUCID": 25687,
-                "TENKHOIKIENTHUC": "Kinh tế- Chính trị- Xã hội- Luật",
-                "MONHOCID": 28800,
-                "MAMONHOC": "SP1033",
-                "TENMONHOC": "Kinh tế Chính trị Mác - Lênin",
-                "SOTC": 2
-            },
-            {
-                "KHOIKIENTHUCID": 25687,
-                "TENKHOIKIENTHUC": "Kinh tế- Chính trị- Xã hội- Luật",
-                "MONHOCID": 28801,
-                "MAMONHOC": "SP1035",
-                "TENMONHOC": "Chủ nghĩa Xã hội Khoa học",
-                "SOTC": 2
-            },
-            {
-                "KHOIKIENTHUCID": 25687,
-                "TENKHOIKIENTHUC": "Kinh tế- Chính trị- Xã hội- Luật",
-                "MONHOCID": 28803,
-                "MAMONHOC": "SP1037",
-                "TENMONHOC": "Tư tưởng Hồ Chí Minh",
-                "SOTC": 2
-            },
-            {
-                "KHOIKIENTHUCID": 25687,
-                "TENKHOIKIENTHUC": "Kinh tế- Chính trị- Xã hội- Luật",
-                "MONHOCID": 28802,
-                "MAMONHOC": "SP1039",
-                "TENMONHOC": "Lịch sử Đảng Cộng sản Việt Nam",
-                "SOTC": 2
-            },
-            {
-                "KHOIKIENTHUCID": 25688,
-                "TENKHOIKIENTHUC": "Ngoại ngữ",
-                "MONHOCID": 6646,
-                "MAMONHOC": "LA1003",
-                "TENMONHOC": "Anh văn 1",
-                "SOTC": 2
-            },
-            {
-                "KHOIKIENTHUCID": 25688,
-                "TENKHOIKIENTHUC": "Ngoại ngữ",
-                "MONHOCID": 6662,
-                "MAMONHOC": "LA1005",
-                "TENMONHOC": "Anh văn 2",
-                "SOTC": 2
-            },
-            {
-                "KHOIKIENTHUCID": 25688,
-                "TENKHOIKIENTHUC": "Ngoại ngữ",
-                "MONHOCID": 6733,
-                "MAMONHOC": "LA1007",
-                "TENMONHOC": "Anh văn 3",
-                "SOTC": 2
-            },
-            {
-                "KHOIKIENTHUCID": 25688,
-                "TENKHOIKIENTHUC": "Ngoại ngữ",
-                "MONHOCID": 6737,
-                "MAMONHOC": "LA1009",
-                "TENMONHOC": "Anh văn 4",
-                "SOTC": 2
-            },
-            {
-                "KHOIKIENTHUCID": 25689,
-                "TENKHOIKIENTHUC": "Nhập môn",
-                "MONHOCID": 6631,
-                "MAMONHOC": "CO1005",
-                "TENMONHOC": "Nhập môn Điện toán",
-                "SOTC": 3
-            },
-            {
-                "KHOIKIENTHUCID": 25690,
-                "TENKHOIKIENTHUC": "Quản lý (Nhóm D)",
-                "MONHOCID": 9567,
-                "MAMONHOC": "IM1013",
-                "TENMONHOC": "Kinh tế học Đại cương",
-                "SOTC": 3
-            },
-            {
-                "KHOIKIENTHUCID": 25690,
-                "TENKHOIKIENTHUC": "Quản lý (Nhóm D)",
-                "MONHOCID": 37652,
-                "MAMONHOC": "IM1023",
-                "TENMONHOC": "Quản lý Sản xuất cho Kỹ sư",
-                "SOTC": 3
-            },
-            {
-                "KHOIKIENTHUCID": 25690,
-                "TENKHOIKIENTHUC": "Quản lý (Nhóm D)",
-                "MONHOCID": 37733,
-                "MAMONHOC": "IM1025",
-                "TENMONHOC": "Quản lý Dự án cho Kỹ sư",
-                "SOTC": 3
-            },
-            {
-                "KHOIKIENTHUCID": 25690,
-                "TENKHOIKIENTHUC": "Quản lý (Nhóm D)",
-                "MONHOCID": 37734,
-                "MAMONHOC": "IM1027",
-                "TENMONHOC": "Kinh tế Kỹ thuật",
-                "SOTC": 3
-            },
-            {
-                "KHOIKIENTHUCID": 25690,
-                "TENKHOIKIENTHUC": "Quản lý (Nhóm D)",
-                "MONHOCID": 9755,
-                "MAMONHOC": "IM3001",
-                "TENMONHOC": "Quản trị Kinh doanh cho Kỹ sư",
-                "SOTC": 3
-            },
-            {
-                "KHOIKIENTHUCID": 25691,
-                "TENKHOIKIENTHUC": "Con người và môi trường",
-                "MONHOCID": 6783,
-                "MAMONHOC": "CO2001",
-                "TENMONHOC": "Kỹ năng Chuyên nghiệp cho Kỹ sư",
-                "SOTC": 3
-            },
-            {
-                "KHOIKIENTHUCID": 25692,
-                "TENKHOIKIENTHUC": "Cơ sở ngành",
-                "MONHOCID": 20627,
-                "MAMONHOC": "CO1023",
-                "TENMONHOC": "Hệ thống số",
-                "SOTC": 3
-            },
-            {
-                "KHOIKIENTHUCID": 25692,
-                "TENKHOIKIENTHUC": "Cơ sở ngành",
-                "MONHOCID": 20928,
-                "MAMONHOC": "CO1027",
-                "TENMONHOC": "Kỹ thuật Lập trình",
-                "SOTC": 3
-            },
-            {
-                "KHOIKIENTHUCID": 25692,
-                "TENKHOIKIENTHUC": "Cơ sở ngành",
-                "MONHOCID": 6762,
-                "MAMONHOC": "CO2003",
-                "TENMONHOC": "Cấu trúc Dữ liệu và Giải Thuật",
-                "SOTC": 4
-            },
-            {
-                "KHOIKIENTHUCID": 25692,
-                "TENKHOIKIENTHUC": "Cơ sở ngành",
-                "MONHOCID": 6764,
-                "MAMONHOC": "CO2007",
-                "TENMONHOC": "Kiến trúc Máy tính",
-                "SOTC": 4
-            },
-            {
-                "KHOIKIENTHUCID": 25692,
-                "TENKHOIKIENTHUC": "Cơ sở ngành",
-                "MONHOCID": 6917,
-                "MAMONHOC": "CO2013",
-                "TENMONHOC": "Hệ cơ sở Dữ liệu",
-                "SOTC": 4
-            },
-            {
-                "KHOIKIENTHUCID": 25692,
-                "TENKHOIKIENTHUC": "Cơ sở ngành",
-                "MONHOCID": 21147,
-                "MAMONHOC": "CO2039",
-                "TENMONHOC": "Lập trình Nâng cao",
-                "SOTC": 3
-            },
-            {
-                "KHOIKIENTHUCID": 25693,
-                "TENKHOIKIENTHUC": "Chuyên ngành",
-                "MONHOCID": 6919,
-                "MAMONHOC": "CO2017",
-                "TENMONHOC": "Hệ điều hành",
-                "SOTC": 3
-            },
-            {
-                "KHOIKIENTHUCID": 25693,
-                "TENKHOIKIENTHUC": "Chuyên ngành",
-                "MONHOCID": 9658,
-                "MAMONHOC": "CO3001",
-                "TENMONHOC": "Công nghệ Phần mềm",
-                "SOTC": 3
-            },
-            {
-                "KHOIKIENTHUCID": 25693,
-                "TENKHOIKIENTHUC": "Chuyên ngành",
-                "MONHOCID": 9660,
-                "MAMONHOC": "CO3005",
-                "TENMONHOC": "Nguyên lý Ngôn ngữ Lập trình",
-                "SOTC": 4
-            },
-            {
-                "KHOIKIENTHUCID": 25693,
-                "TENKHOIKIENTHUC": "Chuyên ngành",
-                "MONHOCID": 21152,
-                "MAMONHOC": "CO3093",
-                "TENMONHOC": "Mạng máy tính",
-                "SOTC": 3
-            },
-            {
-                "KHOIKIENTHUCID": 25694,
-                "TENKHOIKIENTHUC": "Chuyên ngành (Nhóm A)",
-                "MONHOCID": 29185,
-                "MAMONHOC": "CO3101",
-                "TENMONHOC": "Đồ án Tổng hợp - Hướng Trí tuệ Nhân tạo",
-                "SOTC": 1
-            },
-            {
-                "KHOIKIENTHUCID": 25694,
-                "TENKHOIKIENTHUC": "Chuyên ngành (Nhóm A)",
-                "MONHOCID": 29186,
-                "MAMONHOC": "CO3103",
-                "TENMONHOC": "Đồ án Tổng hợp - hướng Công nghệ Phần mềm",
-                "SOTC": 1
-            },
-            {
-                "KHOIKIENTHUCID": 25694,
-                "TENKHOIKIENTHUC": "Chuyên ngành (Nhóm A)",
-                "MONHOCID": 29187,
-                "MAMONHOC": "CO3105",
-                "TENMONHOC": "Đồ án Tổng hợp - Hướng Hệ thống Thông tin",
-                "SOTC": 1
-            },
-            {
-                "KHOIKIENTHUCID": 25694,
-                "TENKHOIKIENTHUC": "Chuyên ngành (Nhóm A)",
-                "MONHOCID": 335507,
-                "MAMONHOC": "CO3127",
-                "TENMONHOC": "Đồ án tổng hợp - hướng kỹ thuật dữ liệu",
-                "SOTC": 1
-            },
-            {
-                "KHOIKIENTHUCID": 25695,
-                "TENKHOIKIENTHUC": "Chuyên ngành (Nhóm B)",
-                "MONHOCID": 29188,
-                "MAMONHOC": "CO3107",
-                "TENMONHOC": "Thực tập Đồ án môn học Đa ngành - Hướng Trí tuệ Nhân tạo",
-                "SOTC": 1
-            },
-            {
-                "KHOIKIENTHUCID": 25695,
-                "TENKHOIKIENTHUC": "Chuyên ngành (Nhóm B)",
-                "MONHOCID": 29189,
-                "MAMONHOC": "CO3109",
-                "TENMONHOC": "Thực tập Đồ án môn học Đa ngành - Hướng công Nghệ phần mềm",
-                "SOTC": 1
-            },
-            {
-                "KHOIKIENTHUCID": 25695,
-                "TENKHOIKIENTHUC": "Chuyên ngành (Nhóm B)",
-                "MONHOCID": 29190,
-                "MAMONHOC": "CO3111",
-                "TENMONHOC": "Thực tập Đồ án môn học Đa ngành - hướng Hệ thống Thông tin",
-                "SOTC": 1
-            },
-            {
-                "KHOIKIENTHUCID": 25696,
-                "TENKHOIKIENTHUC": "Chuyên ngành (Nhóm C)",
-                "MONHOCID": 17756,
-                "MAMONHOC": "CO3011",
-                "TENMONHOC": "Quản lý Dự án Phần mềm",
-                "SOTC": 3
-            },
-            {
-                "KHOIKIENTHUCID": 25696,
-                "TENKHOIKIENTHUC": "Chuyên ngành (Nhóm C)",
-                "MONHOCID": 17757,
-                "MAMONHOC": "CO3013",
-                "TENMONHOC": "Xây dựng Chương trình Dịch",
-                "SOTC": 3
-            },
-            {
-                "KHOIKIENTHUCID": 25696,
-                "TENKHOIKIENTHUC": "Chuyên ngành (Nhóm C)",
-                "MONHOCID": 17758,
-                "MAMONHOC": "CO3015",
-                "TENMONHOC": "Kiểm tra Phần mềm",
-                "SOTC": 3
-            },
-            {
-                "KHOIKIENTHUCID": 25696,
-                "TENKHOIKIENTHUC": "Chuyên ngành (Nhóm C)",
-                "MONHOCID": 17759,
-                "MAMONHOC": "CO3017",
-                "TENMONHOC": "Kiến trúc Phần mềm",
-                "SOTC": 3
-            },
-            {
-                "KHOIKIENTHUCID": 25696,
-                "TENKHOIKIENTHUC": "Chuyên ngành (Nhóm C)",
-                "MONHOCID": 9860,
-                "MAMONHOC": "CO3021",
-                "TENMONHOC": "Hệ Quản trị Cơ sở Dữ Liệu",
-                "SOTC": 3
-            },
-            {
-                "KHOIKIENTHUCID": 25696,
-                "TENKHOIKIENTHUC": "Chuyên ngành (Nhóm C)",
-                "MONHOCID": 17760,
-                "MAMONHOC": "CO3023",
-                "TENMONHOC": "Cơ sở Dữ liệu Phân tán và Hướng đối tượng",
-                "SOTC": 3
-            },
-            {
-                "KHOIKIENTHUCID": 25696,
-                "TENKHOIKIENTHUC": "Chuyên ngành (Nhóm C)",
-                "MONHOCID": 17761,
-                "MAMONHOC": "CO3027",
-                "TENMONHOC": "Thương mại Điện tử",
-                "SOTC": 3
-            },
-            {
-                "KHOIKIENTHUCID": 25696,
-                "TENKHOIKIENTHUC": "Chuyên ngành (Nhóm C)",
-                "MONHOCID": 11158,
-                "MAMONHOC": "CO3029",
-                "TENMONHOC": "Khai phá Dữ liệu",
-                "SOTC": 3
-            },
-            {
-                "KHOIKIENTHUCID": 25696,
-                "TENKHOIKIENTHUC": "Chuyên ngành (Nhóm C)",
-                "MONHOCID": 9861,
-                "MAMONHOC": "CO3031",
-                "TENMONHOC": "Phân tích và Thiết kế Giải Thuật",
-                "SOTC": 3
-            },
-            {
-                "KHOIKIENTHUCID": 25696,
-                "TENKHOIKIENTHUC": "Chuyên ngành (Nhóm C)",
-                "MONHOCID": 11164,
-                "MAMONHOC": "CO3033",
-                "TENMONHOC": "Bảo mật Hệ thống Thông tin",
-                "SOTC": 3
-            },
-            {
-                "KHOIKIENTHUCID": 25696,
-                "TENKHOIKIENTHUC": "Chuyên ngành (Nhóm C)",
-                "MONHOCID": 17762,
-                "MAMONHOC": "CO3035",
-                "TENMONHOC": "Hệ thời gian thực",
-                "SOTC": 3
-            },
-            {
-                "KHOIKIENTHUCID": 25696,
-                "TENKHOIKIENTHUC": "Chuyên ngành (Nhóm C)",
-                "MONHOCID": 11672,
-                "MAMONHOC": "CO3037",
-                "TENMONHOC": "Phát triển Ứng dụng Internet of Things",
-                "SOTC": 3
-            },
-            {
-                "KHOIKIENTHUCID": 25696,
-                "TENKHOIKIENTHUC": "Chuyên ngành (Nhóm C)",
-                "MONHOCID": 11401,
-                "MAMONHOC": "CO3041",
-                "TENMONHOC": "Hệ thống Thông minh",
-                "SOTC": 3
-            },
-            {
-                "KHOIKIENTHUCID": 25696,
-                "TENKHOIKIENTHUC": "Chuyên ngành (Nhóm C)",
-                "MONHOCID": 17763,
-                "MAMONHOC": "CO3043",
-                "TENMONHOC": "Phát triển Ứng dụng trên Thiết bị Di động",
-                "SOTC": 3
-            },
-            {
-                "KHOIKIENTHUCID": 25696,
-                "TENKHOIKIENTHUC": "Chuyên ngành (Nhóm C)",
-                "MONHOCID": 17764,
-                "MAMONHOC": "CO3045",
-                "TENMONHOC": "Lập trình Game",
-                "SOTC": 3
-            },
-            {
-                "KHOIKIENTHUCID": 25696,
-                "TENKHOIKIENTHUC": "Chuyên ngành (Nhóm C)",
-                "MONHOCID": 11667,
-                "MAMONHOC": "CO3047",
-                "TENMONHOC": "Mạng máy tính nâng cao",
-                "SOTC": 3
-            },
-            {
-                "KHOIKIENTHUCID": 25696,
-                "TENKHOIKIENTHUC": "Chuyên ngành (Nhóm C)",
-                "MONHOCID": 11130,
-                "MAMONHOC": "CO3049",
-                "TENMONHOC": "Lập trình Web",
-                "SOTC": 3
-            },
-            {
-                "KHOIKIENTHUCID": 25696,
-                "TENKHOIKIENTHUC": "Chuyên ngành (Nhóm C)",
-                "MONHOCID": 17765,
-                "MAMONHOC": "CO3051",
-                "TENMONHOC": "Hệ thống thiết bị di động",
-                "SOTC": 3
-            },
-            {
-                "KHOIKIENTHUCID": 25696,
-                "TENKHOIKIENTHUC": "Chuyên ngành (Nhóm C)",
-                "MONHOCID": 17767,
-                "MAMONHOC": "CO3057",
-                "TENMONHOC": "Xử lý Ảnh số và Thị giác Máy tính",
-                "SOTC": 3
-            },
-            {
-                "KHOIKIENTHUCID": 25696,
-                "TENKHOIKIENTHUC": "Chuyên ngành (Nhóm C)",
-                "MONHOCID": 10375,
-                "MAMONHOC": "CO3059",
-                "TENMONHOC": "Đồ họa Máy tính",
-                "SOTC": 3
-            },
-            {
-                "KHOIKIENTHUCID": 25696,
-                "TENKHOIKIENTHUC": "Chuyên ngành (Nhóm C)",
-                "MONHOCID": 10357,
-                "MAMONHOC": "CO3061",
-                "TENMONHOC": "Nhập môn Trí tuệ Nhân tạo",
-                "SOTC": 3
-            },
-            {
-                "KHOIKIENTHUCID": 25696,
-                "TENKHOIKIENTHUC": "Chuyên ngành (Nhóm C)",
-                "MONHOCID": 11147,
-                "MAMONHOC": "CO3065",
-                "TENMONHOC": "Công nghệ Phần mềm Nâng cao",
-                "SOTC": 3
-            },
-            {
-                "KHOIKIENTHUCID": 25696,
-                "TENKHOIKIENTHUC": "Chuyên ngành (Nhóm C)",
-                "MONHOCID": 11221,
-                "MAMONHOC": "CO3067",
-                "TENMONHOC": "Tính toán Song song",
-                "SOTC": 3
-            },
-            {
-                "KHOIKIENTHUCID": 25696,
-                "TENKHOIKIENTHUC": "Chuyên ngành (Nhóm C)",
-                "MONHOCID": 10303,
-                "MAMONHOC": "CO3069",
-                "TENMONHOC": "Mật mã và An ninh mạng",
-                "SOTC": 3
-            },
-            {
-                "KHOIKIENTHUCID": 25696,
-                "TENKHOIKIENTHUC": "Chuyên ngành (Nhóm C)",
-                "MONHOCID": 17755,
-                "MAMONHOC": "CO3071",
-                "TENMONHOC": "Hệ phân bố",
-                "SOTC": 3
-            },
-            {
-                "KHOIKIENTHUCID": 25696,
-                "TENKHOIKIENTHUC": "Chuyên ngành (Nhóm C)",
-                "MONHOCID": 17766,
-                "MAMONHOC": "CO3083",
-                "TENMONHOC": "Mật mã học và Mã hóa Thông tin",
-                "SOTC": 3
-            },
-            {
-                "KHOIKIENTHUCID": 25696,
-                "TENKHOIKIENTHUC": "Chuyên ngành (Nhóm C)",
-                "MONHOCID": 11698,
-                "MAMONHOC": "CO3085",
-                "TENMONHOC": "Xử lý Ngôn ngữ Tự nhiên",
-                "SOTC": 3
-            },
-            {
-                "KHOIKIENTHUCID": 25696,
-                "TENKHOIKIENTHUC": "Chuyên ngành (Nhóm C)",
-                "MONHOCID": 17842,
-                "MAMONHOC": "CO3089",
-                "TENMONHOC": "Những Chủ đề Nâng cao trong Khoa học Máy tính",
-                "SOTC": 3
-            },
-            {
-                "KHOIKIENTHUCID": 25696,
-                "TENKHOIKIENTHUC": "Chuyên ngành (Nhóm C)",
-                "MONHOCID": 37502,
-                "MAMONHOC": "CO3115",
-                "TENMONHOC": "Phân tích và Thiết kế Hệ thống",
-                "SOTC": 3
-            },
-            {
-                "KHOIKIENTHUCID": 25696,
-                "TENKHOIKIENTHUC": "Chuyên ngành (Nhóm C)",
-                "MONHOCID": 37723,
-                "MAMONHOC": "CO3117",
-                "TENMONHOC": "Học máy",
-                "SOTC": 3
-            },
-            {
-                "KHOIKIENTHUCID": 25696,
-                "TENKHOIKIENTHUC": "Chuyên ngành (Nhóm C)",
-                "MONHOCID": 17768,
-                "MAMONHOC": "CO4025",
-                "TENMONHOC": "Mạng xã hội và Thông tin",
-                "SOTC": 3
-            },
-            {
-                "KHOIKIENTHUCID": 25696,
-                "TENKHOIKIENTHUC": "Chuyên ngành (Nhóm C)",
-                "MONHOCID": 37990,
-                "MAMONHOC": "CO4031",
-                "TENMONHOC": "Kho dữ Liệu và Hệ hỗ trợ Quyết định",
-                "SOTC": 3
-            },
-            {
-                "KHOIKIENTHUCID": 25696,
-                "TENKHOIKIENTHUC": "Chuyên ngành (Nhóm C)",
-                "MONHOCID": 37991,
-                "MAMONHOC": "CO4033",
-                "TENMONHOC": "Phân tích Dữ liệu lớn và Trí tuệ Kinh doanh",
-                "SOTC": 3
-            },
-            {
-                "KHOIKIENTHUCID": 25696,
-                "TENKHOIKIENTHUC": "Chuyên ngành (Nhóm C)",
-                "MONHOCID": 37992,
-                "MAMONHOC": "CO4035",
-                "TENMONHOC": "Hệ hoạch Định tài Nguyên tổ chức",
-                "SOTC": 3
-            },
-            {
-                "KHOIKIENTHUCID": 25696,
-                "TENKHOIKIENTHUC": "Chuyên ngành (Nhóm C)",
-                "MONHOCID": 37993,
-                "MAMONHOC": "CO4037",
-                "TENMONHOC": "Hệ thống thông tin quản lý",
-                "SOTC": 3
-            },
-            {
-                "KHOIKIENTHUCID": 25696,
-                "TENKHOIKIENTHUC": "Chuyên ngành (Nhóm C)",
-                "MONHOCID": 37994,
-                "MAMONHOC": "CO4039",
-                "TENMONHOC": "Bảo mật sinh trắc",
-                "SOTC": 3
-            },
-            {
-                "KHOIKIENTHUCID": 25697,
-                "TENKHOIKIENTHUC": "Tốt nghiệp",
-                "MONHOCID": 21151,
-                "MAMONHOC": "CO3335",
-                "TENMONHOC": "Thực tập Ngoài trường",
-                "SOTC": 2
-            },
-            {
-                "KHOIKIENTHUCID": 25697,
-                "TENKHOIKIENTHUC": "Tốt nghiệp",
-                "MONHOCID": 21149,
-                "MAMONHOC": "CO4029",
-                "TENMONHOC": "Đồ án Chuyên ngành",
-                "SOTC": 2
-            },
-            {
-                "KHOIKIENTHUCID": 25697,
-                "TENKHOIKIENTHUC": "Tốt nghiệp",
-                "MONHOCID": 21150,
-                "MAMONHOC": "CO4337",
-                "TENMONHOC": "Đồ án Tốt nghiệp (Khoa học Máy tính)",
-                "SOTC": 4
-            },
-            {
-                "KHOIKIENTHUCID": 25698,
-                "TENKHOIKIENTHUC": "Điều kiện tốt nghiệp",
-                "MONHOCID": 382493,
-                "MAMONHOC": "ENG_GC_600",
-                "TENMONHOC": "Điều kiện tiếng Anh tốt nghiệp",
-                "SOTC": 0
-            },
-            {
-                "KHOIKIENTHUCID": 25698,
-                "TENKHOIKIENTHUC": "Điều kiện tốt nghiệp",
-                "MONHOCID": 335091,
-                "MAMONHOC": "SA4001",
-                "TENMONHOC": "Hoạt động sinh viên",
-                "SOTC": 0
-            },
-            {
-                "KHOIKIENTHUCID": 25699,
-                "TENKHOIKIENTHUC": "Chứng chỉ Giáo dục Thể chất",
-                "MONHOCID": 328000,
-                "MAMONHOC": "CCGDTC",
-                "TENMONHOC": "Chứng chỉ Giáo Dục Thể Chất",
-                "SOTC": 0
-            },
-            {
-                "KHOIKIENTHUCID": 25700,
-                "TENKHOIKIENTHUC": "Chứng chỉ Giáo dục Quốc phòng",
-                "MONHOCID": 6649,
-                "MAMONHOC": "MI1003",
-                "TENMONHOC": "Giáo dục Quốc phòng",
-                "SOTC": 0
-            },
-            {
-                "KHOIKIENTHUCID": 27893,
-                "TENKHOIKIENTHUC": "Tự chọn tự do",
-                "MONHOCID": 37628,
-                "MAMONHOC": "IM1021",
-                "TENMONHOC": "Khởi nghiệp",
-                "SOTC": 3
-            }
-        ],
-        "khoiKienThucMoRong": null,
-        "diemSinhVien": [
-            {
-                "MONHOCID": 6699,
-                "MONHOCTUONGDUONG": null,
-                "MAMONHOC": "MT1005",
-                "TENMONHOC": "Giải tích 2",
-                "SOTC": 4,
-                "DIEMDAT": "1",
-                "DIEM": "9.70",
-                "DIEMSO": 9.7,
-                "DIEMCHU": "A+",
-                "UUTIEN": 9.7
-            },
-            {
-                "MONHOCID": 6650,
-                "MONHOCTUONGDUONG": null,
-                "MAMONHOC": "MT1003",
-                "TENMONHOC": "Giải tích 1",
-                "SOTC": 4,
-                "DIEMDAT": "1",
-                "DIEM": "9.40",
-                "DIEMSO": 9.4,
-                "DIEMCHU": "A",
-                "UUTIEN": 9.4
-            },
-            {
-                "MONHOCID": 6631,
-                "MONHOCTUONGDUONG": null,
-                "MAMONHOC": "CO1005",
-                "TENMONHOC": "Nhập môn Điện toán",
-                "SOTC": 3,
-                "DIEMDAT": "1",
-                "DIEM": "9.30",
-                "DIEMSO": 9.3,
-                "DIEMCHU": "A",
-                "UUTIEN": 9.3
-            },
-            {
-                "MONHOCID": 21147,
-                "MONHOCTUONGDUONG": null,
-                "MAMONHOC": "CO2039",
-                "TENMONHOC": "Lập trình Nâng cao",
-                "SOTC": 3,
-                "DIEMDAT": "1",
-                "DIEM": "9.20",
-                "DIEMSO": 9.2,
-                "DIEMCHU": "A",
-                "UUTIEN": 9.2
-            },
-            {
-                "MONHOCID": 20928,
-                "MONHOCTUONGDUONG": null,
-                "MAMONHOC": "CO1027",
-                "TENMONHOC": "Kỹ thuật Lập trình",
-                "SOTC": 3,
-                "DIEMDAT": "1",
-                "DIEM": "9.00",
-                "DIEMSO": 9,
-                "DIEMCHU": "A",
-                "UUTIEN": 9
-            },
-            {
-                "MONHOCID": 20627,
-                "MONHOCTUONGDUONG": null,
-                "MAMONHOC": "CO1023",
-                "TENMONHOC": "Hệ thống số",
-                "SOTC": 3,
-                "DIEMDAT": "1",
-                "DIEM": "8.70",
-                "DIEMSO": 8.7,
-                "DIEMCHU": "A",
-                "UUTIEN": 8.7
-            },
-            {
-                "MONHOCID": 6762,
-                "MONHOCTUONGDUONG": null,
-                "MAMONHOC": "CO2003",
-                "TENMONHOC": "Cấu trúc Dữ liệu và Giải Thuật",
-                "SOTC": 4,
-                "DIEMDAT": "1",
-                "DIEM": "8.70",
-                "DIEMSO": 8.7,
-                "DIEMCHU": "A",
-                "UUTIEN": 8.7
-            },
-            {
-                "MONHOCID": 37628,
-                "MONHOCTUONGDUONG": null,
-                "MAMONHOC": "IM1021",
-                "TENMONHOC": "Khởi nghiệp",
-                "SOTC": 3,
-                "DIEMDAT": "1",
-                "DIEM": "8.50",
-                "DIEMSO": 8.5,
-                "DIEMCHU": "A",
-                "UUTIEN": 8.5
-            },
-            {
-                "MONHOCID": 6655,
-                "MONHOCTUONGDUONG": null,
-                "MAMONHOC": "PH1003",
-                "TENMONHOC": "Vật lý 1",
-                "SOTC": 4,
-                "DIEMDAT": "1",
-                "DIEM": "8.40",
-                "DIEMSO": 8.4,
-                "DIEMCHU": "B+",
-                "UUTIEN": 8.4
-            },
-            {
-                "MONHOCID": 28799,
-                "MONHOCTUONGDUONG": null,
-                "MAMONHOC": "SP1031",
-                "TENMONHOC": "Triết học Mác - Lênin",
-                "SOTC": 3,
-                "DIEMDAT": "1",
-                "DIEM": "8.30",
-                "DIEMSO": 8.3,
-                "DIEMCHU": "B+",
-                "UUTIEN": 8.3
-            },
-            {
-                "MONHOCID": 28892,
-                "MONHOCTUONGDUONG": null,
-                "MAMONHOC": "MT2013",
-                "TENMONHOC": "Xác suất và Thống kê",
-                "SOTC": 4,
-                "DIEMDAT": "1",
-                "DIEM": "8.20",
-                "DIEMSO": 8.2,
-                "DIEMCHU": "B+",
-                "UUTIEN": 8.2
-            },
-            {
-                "MONHOCID": 6622,
-                "MONHOCTUONGDUONG": null,
-                "MAMONHOC": "CH1003",
-                "TENMONHOC": "Hóa đại cương",
-                "SOTC": 3,
-                "DIEMDAT": "1",
-                "DIEM": "9.60",
-                "DIEMSO": 9.60,
-                "DIEMCHU": "A+",
-                "UUTIEN": 9.60
-            },
-            {
-                "MONHOCID": 6916,
-                "MONHOCTUONGDUONG": null,
-                "MAMONHOC": "CO2011",
-                "TENMONHOC": "Mô hình hóa Toán học",
-                "SOTC": 3,
-                "DIEMDAT": "1",
-                "DIEM": "8.00",
-                "DIEMSO": 8,
-                "DIEMCHU": "B+",
-                "UUTIEN": 8
-            },
-            {
-                "MONHOCID": 6646,
-                "MONHOCTUONGDUONG": null,
-                "MAMONHOC": "LA1003",
-                "TENMONHOC": "Anh văn 1",
-                "SOTC": 2,
-                "DIEMDAT": "1",
-                "DIEM": "8.00",
-                "DIEMSO": 8,
-                "DIEMCHU": "B+",
-                "UUTIEN": 8
-            },
-            {
-                "MONHOCID": 6919,
-                "MONHOCTUONGDUONG": null,
-                "MAMONHOC": "CO2017",
-                "TENMONHOC": "Hệ điều hành",
-                "SOTC": 3,
-                "DIEMDAT": "1",
-                "DIEM": "7.90",
-                "DIEMSO": 7.9,
-                "DIEMCHU": "B",
-                "UUTIEN": 7.9
-            },
-            {
-                "MONHOCID": 28800,
-                "MONHOCTUONGDUONG": null,
-                "MAMONHOC": "SP1033",
-                "TENMONHOC": "Kinh tế Chính trị Mác - Lênin",
-                "SOTC": 2,
-                "DIEMDAT": "1",
-                "DIEM": "7.90",
-                "DIEMSO": 7.9,
-                "DIEMCHU": "B",
-                "UUTIEN": 7.9
-            },
-            {
-                "MONHOCID": 6764,
-                "MONHOCTUONGDUONG": null,
-                "MAMONHOC": "CO2007",
-                "TENMONHOC": "Kiến trúc Máy tính",
-                "SOTC": 4,
-                "DIEMDAT": "1",
-                "DIEM": "7.70",
-                "DIEMSO": 7.7,
-                "DIEMCHU": "B",
-                "UUTIEN": 7.7
-            },
-            {
-                "MONHOCID": 6633,
-                "MONHOCTUONGDUONG": null,
-                "MAMONHOC": "CO1007",
-                "TENMONHOC": "Cấu trúc Rời rạc cho Khoa học Máy tính",
-                "SOTC": 4,
-                "DIEMDAT": "1",
-                "DIEM": "7.60",
-                "DIEMSO": 7.6,
-                "DIEMCHU": "B",
-                "UUTIEN": 7.6
-            },
-            {
-                "MONHOCID": 6786,
-                "MONHOCTUONGDUONG": null,
-                "MAMONHOC": "SP1007",
-                "TENMONHOC": "Pháp luật Việt Nam Đại cương",
-                "SOTC": 2,
-                "DIEMDAT": "1",
-                "DIEM": "7.40",
-                "DIEMSO": 7.4,
-                "DIEMCHU": "B",
-                "UUTIEN": 7.4
-            },
-            {
-                "MONHOCID": 6652,
-                "MONHOCTUONGDUONG": null,
-                "MAMONHOC": "MT1007",
-                "TENMONHOC": "Đại số Tuyến tính",
-                "SOTC": 3,
-                "DIEMDAT": "1",
-                "DIEM": "7.30",
-                "DIEMSO": 7.3,
-                "DIEMCHU": "B",
-                "UUTIEN": 7.3
-            },
-            {
-                "MONHOCID": 6657,
-                "MONHOCTUONGDUONG": null,
-                "MAMONHOC": "PH1007",
-                "TENMONHOC": "Thí nghiệm Vật lý",
-                "SOTC": 1,
-                "DIEMDAT": "1",
-                "DIEM": "6.00",
-                "DIEMSO": 6,
-                "DIEMCHU": "C",
-                "UUTIEN": 6
-            },
-            {
-                "MONHOCID": 6733,
-                "MONHOCTUONGDUONG": null,
-                "MAMONHOC": "LA1007",
-                "TENMONHOC": "Anh văn 3",
-                "SOTC": 0,
-                "DIEMDAT": "1",
-                "DIEM": "MT",
-                "DIEMSO": 12,
-                "DIEMCHU": "--",
-                "UUTIEN": 1
-            },
-            {
-                "MONHOCID": 6649,
-                "MONHOCTUONGDUONG": null,
-                "MAMONHOC": "MI1003",
-                "TENMONHOC": "Giáo dục Quốc phòng",
-                "SOTC": 0,
-                "DIEMDAT": "1",
-                "DIEM": "DT",
-                "DIEMSO": 21,
-                "DIEMCHU": "DT",
-                "UUTIEN": 1
-            },
-            {
-                "MONHOCID": 6662,
-                "MONHOCTUONGDUONG": null,
-                "MAMONHOC": "LA1005",
-                "TENMONHOC": "Anh văn 2",
-                "SOTC": 2,
-                "DIEMDAT": "1",
-                "DIEM": "MT",
-                "DIEMSO": 12,
-                "DIEMCHU": "--",
-                "UUTIEN": 1
-            },
-            {
-                "MONHOCID": 328000,
-                "MONHOCTUONGDUONG": null,
-                "MAMONHOC": "CCGDTC",
-                "TENMONHOC": "Chứng chỉ Giáo Dục Thể Chất",
-                "SOTC": 0,
-                "DIEMDAT": "-1",
-                "DIEM": "DT",
-                "DIEMSO": 21,
-                "DIEMCHU": "DT",
-                "UUTIEN": -100
-            },
-            {
-                "MONHOCID": 335091,
-                "MONHOCTUONGDUONG": null,
-                "MAMONHOC": "SA4001",
-                "TENMONHOC": "Hoạt động sinh viên",
-                "SOTC": 0,
-                "DIEMDAT": "-1",
-                "DIEM": "DT",
-                "DIEMSO": 21,
-                "DIEMCHU": "--",
-                "UUTIEN": -100
-            }
-        ]
+  "code": "200",
+  "msg": "ok",
+  "data": {
+    "thongTinCTDT": {
+      "ID": 2512,
+      "MACTDT": "DH_CQ_MT_KHM_2023",
+      "TENCTDT": "NGUYỄN PHÚC NHÂN (2312438) - MT23KHM3 | 2023 - DH_CQ_MT_KHM_2023 - Khoa học Máy tính (Computer Science)",
+      "SOTINCHI": 128,
+      "KHOIKIENTHUC": "[{\"id\":25684,\"tuchon\":\"B\",\"sothutu\":11,\"sotc\":7,\"somh\":2,\"sotcdat\":7,\"somhdat\":2,\"hoanthanh\":\"1\",\"danhsachmondat\":\"6633,6916,\",\"danhsachmonkhongdat\":null},{\"id\":25685,\"tuchon\":\"B\",\"sothutu\":12,\"sotc\":15,\"somh\":4,\"sotcdat\":11,\"somhdat\":3,\"hoanthanh\":\"0\",\"danhsachmondat\":\"6650,6652,6699,\",\"danhsachmonkhongdat\":null},{\"id\":25686,\"tuchon\":\"B\",\"sothutu\":13,\"sotc\":8,\"somh\":3,\"sotcdat\":5,\"somhdat\":2,\"hoanthanh\":\"0\",\"danhsachmondat\":\"6655,6657,\",\"danhsachmonkhongdat\":null},{\"id\":25687,\"tuchon\":\"B\",\"sothutu\":14,\"sotc\":13,\"somh\":6,\"sotcdat\":7,\"somhdat\":3,\"hoanthanh\":\"0\",\"danhsachmondat\":\"6786,28799,28800,\",\"danhsachmonkhongdat\":null},{\"id\":25688,\"tuchon\":\"B\",\"sothutu\":20,\"sotc\":8,\"somh\":4,\"sotcdat\":6,\"somhdat\":3,\"hoanthanh\":\"0\",\"danhsachmondat\":\"6646,6662,6733,\",\"danhsachmonkhongdat\":null},{\"id\":25689,\"tuchon\":\"B\",\"sothutu\":30,\"sotc\":3,\"somh\":1,\"sotcdat\":3,\"somhdat\":1,\"hoanthanh\":\"1\",\"danhsachmondat\":\"6631,\",\"danhsachmonkhongdat\":null},{\"id\":25690,\"tuchon\":\"C\",\"sothutu\":31,\"sotc\":3,\"somh\":0,\"sotcdat\":0,\"somhdat\":0,\"hoanthanh\":\"0\",\"danhsachmondat\":null,\"danhsachmonkhongdat\":null},{\"id\":25691,\"tuchon\":\"B\",\"sothutu\":33,\"sotc\":3,\"somh\":1,\"sotcdat\":0,\"somhdat\":0,\"hoanthanh\":\"0\",\"danhsachmondat\":null,\"danhsachmonkhongdat\":null},{\"id\":25692,\"tuchon\":\"B\",\"sothutu\":42,\"sotc\":21,\"somh\":6,\"sotcdat\":17,\"somhdat\":5,\"hoanthanh\":\"0\",\"danhsachmondat\":\"6762,6764,20627,20928,21147,\",\"danhsachmonkhongdat\":null},{\"id\":25694,\"tuchon\":\"C\",\"sothutu\":50,\"sotc\":1,\"somh\":0,\"sotcdat\":0,\"somhdat\":0,\"hoanthanh\":\"0\",\"danhsachmondat\":null,\"danhsachmonkhongdat\":null},{\"id\":25695,\"tuchon\":\"C\",\"sothutu\":50,\"sotc\":1,\"somh\":0,\"sotcdat\":0,\"somhdat\":0,\"hoanthanh\":\"0\",\"danhsachmondat\":null,\"danhsachmonkhongdat\":null},{\"id\":25696,\"tuchon\":\"C\",\"sothutu\":50,\"sotc\":15,\"somh\":0,\"sotcdat\":0,\"somhdat\":0,\"hoanthanh\":\"0\",\"danhsachmondat\":null,\"danhsachmonkhongdat\":null},{\"id\":25693,\"tuchon\":\"B\",\"sothutu\":50,\"sotc\":13,\"somh\":4,\"sotcdat\":3,\"somhdat\":1,\"hoanthanh\":\"0\",\"danhsachmondat\":\"6919,\",\"danhsachmonkhongdat\":null},{\"id\":25697,\"tuchon\":\"B\",\"sothutu\":67,\"sotc\":8,\"somh\":3,\"sotcdat\":0,\"somhdat\":0,\"hoanthanh\":\"0\",\"danhsachmondat\":null,\"danhsachmonkhongdat\":null},{\"id\":27893,\"tuchon\":\"TUDO\",\"sothutu\":191,\"sotc\":9,\"somh\":0,\"sotcdat\":3,\"somhdat\":1,\"hoanthanh\":\"0\",\"danhsachmondat\":\"37628,\"},{\"id\":25699,\"tuchon\":\"DKTN\",\"sothutu\":60,\"sotc\":0,\"somh\":1,\"sotcdat\":0,\"somhdat\":1,\"hoanthanh\":\"1\",\"danhsachmondat\":\"328000,\",\"danhsachmonkhongdat\":\"\"},{\"id\":25700,\"tuchon\":\"DKTN\",\"sothutu\":61,\"sotc\":0,\"somh\":1,\"sotcdat\":0,\"somhdat\":1,\"hoanthanh\":\"1\",\"danhsachmondat\":\"6649,\",\"danhsachmonkhongdat\":\"\"},{\"id\":25698,\"tuchon\":\"DKTN\",\"sothutu\":68,\"sotc\":0,\"somh\":2,\"sotcdat\":0,\"somhdat\":1,\"hoanthanh\":\"0\",\"danhsachmondat\":\"335091,\",\"danhsachmonkhongdat\":\"\"}]",
+      "TICHLUYNGANH": "{\"tbtlhe10\":\"8.40\",\"tbtlhe4\":\"3.6\",\"tctl\":62,\"hoanthanhctdt\":\"0\",\"dieukientotnghiep\":\"0\"}",
+      "TICHLUYCHUNG": "{\"tbtlhe10\":\"8.39\",\"tbtlhe4\":\"3.5\",\"tctl\":64}",
+      "MONHOCNGOAICTDT": "37628,",
+      "KHOIKIENTHUCMORONG": null,
+      "TICHLUYNGANHMORONG": null,
+      "GHICHUMONHOC": "[{\"monhocid\":37628,\"ghichu\":\"Đặc cách chung TCTD\"}]",
+      "THOIGIANLAYDIEM": "12/06/2025 08:00:00",
+      "CAPNHAT": "26/06/2025 16:31:05"
     },
-    "sign": ""
+    "khoiKienThuc": [
+      {
+        "KHOIKIENTHUCID": 25684,
+        "TENKHOIKIENTHUC": "Toán và KH tự nhiên khác",
+        "MONHOCID": 6633,
+        "MAMONHOC": "CO1007",
+        "TENMONHOC": "Cấu trúc Rời rạc cho Khoa học Máy tính",
+        "SOTC": 4
+      },
+      {
+        "KHOIKIENTHUCID": 25684,
+        "TENKHOIKIENTHUC": "Toán và KH tự nhiên khác",
+        "MONHOCID": 6916,
+        "MAMONHOC": "CO2011",
+        "TENMONHOC": "Mô hình hóa Toán học",
+        "SOTC": 3
+      },
+      {
+        "KHOIKIENTHUCID": 25685,
+        "TENKHOIKIENTHUC": "Toán",
+        "MONHOCID": 6650,
+        "MAMONHOC": "MT1003",
+        "TENMONHOC": "Giải tích 1",
+        "SOTC": 4
+      },
+      {
+        "KHOIKIENTHUCID": 25685,
+        "TENKHOIKIENTHUC": "Toán",
+        "MONHOCID": 6699,
+        "MAMONHOC": "MT1005",
+        "TENMONHOC": "Giải tích 2",
+        "SOTC": 4
+      },
+      {
+        "KHOIKIENTHUCID": 25685,
+        "TENKHOIKIENTHUC": "Toán",
+        "MONHOCID": 6652,
+        "MAMONHOC": "MT1007",
+        "TENMONHOC": "Đại số Tuyến tính",
+        "SOTC": 3
+      },
+      {
+        "KHOIKIENTHUCID": 25685,
+        "TENKHOIKIENTHUC": "Toán",
+        "MONHOCID": 28892,
+        "MAMONHOC": "MT2013",
+        "TENMONHOC": "Xác suất và Thống kê",
+        "SOTC": 4
+      },
+      {
+        "KHOIKIENTHUCID": 25686,
+        "TENKHOIKIENTHUC": "Khoa học tự nhiên",
+        "MONHOCID": 6622,
+        "MAMONHOC": "CH1003",
+        "TENMONHOC": "Hóa đại cương",
+        "SOTC": 3
+      },
+      {
+        "KHOIKIENTHUCID": 25686,
+        "TENKHOIKIENTHUC": "Khoa học tự nhiên",
+        "MONHOCID": 6655,
+        "MAMONHOC": "PH1003",
+        "TENMONHOC": "Vật lý 1",
+        "SOTC": 4
+      },
+      {
+        "KHOIKIENTHUCID": 25686,
+        "TENKHOIKIENTHUC": "Khoa học tự nhiên",
+        "MONHOCID": 6657,
+        "MAMONHOC": "PH1007",
+        "TENMONHOC": "Thí nghiệm Vật lý",
+        "SOTC": 1
+      },
+      {
+        "KHOIKIENTHUCID": 25687,
+        "TENKHOIKIENTHUC": "Kinh tế- Chính trị- Xã hội- Luật",
+        "MONHOCID": 6786,
+        "MAMONHOC": "SP1007",
+        "TENMONHOC": "Pháp luật Việt Nam Đại cương",
+        "SOTC": 2
+      },
+      {
+        "KHOIKIENTHUCID": 25687,
+        "TENKHOIKIENTHUC": "Kinh tế- Chính trị- Xã hội- Luật",
+        "MONHOCID": 28799,
+        "MAMONHOC": "SP1031",
+        "TENMONHOC": "Triết học Mác - Lênin",
+        "SOTC": 3
+      },
+      {
+        "KHOIKIENTHUCID": 25687,
+        "TENKHOIKIENTHUC": "Kinh tế- Chính trị- Xã hội- Luật",
+        "MONHOCID": 28800,
+        "MAMONHOC": "SP1033",
+        "TENMONHOC": "Kinh tế Chính trị Mác - Lênin",
+        "SOTC": 2
+      },
+      {
+        "KHOIKIENTHUCID": 25687,
+        "TENKHOIKIENTHUC": "Kinh tế- Chính trị- Xã hội- Luật",
+        "MONHOCID": 28801,
+        "MAMONHOC": "SP1035",
+        "TENMONHOC": "Chủ nghĩa Xã hội Khoa học",
+        "SOTC": 2
+      },
+      {
+        "KHOIKIENTHUCID": 25687,
+        "TENKHOIKIENTHUC": "Kinh tế- Chính trị- Xã hội- Luật",
+        "MONHOCID": 28803,
+        "MAMONHOC": "SP1037",
+        "TENMONHOC": "Tư tưởng Hồ Chí Minh",
+        "SOTC": 2
+      },
+      {
+        "KHOIKIENTHUCID": 25687,
+        "TENKHOIKIENTHUC": "Kinh tế- Chính trị- Xã hội- Luật",
+        "MONHOCID": 28802,
+        "MAMONHOC": "SP1039",
+        "TENMONHOC": "Lịch sử Đảng Cộng sản Việt Nam",
+        "SOTC": 2
+      },
+      {
+        "KHOIKIENTHUCID": 25688,
+        "TENKHOIKIENTHUC": "Ngoại ngữ",
+        "MONHOCID": 6646,
+        "MAMONHOC": "LA1003",
+        "TENMONHOC": "Anh văn 1",
+        "SOTC": 2
+      },
+      {
+        "KHOIKIENTHUCID": 25688,
+        "TENKHOIKIENTHUC": "Ngoại ngữ",
+        "MONHOCID": 6662,
+        "MAMONHOC": "LA1005",
+        "TENMONHOC": "Anh văn 2",
+        "SOTC": 2
+      },
+      {
+        "KHOIKIENTHUCID": 25688,
+        "TENKHOIKIENTHUC": "Ngoại ngữ",
+        "MONHOCID": 6733,
+        "MAMONHOC": "LA1007",
+        "TENMONHOC": "Anh văn 3",
+        "SOTC": 2
+      },
+      {
+        "KHOIKIENTHUCID": 25688,
+        "TENKHOIKIENTHUC": "Ngoại ngữ",
+        "MONHOCID": 6737,
+        "MAMONHOC": "LA1009",
+        "TENMONHOC": "Anh văn 4",
+        "SOTC": 2
+      },
+      {
+        "KHOIKIENTHUCID": 25689,
+        "TENKHOIKIENTHUC": "Nhập môn",
+        "MONHOCID": 6631,
+        "MAMONHOC": "CO1005",
+        "TENMONHOC": "Nhập môn Điện toán",
+        "SOTC": 3
+      },
+      {
+        "KHOIKIENTHUCID": 25690,
+        "TENKHOIKIENTHUC": "Quản lý (Nhóm D)",
+        "MONHOCID": 9567,
+        "MAMONHOC": "IM1013",
+        "TENMONHOC": "Kinh tế học Đại cương",
+        "SOTC": 3
+      },
+      {
+        "KHOIKIENTHUCID": 25690,
+        "TENKHOIKIENTHUC": "Quản lý (Nhóm D)",
+        "MONHOCID": 37652,
+        "MAMONHOC": "IM1023",
+        "TENMONHOC": "Quản lý Sản xuất cho Kỹ sư",
+        "SOTC": 3
+      },
+      {
+        "KHOIKIENTHUCID": 25690,
+        "TENKHOIKIENTHUC": "Quản lý (Nhóm D)",
+        "MONHOCID": 37733,
+        "MAMONHOC": "IM1025",
+        "TENMONHOC": "Quản lý Dự án cho Kỹ sư",
+        "SOTC": 3
+      },
+      {
+        "KHOIKIENTHUCID": 25690,
+        "TENKHOIKIENTHUC": "Quản lý (Nhóm D)",
+        "MONHOCID": 37734,
+        "MAMONHOC": "IM1027",
+        "TENMONHOC": "Kinh tế Kỹ thuật",
+        "SOTC": 3
+      },
+      {
+        "KHOIKIENTHUCID": 25690,
+        "TENKHOIKIENTHUC": "Quản lý (Nhóm D)",
+        "MONHOCID": 9755,
+        "MAMONHOC": "IM3001",
+        "TENMONHOC": "Quản trị Kinh doanh cho Kỹ sư",
+        "SOTC": 3
+      },
+      {
+        "KHOIKIENTHUCID": 25691,
+        "TENKHOIKIENTHUC": "Con người và môi trường",
+        "MONHOCID": 6783,
+        "MAMONHOC": "CO2001",
+        "TENMONHOC": "Kỹ năng Chuyên nghiệp cho Kỹ sư",
+        "SOTC": 3
+      },
+      {
+        "KHOIKIENTHUCID": 25692,
+        "TENKHOIKIENTHUC": "Cơ sở ngành",
+        "MONHOCID": 20627,
+        "MAMONHOC": "CO1023",
+        "TENMONHOC": "Hệ thống số",
+        "SOTC": 3
+      },
+      {
+        "KHOIKIENTHUCID": 25692,
+        "TENKHOIKIENTHUC": "Cơ sở ngành",
+        "MONHOCID": 20928,
+        "MAMONHOC": "CO1027",
+        "TENMONHOC": "Kỹ thuật Lập trình",
+        "SOTC": 3
+      },
+      {
+        "KHOIKIENTHUCID": 25692,
+        "TENKHOIKIENTHUC": "Cơ sở ngành",
+        "MONHOCID": 6762,
+        "MAMONHOC": "CO2003",
+        "TENMONHOC": "Cấu trúc Dữ liệu và Giải Thuật",
+        "SOTC": 4
+      },
+      {
+        "KHOIKIENTHUCID": 25692,
+        "TENKHOIKIENTHUC": "Cơ sở ngành",
+        "MONHOCID": 6764,
+        "MAMONHOC": "CO2007",
+        "TENMONHOC": "Kiến trúc Máy tính",
+        "SOTC": 4
+      },
+      {
+        "KHOIKIENTHUCID": 25692,
+        "TENKHOIKIENTHUC": "Cơ sở ngành",
+        "MONHOCID": 6917,
+        "MAMONHOC": "CO2013",
+        "TENMONHOC": "Hệ cơ sở Dữ liệu",
+        "SOTC": 4
+      },
+      {
+        "KHOIKIENTHUCID": 25692,
+        "TENKHOIKIENTHUC": "Cơ sở ngành",
+        "MONHOCID": 21147,
+        "MAMONHOC": "CO2039",
+        "TENMONHOC": "Lập trình Nâng cao",
+        "SOTC": 3
+      },
+      {
+        "KHOIKIENTHUCID": 25693,
+        "TENKHOIKIENTHUC": "Chuyên ngành",
+        "MONHOCID": 6919,
+        "MAMONHOC": "CO2017",
+        "TENMONHOC": "Hệ điều hành",
+        "SOTC": 3
+      },
+      {
+        "KHOIKIENTHUCID": 25693,
+        "TENKHOIKIENTHUC": "Chuyên ngành",
+        "MONHOCID": 9658,
+        "MAMONHOC": "CO3001",
+        "TENMONHOC": "Công nghệ Phần mềm",
+        "SOTC": 3
+      },
+      {
+        "KHOIKIENTHUCID": 25693,
+        "TENKHOIKIENTHUC": "Chuyên ngành",
+        "MONHOCID": 9660,
+        "MAMONHOC": "CO3005",
+        "TENMONHOC": "Nguyên lý Ngôn ngữ Lập trình",
+        "SOTC": 4
+      },
+      {
+        "KHOIKIENTHUCID": 25693,
+        "TENKHOIKIENTHUC": "Chuyên ngành",
+        "MONHOCID": 21152,
+        "MAMONHOC": "CO3093",
+        "TENMONHOC": "Mạng máy tính",
+        "SOTC": 3
+      },
+      {
+        "KHOIKIENTHUCID": 25694,
+        "TENKHOIKIENTHUC": "Chuyên ngành (Nhóm A)",
+        "MONHOCID": 29185,
+        "MAMONHOC": "CO3101",
+        "TENMONHOC": "Đồ án Tổng hợp - Hướng Trí tuệ Nhân tạo",
+        "SOTC": 1
+      },
+      {
+        "KHOIKIENTHUCID": 25694,
+        "TENKHOIKIENTHUC": "Chuyên ngành (Nhóm A)",
+        "MONHOCID": 29186,
+        "MAMONHOC": "CO3103",
+        "TENMONHOC": "Đồ án Tổng hợp - hướng Công nghệ Phần mềm",
+        "SOTC": 1
+      },
+      {
+        "KHOIKIENTHUCID": 25694,
+        "TENKHOIKIENTHUC": "Chuyên ngành (Nhóm A)",
+        "MONHOCID": 29187,
+        "MAMONHOC": "CO3105",
+        "TENMONHOC": "Đồ án Tổng hợp - Hướng Hệ thống Thông tin",
+        "SOTC": 1
+      },
+      {
+        "KHOIKIENTHUCID": 25694,
+        "TENKHOIKIENTHUC": "Chuyên ngành (Nhóm A)",
+        "MONHOCID": 335507,
+        "MAMONHOC": "CO3127",
+        "TENMONHOC": "Đồ án tổng hợp - hướng kỹ thuật dữ liệu",
+        "SOTC": 1
+      },
+      {
+        "KHOIKIENTHUCID": 25695,
+        "TENKHOIKIENTHUC": "Chuyên ngành (Nhóm B)",
+        "MONHOCID": 29188,
+        "MAMONHOC": "CO3107",
+        "TENMONHOC": "Thực tập Đồ án môn học Đa ngành - Hướng Trí tuệ Nhân tạo",
+        "SOTC": 1
+      },
+      {
+        "KHOIKIENTHUCID": 25695,
+        "TENKHOIKIENTHUC": "Chuyên ngành (Nhóm B)",
+        "MONHOCID": 29189,
+        "MAMONHOC": "CO3109",
+        "TENMONHOC": "Thực tập Đồ án môn học Đa ngành - Hướng công Nghệ phần mềm",
+        "SOTC": 1
+      },
+      {
+        "KHOIKIENTHUCID": 25695,
+        "TENKHOIKIENTHUC": "Chuyên ngành (Nhóm B)",
+        "MONHOCID": 29190,
+        "MAMONHOC": "CO3111",
+        "TENMONHOC": "Thực tập Đồ án môn học Đa ngành - hướng Hệ thống Thông tin",
+        "SOTC": 1
+      },
+      {
+        "KHOIKIENTHUCID": 25696,
+        "TENKHOIKIENTHUC": "Chuyên ngành (Nhóm C)",
+        "MONHOCID": 17756,
+        "MAMONHOC": "CO3011",
+        "TENMONHOC": "Quản lý Dự án Phần mềm",
+        "SOTC": 3
+      },
+      {
+        "KHOIKIENTHUCID": 25696,
+        "TENKHOIKIENTHUC": "Chuyên ngành (Nhóm C)",
+        "MONHOCID": 17757,
+        "MAMONHOC": "CO3013",
+        "TENMONHOC": "Xây dựng Chương trình Dịch",
+        "SOTC": 3
+      },
+      {
+        "KHOIKIENTHUCID": 25696,
+        "TENKHOIKIENTHUC": "Chuyên ngành (Nhóm C)",
+        "MONHOCID": 17758,
+        "MAMONHOC": "CO3015",
+        "TENMONHOC": "Kiểm tra Phần mềm",
+        "SOTC": 3
+      },
+      {
+        "KHOIKIENTHUCID": 25696,
+        "TENKHOIKIENTHUC": "Chuyên ngành (Nhóm C)",
+        "MONHOCID": 17759,
+        "MAMONHOC": "CO3017",
+        "TENMONHOC": "Kiến trúc Phần mềm",
+        "SOTC": 3
+      },
+      {
+        "KHOIKIENTHUCID": 25696,
+        "TENKHOIKIENTHUC": "Chuyên ngành (Nhóm C)",
+        "MONHOCID": 9860,
+        "MAMONHOC": "CO3021",
+        "TENMONHOC": "Hệ Quản trị Cơ sở Dữ Liệu",
+        "SOTC": 3
+      },
+      {
+        "KHOIKIENTHUCID": 25696,
+        "TENKHOIKIENTHUC": "Chuyên ngành (Nhóm C)",
+        "MONHOCID": 17760,
+        "MAMONHOC": "CO3023",
+        "TENMONHOC": "Cơ sở Dữ liệu Phân tán và Hướng đối tượng",
+        "SOTC": 3
+      },
+      {
+        "KHOIKIENTHUCID": 25696,
+        "TENKHOIKIENTHUC": "Chuyên ngành (Nhóm C)",
+        "MONHOCID": 17761,
+        "MAMONHOC": "CO3027",
+        "TENMONHOC": "Thương mại Điện tử",
+        "SOTC": 3
+      },
+      {
+        "KHOIKIENTHUCID": 25696,
+        "TENKHOIKIENTHUC": "Chuyên ngành (Nhóm C)",
+        "MONHOCID": 11158,
+        "MAMONHOC": "CO3029",
+        "TENMONHOC": "Khai phá Dữ liệu",
+        "SOTC": 3
+      },
+      {
+        "KHOIKIENTHUCID": 25696,
+        "TENKHOIKIENTHUC": "Chuyên ngành (Nhóm C)",
+        "MONHOCID": 9861,
+        "MAMONHOC": "CO3031",
+        "TENMONHOC": "Phân tích và Thiết kế Giải Thuật",
+        "SOTC": 3
+      },
+      {
+        "KHOIKIENTHUCID": 25696,
+        "TENKHOIKIENTHUC": "Chuyên ngành (Nhóm C)",
+        "MONHOCID": 11164,
+        "MAMONHOC": "CO3033",
+        "TENMONHOC": "Bảo mật Hệ thống Thông tin",
+        "SOTC": 3
+      },
+      {
+        "KHOIKIENTHUCID": 25696,
+        "TENKHOIKIENTHUC": "Chuyên ngành (Nhóm C)",
+        "MONHOCID": 17762,
+        "MAMONHOC": "CO3035",
+        "TENMONHOC": "Hệ thời gian thực",
+        "SOTC": 3
+      },
+      {
+        "KHOIKIENTHUCID": 25696,
+        "TENKHOIKIENTHUC": "Chuyên ngành (Nhóm C)",
+        "MONHOCID": 11672,
+        "MAMONHOC": "CO3037",
+        "TENMONHOC": "Phát triển Ứng dụng Internet of Things",
+        "SOTC": 3
+      },
+      {
+        "KHOIKIENTHUCID": 25696,
+        "TENKHOIKIENTHUC": "Chuyên ngành (Nhóm C)",
+        "MONHOCID": 11401,
+        "MAMONHOC": "CO3041",
+        "TENMONHOC": "Hệ thống Thông minh",
+        "SOTC": 3
+      },
+      {
+        "KHOIKIENTHUCID": 25696,
+        "TENKHOIKIENTHUC": "Chuyên ngành (Nhóm C)",
+        "MONHOCID": 17763,
+        "MAMONHOC": "CO3043",
+        "TENMONHOC": "Phát triển Ứng dụng trên Thiết bị Di động",
+        "SOTC": 3
+      },
+      {
+        "KHOIKIENTHUCID": 25696,
+        "TENKHOIKIENTHUC": "Chuyên ngành (Nhóm C)",
+        "MONHOCID": 17764,
+        "MAMONHOC": "CO3045",
+        "TENMONHOC": "Lập trình Game",
+        "SOTC": 3
+      },
+      {
+        "KHOIKIENTHUCID": 25696,
+        "TENKHOIKIENTHUC": "Chuyên ngành (Nhóm C)",
+        "MONHOCID": 11667,
+        "MAMONHOC": "CO3047",
+        "TENMONHOC": "Mạng máy tính nâng cao",
+        "SOTC": 3
+      },
+      {
+        "KHOIKIENTHUCID": 25696,
+        "TENKHOIKIENTHUC": "Chuyên ngành (Nhóm C)",
+        "MONHOCID": 11130,
+        "MAMONHOC": "CO3049",
+        "TENMONHOC": "Lập trình Web",
+        "SOTC": 3
+      },
+      {
+        "KHOIKIENTHUCID": 25696,
+        "TENKHOIKIENTHUC": "Chuyên ngành (Nhóm C)",
+        "MONHOCID": 17765,
+        "MAMONHOC": "CO3051",
+        "TENMONHOC": "Hệ thống thiết bị di động",
+        "SOTC": 3
+      },
+      {
+        "KHOIKIENTHUCID": 25696,
+        "TENKHOIKIENTHUC": "Chuyên ngành (Nhóm C)",
+        "MONHOCID": 17767,
+        "MAMONHOC": "CO3057",
+        "TENMONHOC": "Xử lý Ảnh số và Thị giác Máy tính",
+        "SOTC": 3
+      },
+      {
+        "KHOIKIENTHUCID": 25696,
+        "TENKHOIKIENTHUC": "Chuyên ngành (Nhóm C)",
+        "MONHOCID": 10375,
+        "MAMONHOC": "CO3059",
+        "TENMONHOC": "Đồ họa Máy tính",
+        "SOTC": 3
+      },
+      {
+        "KHOIKIENTHUCID": 25696,
+        "TENKHOIKIENTHUC": "Chuyên ngành (Nhóm C)",
+        "MONHOCID": 10357,
+        "MAMONHOC": "CO3061",
+        "TENMONHOC": "Nhập môn Trí tuệ Nhân tạo",
+        "SOTC": 3
+      },
+      {
+        "KHOIKIENTHUCID": 25696,
+        "TENKHOIKIENTHUC": "Chuyên ngành (Nhóm C)",
+        "MONHOCID": 11147,
+        "MAMONHOC": "CO3065",
+        "TENMONHOC": "Công nghệ Phần mềm Nâng cao",
+        "SOTC": 3
+      },
+      {
+        "KHOIKIENTHUCID": 25696,
+        "TENKHOIKIENTHUC": "Chuyên ngành (Nhóm C)",
+        "MONHOCID": 11221,
+        "MAMONHOC": "CO3067",
+        "TENMONHOC": "Tính toán Song song",
+        "SOTC": 3
+      },
+      {
+        "KHOIKIENTHUCID": 25696,
+        "TENKHOIKIENTHUC": "Chuyên ngành (Nhóm C)",
+        "MONHOCID": 10303,
+        "MAMONHOC": "CO3069",
+        "TENMONHOC": "Mật mã và An ninh mạng",
+        "SOTC": 3
+      },
+      {
+        "KHOIKIENTHUCID": 25696,
+        "TENKHOIKIENTHUC": "Chuyên ngành (Nhóm C)",
+        "MONHOCID": 17755,
+        "MAMONHOC": "CO3071",
+        "TENMONHOC": "Hệ phân bố",
+        "SOTC": 3
+      },
+      {
+        "KHOIKIENTHUCID": 25696,
+        "TENKHOIKIENTHUC": "Chuyên ngành (Nhóm C)",
+        "MONHOCID": 17766,
+        "MAMONHOC": "CO3083",
+        "TENMONHOC": "Mật mã học và Mã hóa Thông tin",
+        "SOTC": 3
+      },
+      {
+        "KHOIKIENTHUCID": 25696,
+        "TENKHOIKIENTHUC": "Chuyên ngành (Nhóm C)",
+        "MONHOCID": 11698,
+        "MAMONHOC": "CO3085",
+        "TENMONHOC": "Xử lý Ngôn ngữ Tự nhiên",
+        "SOTC": 3
+      },
+      {
+        "KHOIKIENTHUCID": 25696,
+        "TENKHOIKIENTHUC": "Chuyên ngành (Nhóm C)",
+        "MONHOCID": 17842,
+        "MAMONHOC": "CO3089",
+        "TENMONHOC": "Những Chủ đề Nâng cao trong Khoa học Máy tính",
+        "SOTC": 3
+      },
+      {
+        "KHOIKIENTHUCID": 25696,
+        "TENKHOIKIENTHUC": "Chuyên ngành (Nhóm C)",
+        "MONHOCID": 37502,
+        "MAMONHOC": "CO3115",
+        "TENMONHOC": "Phân tích và Thiết kế Hệ thống",
+        "SOTC": 3
+      },
+      {
+        "KHOIKIENTHUCID": 25696,
+        "TENKHOIKIENTHUC": "Chuyên ngành (Nhóm C)",
+        "MONHOCID": 37723,
+        "MAMONHOC": "CO3117",
+        "TENMONHOC": "Học máy",
+        "SOTC": 3
+      },
+      {
+        "KHOIKIENTHUCID": 25696,
+        "TENKHOIKIENTHUC": "Chuyên ngành (Nhóm C)",
+        "MONHOCID": 17768,
+        "MAMONHOC": "CO4025",
+        "TENMONHOC": "Mạng xã hội và Thông tin",
+        "SOTC": 3
+      },
+      {
+        "KHOIKIENTHUCID": 25696,
+        "TENKHOIKIENTHUC": "Chuyên ngành (Nhóm C)",
+        "MONHOCID": 37990,
+        "MAMONHOC": "CO4031",
+        "TENMONHOC": "Kho dữ Liệu và Hệ hỗ trợ Quyết định",
+        "SOTC": 3
+      },
+      {
+        "KHOIKIENTHUCID": 25696,
+        "TENKHOIKIENTHUC": "Chuyên ngành (Nhóm C)",
+        "MONHOCID": 37991,
+        "MAMONHOC": "CO4033",
+        "TENMONHOC": "Phân tích Dữ liệu lớn và Trí tuệ Kinh doanh",
+        "SOTC": 3
+      },
+      {
+        "KHOIKIENTHUCID": 25696,
+        "TENKHOIKIENTHUC": "Chuyên ngành (Nhóm C)",
+        "MONHOCID": 37992,
+        "MAMONHOC": "CO4035",
+        "TENMONHOC": "Hệ hoạch Định tài Nguyên tổ chức",
+        "SOTC": 3
+      },
+      {
+        "KHOIKIENTHUCID": 25696,
+        "TENKHOIKIENTHUC": "Chuyên ngành (Nhóm C)",
+        "MONHOCID": 37993,
+        "MAMONHOC": "CO4037",
+        "TENMONHOC": "Hệ thống thông tin quản lý",
+        "SOTC": 3
+      },
+      {
+        "KHOIKIENTHUCID": 25696,
+        "TENKHOIKIENTHUC": "Chuyên ngành (Nhóm C)",
+        "MONHOCID": 37994,
+        "MAMONHOC": "CO4039",
+        "TENMONHOC": "Bảo mật sinh trắc",
+        "SOTC": 3
+      },
+      {
+        "KHOIKIENTHUCID": 25697,
+        "TENKHOIKIENTHUC": "Tốt nghiệp",
+        "MONHOCID": 21151,
+        "MAMONHOC": "CO3335",
+        "TENMONHOC": "Thực tập Ngoài trường",
+        "SOTC": 2
+      },
+      {
+        "KHOIKIENTHUCID": 25697,
+        "TENKHOIKIENTHUC": "Tốt nghiệp",
+        "MONHOCID": 21149,
+        "MAMONHOC": "CO4029",
+        "TENMONHOC": "Đồ án Chuyên ngành",
+        "SOTC": 2
+      },
+      {
+        "KHOIKIENTHUCID": 25697,
+        "TENKHOIKIENTHUC": "Tốt nghiệp",
+        "MONHOCID": 21150,
+        "MAMONHOC": "CO4337",
+        "TENMONHOC": "Đồ án Tốt nghiệp (Khoa học Máy tính)",
+        "SOTC": 4
+      },
+      {
+        "KHOIKIENTHUCID": 25698,
+        "TENKHOIKIENTHUC": "Điều kiện tốt nghiệp",
+        "MONHOCID": 382493,
+        "MAMONHOC": "ENG_GC_600",
+        "TENMONHOC": "Điều kiện tiếng Anh tốt nghiệp",
+        "SOTC": 0
+      },
+      {
+        "KHOIKIENTHUCID": 25698,
+        "TENKHOIKIENTHUC": "Điều kiện tốt nghiệp",
+        "MONHOCID": 335091,
+        "MAMONHOC": "SA4001",
+        "TENMONHOC": "Hoạt động sinh viên",
+        "SOTC": 0
+      },
+      {
+        "KHOIKIENTHUCID": 25699,
+        "TENKHOIKIENTHUC": "Chứng chỉ Giáo dục Thể chất",
+        "MONHOCID": 328000,
+        "MAMONHOC": "CCGDTC",
+        "TENMONHOC": "Chứng chỉ Giáo Dục Thể Chất",
+        "SOTC": 0
+      },
+      {
+        "KHOIKIENTHUCID": 25700,
+        "TENKHOIKIENTHUC": "Chứng chỉ Giáo dục Quốc phòng",
+        "MONHOCID": 6649,
+        "MAMONHOC": "MI1003",
+        "TENMONHOC": "Giáo dục Quốc phòng",
+        "SOTC": 0
+      },
+      {
+        "KHOIKIENTHUCID": 27893,
+        "TENKHOIKIENTHUC": "Tự chọn tự do",
+        "MONHOCID": 37628,
+        "MAMONHOC": "IM1021",
+        "TENMONHOC": "Khởi nghiệp",
+        "SOTC": 3
+      }
+    ],
+    "khoiKienThucMoRong": null,
+    "diemSinhVien": [
+      {
+        "MONHOCID": 6699,
+        "MONHOCTUONGDUONG": null,
+        "MAMONHOC": "MT1005",
+        "TENMONHOC": "Giải tích 2",
+        "SOTC": 4,
+        "DIEMDAT": "1",
+        "DIEM": "9.70",
+        "DIEMSO": 9.7,
+        "DIEMCHU": "A+",
+        "UUTIEN": 9.7
+      },
+      {
+        "MONHOCID": 6650,
+        "MONHOCTUONGDUONG": null,
+        "MAMONHOC": "MT1003",
+        "TENMONHOC": "Giải tích 1",
+        "SOTC": 4,
+        "DIEMDAT": "1",
+        "DIEM": "9.40",
+        "DIEMSO": 9.4,
+        "DIEMCHU": "A",
+        "UUTIEN": 9.4
+      },
+      {
+        "MONHOCID": 6631,
+        "MONHOCTUONGDUONG": null,
+        "MAMONHOC": "CO1005",
+        "TENMONHOC": "Nhập môn Điện toán",
+        "SOTC": 3,
+        "DIEMDAT": "1",
+        "DIEM": "9.30",
+        "DIEMSO": 9.3,
+        "DIEMCHU": "A",
+        "UUTIEN": 9.3
+      },
+      {
+        "MONHOCID": 21147,
+        "MONHOCTUONGDUONG": null,
+        "MAMONHOC": "CO2039",
+        "TENMONHOC": "Lập trình Nâng cao",
+        "SOTC": 3,
+        "DIEMDAT": "1",
+        "DIEM": "9.20",
+        "DIEMSO": 9.2,
+        "DIEMCHU": "A",
+        "UUTIEN": 9.2
+      },
+      {
+        "MONHOCID": 20928,
+        "MONHOCTUONGDUONG": null,
+        "MAMONHOC": "CO1027",
+        "TENMONHOC": "Kỹ thuật Lập trình",
+        "SOTC": 3,
+        "DIEMDAT": "1",
+        "DIEM": "9.00",
+        "DIEMSO": 9,
+        "DIEMCHU": "A",
+        "UUTIEN": 9
+      },
+      {
+        "MONHOCID": 20627,
+        "MONHOCTUONGDUONG": null,
+        "MAMONHOC": "CO1023",
+        "TENMONHOC": "Hệ thống số",
+        "SOTC": 3,
+        "DIEMDAT": "1",
+        "DIEM": "8.70",
+        "DIEMSO": 8.7,
+        "DIEMCHU": "A",
+        "UUTIEN": 8.7
+      },
+      {
+        "MONHOCID": 6762,
+        "MONHOCTUONGDUONG": null,
+        "MAMONHOC": "CO2003",
+        "TENMONHOC": "Cấu trúc Dữ liệu và Giải Thuật",
+        "SOTC": 4,
+        "DIEMDAT": "1",
+        "DIEM": "8.70",
+        "DIEMSO": 8.7,
+        "DIEMCHU": "A",
+        "UUTIEN": 8.7
+      },
+      {
+        "MONHOCID": 37628,
+        "MONHOCTUONGDUONG": null,
+        "MAMONHOC": "IM1021",
+        "TENMONHOC": "Khởi nghiệp",
+        "SOTC": 3,
+        "DIEMDAT": "1",
+        "DIEM": "8.50",
+        "DIEMSO": 8.5,
+        "DIEMCHU": "A",
+        "UUTIEN": 8.5
+      },
+      {
+        "MONHOCID": 6655,
+        "MONHOCTUONGDUONG": null,
+        "MAMONHOC": "PH1003",
+        "TENMONHOC": "Vật lý 1",
+        "SOTC": 4,
+        "DIEMDAT": "1",
+        "DIEM": "8.40",
+        "DIEMSO": 8.4,
+        "DIEMCHU": "B+",
+        "UUTIEN": 8.4
+      },
+      {
+        "MONHOCID": 28799,
+        "MONHOCTUONGDUONG": null,
+        "MAMONHOC": "SP1031",
+        "TENMONHOC": "Triết học Mác - Lênin",
+        "SOTC": 3,
+        "DIEMDAT": "1",
+        "DIEM": "8.30",
+        "DIEMSO": 8.3,
+        "DIEMCHU": "B+",
+        "UUTIEN": 8.3
+      },
+      {
+        "MONHOCID": 28892,
+        "MONHOCTUONGDUONG": null,
+        "MAMONHOC": "MT2013",
+        "TENMONHOC": "Xác suất và Thống kê",
+        "SOTC": 4,
+        "DIEMDAT": "1",
+        "DIEM": "8.20",
+        "DIEMSO": 8.2,
+        "DIEMCHU": "B+",
+        "UUTIEN": 8.2
+      },
+      {
+        "MONHOCID": 6622,
+        "MONHOCTUONGDUONG": null,
+        "MAMONHOC": "CH1003",
+        "TENMONHOC": "Hóa đại cương",
+        "SOTC": 3,
+        "DIEMDAT": "1",
+        "DIEM": "9.60",
+        "DIEMSO": 9.6,
+        "DIEMCHU": "A+",
+        "UUTIEN": 9.6
+      },
+      {
+        "MONHOCID": 6916,
+        "MONHOCTUONGDUONG": null,
+        "MAMONHOC": "CO2011",
+        "TENMONHOC": "Mô hình hóa Toán học",
+        "SOTC": 3,
+        "DIEMDAT": "1",
+        "DIEM": "8.00",
+        "DIEMSO": 8,
+        "DIEMCHU": "B+",
+        "UUTIEN": 8
+      },
+      {
+        "MONHOCID": 6646,
+        "MONHOCTUONGDUONG": null,
+        "MAMONHOC": "LA1003",
+        "TENMONHOC": "Anh văn 1",
+        "SOTC": 2,
+        "DIEMDAT": "1",
+        "DIEM": "8.00",
+        "DIEMSO": 8,
+        "DIEMCHU": "B+",
+        "UUTIEN": 8
+      },
+      {
+        "MONHOCID": 6919,
+        "MONHOCTUONGDUONG": null,
+        "MAMONHOC": "CO2017",
+        "TENMONHOC": "Hệ điều hành",
+        "SOTC": 3,
+        "DIEMDAT": "1",
+        "DIEM": "7.90",
+        "DIEMSO": 7.9,
+        "DIEMCHU": "B",
+        "UUTIEN": 7.9
+      },
+      {
+        "MONHOCID": 28800,
+        "MONHOCTUONGDUONG": null,
+        "MAMONHOC": "SP1033",
+        "TENMONHOC": "Kinh tế Chính trị Mác - Lênin",
+        "SOTC": 2,
+        "DIEMDAT": "1",
+        "DIEM": "7.90",
+        "DIEMSO": 7.9,
+        "DIEMCHU": "B",
+        "UUTIEN": 7.9
+      },
+      {
+        "MONHOCID": 6764,
+        "MONHOCTUONGDUONG": null,
+        "MAMONHOC": "CO2007",
+        "TENMONHOC": "Kiến trúc Máy tính",
+        "SOTC": 4,
+        "DIEMDAT": "1",
+        "DIEM": "7.70",
+        "DIEMSO": 7.7,
+        "DIEMCHU": "B",
+        "UUTIEN": 7.7
+      },
+      {
+        "MONHOCID": 6633,
+        "MONHOCTUONGDUONG": null,
+        "MAMONHOC": "CO1007",
+        "TENMONHOC": "Cấu trúc Rời rạc cho Khoa học Máy tính",
+        "SOTC": 4,
+        "DIEMDAT": "1",
+        "DIEM": "7.60",
+        "DIEMSO": 7.6,
+        "DIEMCHU": "B",
+        "UUTIEN": 7.6
+      },
+      {
+        "MONHOCID": 6786,
+        "MONHOCTUONGDUONG": null,
+        "MAMONHOC": "SP1007",
+        "TENMONHOC": "Pháp luật Việt Nam Đại cương",
+        "SOTC": 2,
+        "DIEMDAT": "1",
+        "DIEM": "7.40",
+        "DIEMSO": 7.4,
+        "DIEMCHU": "B",
+        "UUTIEN": 7.4
+      },
+      {
+        "MONHOCID": 6652,
+        "MONHOCTUONGDUONG": null,
+        "MAMONHOC": "MT1007",
+        "TENMONHOC": "Đại số Tuyến tính",
+        "SOTC": 3,
+        "DIEMDAT": "1",
+        "DIEM": "7.30",
+        "DIEMSO": 7.3,
+        "DIEMCHU": "B",
+        "UUTIEN": 7.3
+      },
+      {
+        "MONHOCID": 6657,
+        "MONHOCTUONGDUONG": null,
+        "MAMONHOC": "PH1007",
+        "TENMONHOC": "Thí nghiệm Vật lý",
+        "SOTC": 1,
+        "DIEMDAT": "1",
+        "DIEM": "6.00",
+        "DIEMSO": 6,
+        "DIEMCHU": "C",
+        "UUTIEN": 6
+      },
+      {
+        "MONHOCID": 6733,
+        "MONHOCTUONGDUONG": null,
+        "MAMONHOC": "LA1007",
+        "TENMONHOC": "Anh văn 3",
+        "SOTC": 0,
+        "DIEMDAT": "1",
+        "DIEM": "MT",
+        "DIEMSO": 12,
+        "DIEMCHU": "--",
+        "UUTIEN": 1
+      },
+      {
+        "MONHOCID": 6649,
+        "MONHOCTUONGDUONG": null,
+        "MAMONHOC": "MI1003",
+        "TENMONHOC": "Giáo dục Quốc phòng",
+        "SOTC": 0,
+        "DIEMDAT": "1",
+        "DIEM": "DT",
+        "DIEMSO": 21,
+        "DIEMCHU": "DT",
+        "UUTIEN": 1
+      },
+      {
+        "MONHOCID": 6662,
+        "MONHOCTUONGDUONG": null,
+        "MAMONHOC": "LA1005",
+        "TENMONHOC": "Anh văn 2",
+        "SOTC": 2,
+        "DIEMDAT": "1",
+        "DIEM": "MT",
+        "DIEMSO": 12,
+        "DIEMCHU": "--",
+        "UUTIEN": 1
+      },
+      {
+        "MONHOCID": 328000,
+        "MONHOCTUONGDUONG": null,
+        "MAMONHOC": "CCGDTC",
+        "TENMONHOC": "Chứng chỉ Giáo Dục Thể Chất",
+        "SOTC": 0,
+        "DIEMDAT": "-1",
+        "DIEM": "DT",
+        "DIEMSO": 21,
+        "DIEMCHU": "DT",
+        "UUTIEN": -100
+      },
+      {
+        "MONHOCID": 335091,
+        "MONHOCTUONGDUONG": null,
+        "MAMONHOC": "SA4001",
+        "TENMONHOC": "Hoạt động sinh viên",
+        "SOTC": 0,
+        "DIEMDAT": "-1",
+        "DIEM": "DT",
+        "DIEMSO": 21,
+        "DIEMCHU": "--",
+        "UUTIEN": -100
+      },
+      {
+        "MONHOCID": 6917,
+        "MONHOCTUONGDUONG": null,
+        "MAMONHOC": "CO2013",
+        "TENMONHOC": "Hệ cơ sở Dữ liệu",
+        "SOTC": 4,
+        "DIEMCHU": "CH",
+        "DIEMSO": 15,
+        "DIEM": "CH",
+        "DIEMDAT": "1",
+        "UUTIEN": 15
+      },
+      {
+        "MONHOCID": 21152,
+        "MONHOCTUONGDUONG": null,
+        "MAMONHOC": "CO3093",
+        "TENMONHOC": "Mạng máy tính",
+        "SOTC": 3,
+        "DIEMCHU": "CH",
+        "DIEMSO": 15,
+        "DIEM": "CH",
+        "DIEMDAT": "1",
+        "UUTIEN": 15
+      },
+      {
+        "MONHOCID": 9660,
+        "MONHOCTUONGDUONG": null,
+        "MAMONHOC": "CO3005",
+        "TENMONHOC": "Nguyên lý Ngôn ngữ Lập trình",
+        "SOTC": 4,
+        "DIEMCHU": "CH",
+        "DIEMSO": 15,
+        "DIEM": "CH",
+        "DIEMDAT": "1",
+        "UUTIEN": 15
+      },
+      {
+        "MONHOCID": 9658,
+        "MONHOCTUONGDUONG": null,
+        "MAMONHOC": "CO3001",
+        "TENMONHOC": "Công nghệ Phần mềm",
+        "SOTC": 3,
+        "DIEMCHU": "CH",
+        "DIEMSO": 15,
+        "DIEM": "CH",
+        "DIEMDAT": "1",
+        "UUTIEN": 15
+      },
+      {
+        "MONHOCID": 335507,
+        "MONHOCTUONGDUONG": null,
+        "MAMONHOC": "CO3127",
+        "TENMONHOC": "Đồ án tổng hợp - hướng kỹ thuật dữ liệu",
+        "SOTC": 1,
+        "DIEMCHU": "CH",
+        "DIEMSO": 15,
+        "DIEM": "CH",
+        "DIEMDAT": "1",
+        "UUTIEN": 15
+      },
+      {
+        "MONHOCID": 28801,
+        "MONHOCTUONGDUONG": null,
+        "MAMONHOC": "SP1035",
+        "TENMONHOC": "Chủ nghĩa Xã hội Khoa học",
+        "SOTC": 2,
+        "DIEMCHU": "CH",
+        "DIEMSO": 15,
+        "DIEM": "CH",
+        "DIEMDAT": "1",
+        "UUTIEN": 15
+      },
+      {
+        "MONHOCID": 28802,
+        "MONHOCTUONGDUONG": null,
+        "MAMONHOC": "SP1039",
+        "TENMONHOC": "Lịch sử Đảng Cộng sản Việt Nam",
+        "SOTC": 2,
+        "DIEMCHU": "CH",
+        "DIEMSO": 15,
+        "DIEM": "CH",
+        "DIEMDAT": "1",
+        "UUTIEN": 15
+      }
+    ]
+  }
 }
