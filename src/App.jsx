@@ -5,6 +5,8 @@ import Photobooth from "./pages/Photobooth"; // Giả sử bạn lưu Photobooth
 //import VintageCakePage from "./pages/VintageCakePage"; // Giả sử bạn lưu VintageCakePage.jsx trong folder pages
 import ChatBtn from "./components/ChatBtn";
 import TranscriptPage from "./pages/Transcript";
+import Blog from "./pages/Blog";
+import BlogPost from "./components/BlogPost";
 
 const App = () => {
   return (
@@ -25,6 +27,8 @@ const App = () => {
                   <Route path="/contact" element={<Contact />} />
                   <Route path="/sorry" element={<SorryPage />} />
                   <Route path="/transcript" element={<TranscriptPage />} />
+                  <Route path="/blog" element={<Blog />} />
+                  <Route path="/blog/:slug" element={<BlogPost />} />
                 </Routes>
               </>
             }

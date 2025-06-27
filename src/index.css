@@ -9,6 +9,14 @@
   --green-rgb: 125 161 35;
 }
 
+/* Custom utilities for blog */
+.line-clamp-3 {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
 body {
   font-family: "Work Sans", sans-serif;
 }
