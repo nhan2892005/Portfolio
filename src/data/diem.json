@@ -994,18 +994,6 @@
                 "UUTIEN": 1
             },
             {
-                "MONHOCID": 6646,
-                "MONHOCTUONGDUONG": null,
-                "MAMONHOC": "LA1003",
-                "TENMONHOC": "Anh văn 1",
-                "SOTC": 2,
-                "DIEMDAT": "1",
-                "DIEM": "MT",
-                "DIEMSO": 12,
-                "DIEMCHU": "--",
-                "UUTIEN": 1
-            },
-            {
                 "MONHOCID": 6662,
                 "MONHOCTUONGDUONG": null,
                 "MAMONHOC": "LA1005",

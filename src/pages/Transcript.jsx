@@ -14,6 +14,30 @@ const gradeToGPA = {
   "F": 0.0,
 };
 
+// Các loại điểm đặc biệt và ý nghĩa
+const SPECIAL_SCORES = {
+  "CT": { label: "Cấm thi", description: "Tính điểm 0.0", includeInGPA: false },
+  "MT": { label: "Miễn thi", description: "Được miễn thi do có chứng chỉ tương đương", includeInGPA: false },
+  "VT": { label: "Vắng thi", description: "Vắng mặt trong kỳ thi", includeInGPA: false },
+  "VP": { label: "Vi phạm", description: "Vi phạm quy chế thi", includeInGPA: false },
+  "HT": { label: "Hoãn thi", description: "Hoãn thi có lý do chính đáng", includeInGPA: false },
+  "CH": { label: "Chưa có điểm", description: "Chưa có kết quả điểm", includeInGPA: false },
+  "RT": { label: "Rút môn", description: "Rút khỏi môn học trong thời gian cho phép", includeInGPA: false },
+  "KD": { label: "Không đủ điều kiện thi", description: "Không đủ điều kiện dự thi", includeInGPA: false },
+  "DT": { label: "Đạt", description: "Môn học đạt yêu cầu (không tính điểm số)", includeInGPA: false },
+  "KDT": { label: "Không đạt", description: "Môn học không đạt yêu cầu", includeInGPA: false }
+};
+
+// Hàm kiểm tra xem có phải là điểm đặc biệt không
+const isSpecialScore = (diemChu) => {
+  return SPECIAL_SCORES.hasOwnProperty(diemChu);
+};
+
+// Hàm kiểm tra xem có phải là điểm số hợp lệ (0-10) không
+const isValidNumericalScore = (diemSo) => {
+  return typeof diemSo === 'number' && diemSo >= 0 && diemSo <= 10;
+};
+
 const Transcript = () => {
   // State cho dữ liệu (có thể chỉnh sửa)
   const [currentData, setCurrentData] = useState(transcriptData.data);
@@ -70,13 +94,25 @@ const Transcript = () => {
     let diemChu = "--";
     let diemSo = null;
     let diemHe4 = null;
+    let isSpecial = false;
+    let specialInfo = null;
 
     if (score) {
       diemChu = score.DIEMCHU;
       diemSo = score.DIEMSO;
-      diemHe4 = gradeToGPA[diemChu] ?? "--";
+      
+      // Kiểm tra xem có phải là điểm đặc biệt không
+      if (isSpecialScore(score.DIEM)) {
+        isSpecial = true;
+        specialInfo = SPECIAL_SCORES[score.DIEM];
+        diemChu = score.DIEM; // Hiển thị mã điểm đặc biệt thay vì DIEMCHU
+        diemHe4 = "--";
+      } else {
+        diemHe4 = gradeToGPA[diemChu] ?? "--";
+      }
 
-      if (course.SOTC > 0 && typeof diemHe4 === "number" && typeof diemSo === "number") {
+      // Chỉ tính vào điểm trung bình nếu không phải điểm đặc biệt và là điểm số hợp lệ
+      if (!isSpecial && course.SOTC > 0 && typeof diemHe4 === "number" && isValidNumericalScore(diemSo)) {
         totalCredits += course.SOTC;
         totalWeightedGPA += diemHe4 * course.SOTC;
         totalWeightedScore10 += diemSo * course.SOTC;
@@ -88,6 +124,8 @@ const Transcript = () => {
       diemChu,
       diemSo,
       diemHe4,
+      isSpecial,
+      specialInfo,
     };
 
     if (!groupedByKKT[course.TENKHOIKIENTHUC]) {
@@ -142,60 +180,72 @@ const Transcript = () => {
   const gradeAnalysis = useMemo(() => {
     const gradeCount = { "A+": 0, "A": 0, "B+": 0, "B": 0, "C+": 0, "C": 0, "D+": 0, "D": 0, "F": 0 };
     const scoreRanges = { "9.0-10": 0, "8.0-8.9": 0, "7.0-7.9": 0, "6.0-6.9": 0, "5.0-5.9": 0, "<5.0": 0 };
+    const specialScoreCount = {}; // Thống kê điểm đặc biệt
     const kktAnalysis = {};
     const creditAnalysis = {
       totalRequired: 128, // Từ thông tin CTĐT
       totalCompleted: 0,
       totalRemaining: 0,
       creditsByGrade: { "A+": 0, "A": 0, "B+": 0, "B": 0, "C+": 0, "C": 0, "D+": 0, "D": 0, "F": 0 },
+      creditsBySpecial: {}, // Tín chỉ theo điểm đặc biệt
       creditsByKKT: {},
       progressByKKT: {}
     };
     
     Object.values(groupedByKKT).forEach(courses => {
       courses.forEach(course => {
-        // Kiểm tra xem có phải môn xét điểm không (điểm số <= 10)
-        const isGradedCourse = course.diemSo !== null && course.diemSo <= 10;
+        // Kiểm tra xem có phải môn xét điểm không (điểm số hợp lệ và không phải điểm đặc biệt)
+        const isGradedCourse = !course.isSpecial && isValidNumericalScore(course.diemSo);
         
-        // Đếm điểm chữ (chỉ với môn xét điểm)
-        if (course.diemChu && course.diemChu !== "--" && isGradedCourse) {
-          gradeCount[course.diemChu] = (gradeCount[course.diemChu] || 0) + 1;
-          // Đếm tín chỉ theo điểm chữ (chỉ với môn xét điểm)
-          creditAnalysis.creditsByGrade[course.diemChu] = (creditAnalysis.creditsByGrade[course.diemChu] || 0) + course.SOTC;
-        }
-        
-        // Đếm theo khoảng điểm (chỉ với môn xét điểm)
-        if (isGradedCourse) {
-          const score = course.diemSo;
-          if (score >= 9.0 && score <= 10) scoreRanges["9.0-10"]++;
-          else if (score >= 8.0) scoreRanges["8.0-8.9"]++;
-          else if (score >= 7.0) scoreRanges["7.0-7.9"]++;
-          else if (score >= 6.0) scoreRanges["6.0-6.9"]++;
-          else if (score >= 5.0) scoreRanges["5.0-5.9"]++;
-          else scoreRanges["<5.0"]++;
+        if (course.isSpecial) {
+          // Thống kê điểm đặc biệt
+          const specialType = course.diemChu;
+          specialScoreCount[specialType] = (specialScoreCount[specialType] || 0) + 1;
+          // Thống kê tín chỉ theo điểm đặc biệt
+          creditAnalysis.creditsBySpecial[specialType] = (creditAnalysis.creditsBySpecial[specialType] || 0) + course.SOTC;
+        } else {
+          // Đếm điểm chữ (chỉ với môn xét điểm thường)
+          if (course.diemChu && course.diemChu !== "--" && isGradedCourse) {
+            gradeCount[course.diemChu] = (gradeCount[course.diemChu] || 0) + 1;
+            // Đếm tín chỉ theo điểm chữ (chỉ với môn xét điểm thường)
+            creditAnalysis.creditsByGrade[course.diemChu] = (creditAnalysis.creditsByGrade[course.diemChu] || 0) + course.SOTC;
+          }
+          
+          // Đếm theo khoảng điểm (chỉ với môn xét điểm thường)
+          if (isGradedCourse) {
+            const score = course.diemSo;
+            if (score >= 9.0 && score <= 10) scoreRanges["9.0-10"]++;
+            else if (score >= 8.0) scoreRanges["8.0-8.9"]++;
+            else if (score >= 7.0) scoreRanges["7.0-7.9"]++;
+            else if (score >= 6.0) scoreRanges["6.0-6.9"]++;
+            else if (score >= 5.0) scoreRanges["5.0-5.9"]++;
+            else scoreRanges["<5.0"]++;
+          }
         }
         
         // Phân tích theo khối kiến thức
         const kkt = course.TENKHOIKIENTHUC;
         if (!kktAnalysis[kkt]) {
-          kktAnalysis[kkt] = { count: 0, totalScore: 0, avgScore: 0, gradedCount: 0 };
+          kktAnalysis[kkt] = { count: 0, totalScore: 0, avgScore: 0, gradedCount: 0, specialCount: 0 };
         }
-        kktAnalysis[kkt].count++; // Tổng số môn (bao gồm cả không xét điểm)
+        kktAnalysis[kkt].count++; // Tổng số môn (bao gồm cả điểm đặc biệt)
         
-        // Chỉ tính điểm TB với môn xét điểm
-        if (isGradedCourse) {
+        if (course.isSpecial) {
+          kktAnalysis[kkt].specialCount++; // Số môn có điểm đặc biệt
+        } else if (isGradedCourse) {
+          // Chỉ tính điểm TB với môn xét điểm thường
           kktAnalysis[kkt].totalScore += course.diemSo;
           kktAnalysis[kkt].gradedCount++; // Số môn thực sự xét điểm
         }
 
-        // Phân tích tín chỉ theo khối kiến thức (tất cả môn, kể cả không xét điểm)
+        // Phân tích tín chỉ theo khối kiến thức (tất cả môn, kể cả điểm đặc biệt)
         if (!creditAnalysis.creditsByKKT[kkt]) {
           creditAnalysis.creditsByKKT[kkt] = { completed: 0, total: 0 };
         }
         creditAnalysis.creditsByKKT[kkt].total += course.SOTC;
         
-        // Tín chỉ hoàn thành: môn có điểm chữ (bao gồm cả không xét điểm nếu có điểm chữ)
-        if (course.diemChu && course.diemChu !== "--") {
+        // Tín chỉ hoàn thành: môn có điểm chữ hoặc điểm đặc biệt (trừ các loại không đạt)
+        if ((course.diemChu && course.diemChu !== "--") || (course.isSpecial && !["VT", "VP", "KD", "KDT"].includes(course.diemChu))) {
           creditAnalysis.creditsByKKT[kkt].completed += course.SOTC;
         }
       });
@@ -223,7 +273,7 @@ const Transcript = () => {
       };
     });
 
-    return { gradeCount, scoreRanges, kktAnalysis, creditAnalysis };
+    return { gradeCount, scoreRanges, kktAnalysis, creditAnalysis, specialScoreCount };
   }, [groupedByKKT, totalCredits]);
 
   // Chuẩn bị dữ liệu cho biểu đồ
@@ -450,8 +500,15 @@ const Transcript = () => {
 
   // Hàm xử lý CRUD cho điểm số
   const handleAddScore = () => {
-    if (!scoreForm.MONHOCID || !scoreForm.DIEMCHU || !scoreForm.DIEMSO) {
+    if (!scoreForm.MONHOCID || !scoreForm.DIEMCHU) {
       alert('Vui lòng điền đầy đủ thông tin điểm');
+      return;
+    }
+
+    // Với điểm đặc biệt, không cần điểm số
+    const isSpecialGrade = SPECIAL_SCORES[scoreForm.DIEMCHU];
+    if (!isSpecialGrade && !scoreForm.DIEMSO) {
+      alert('Vui lòng nhập điểm số cho điểm thường');
       return;
     }
 
@@ -463,8 +520,11 @@ const Transcript = () => {
 
     const newScore = {
       MONHOCID: parseInt(scoreForm.MONHOCID),
-      DIEMCHU: scoreForm.DIEMCHU,
-      DIEMSO: parseFloat(scoreForm.DIEMSO)
+      DIEMCHU: isSpecialGrade ? '--' : scoreForm.DIEMCHU,
+      DIEMSO: isSpecialGrade ? (scoreForm.DIEMCHU === 'MT' ? 12 : scoreForm.DIEMCHU === 'DT' ? 21 : 0) : parseFloat(scoreForm.DIEMSO),
+      DIEM: scoreForm.DIEMCHU, // Thêm field DIEM để nhận diện điểm đặc biệt
+      DIEMDAT: isSpecialGrade && ['MT', 'DT', 'CT'].includes(scoreForm.DIEMCHU) ? "1" : (isSpecialGrade ? "-1" : "1"),
+      UUTIEN: isSpecialGrade ? (scoreForm.DIEMCHU === 'DT' ? 1 : -100) : parseFloat(scoreForm.DIEMSO)
     };
 
     setCurrentData(prev => ({
@@ -484,18 +544,29 @@ const Transcript = () => {
   const handleEditScore = (score) => {
     console.log('Editing score:', score); // Debug log
     setEditingScore(score);
+    
+    // Kiểm tra xem có phải điểm đặc biệt không dựa vào field DIEM
+    const isSpecialScore = score.DIEM && SPECIAL_SCORES[score.DIEM];
+    
     setScoreForm({
       MONHOCID: score.MONHOCID.toString(),
-      DIEMCHU: score.DIEMCHU,
-      DIEMSO: score.DIEMSO.toString()
+      DIEMCHU: isSpecialScore ? score.DIEM : score.DIEMCHU,
+      DIEMSO: isSpecialScore ? '' : score.DIEMSO.toString()
     });
   };
 
   const handleUpdateScore = () => {
     console.log('Updating score:', { editingScore, scoreForm }); // Debug log
     
-    if (!scoreForm.MONHOCID || !scoreForm.DIEMCHU || !scoreForm.DIEMSO) {
+    if (!scoreForm.MONHOCID || !scoreForm.DIEMCHU) {
       alert('Vui lòng điền đầy đủ thông tin điểm');
+      return;
+    }
+
+    // Với điểm đặc biệt, không cần điểm số
+    const isSpecialGrade = SPECIAL_SCORES[scoreForm.DIEMCHU];
+    if (!isSpecialGrade && !scoreForm.DIEMSO) {
+      alert('Vui lòng nhập điểm số cho điểm thường');
       return;
     }
 
@@ -503,7 +574,14 @@ const Transcript = () => {
       ...prev,
       diemSinhVien: prev.diemSinhVien.map(score => 
         score.MONHOCID === editingScore.MONHOCID 
-          ? { ...score, DIEMCHU: scoreForm.DIEMCHU, DIEMSO: parseFloat(scoreForm.DIEMSO) }
+          ? { 
+              ...score, 
+              DIEMCHU: isSpecialGrade ? '--' : scoreForm.DIEMCHU,
+              DIEMSO: isSpecialGrade ? (scoreForm.DIEMCHU === 'MT' ? 12 : scoreForm.DIEMCHU === 'DT' ? 21 : 0) : parseFloat(scoreForm.DIEMSO),
+              DIEM: scoreForm.DIEMCHU,
+              DIEMDAT: isSpecialGrade && ['MT', 'DT', 'CT'].includes(scoreForm.DIEMCHU) ? "1" : (isSpecialGrade ? "-1" : "1"),
+              UUTIEN: isSpecialGrade ? (scoreForm.DIEMCHU === 'DT' ? 1 : -100) : parseFloat(scoreForm.DIEMSO)
+            }
           : score
       )
     }));
@@ -969,6 +1047,58 @@ const Transcript = () => {
                 <div className="text-xs text-gray-400 italic">Chưa có dữ liệu điểm</div>
               )}
             </div>
+
+            {/* Thống kê điểm đặc biệt */}
+            {Object.keys(gradeAnalysis.specialScoreCount).length > 0 && (
+              <div className="space-y-2 text-sm border-t pt-4">
+                <h4 className="font-medium text-gray-700">🔸 Thống kê điểm đặc biệt</h4>
+                <div className="text-xs text-gray-500 mb-2">
+                  Các môn có điểm đặc biệt (không tính vào GPA)
+                </div>
+                {Object.entries(gradeAnalysis.specialScoreCount).map(([scoreType, count]) => (
+                  <div key={scoreType} className="flex justify-between items-center group">
+                    <div className="flex items-center gap-2">
+                      <span className={`px-2 py-1 rounded text-xs font-semibold
+                        ${scoreType === 'MT' ? 'bg-purple-100 text-purple-800' :
+                          scoreType === 'DT' ? 'bg-green-100 text-green-800' :
+                          scoreType === 'CT' ? 'bg-indigo-100 text-indigo-800' :
+                          scoreType === 'VT' ? 'bg-red-100 text-red-800' :
+                          scoreType === 'VP' ? 'bg-red-200 text-red-900' :
+                          scoreType === 'HT' ? 'bg-yellow-100 text-yellow-800' :
+                          scoreType === 'CH' ? 'bg-gray-100 text-gray-800' :
+                          scoreType === 'RT' ? 'bg-orange-100 text-orange-800' :
+                          scoreType === 'KD' ? 'bg-red-100 text-red-800' :
+                          scoreType === 'KDT' ? 'bg-red-200 text-red-900' :
+                          'bg-gray-100 text-gray-800'
+                        }`}>
+                        {scoreType}
+                      </span>
+                      <span className="text-xs">{SPECIAL_SCORES[scoreType]?.label || scoreType}</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <span className="text-xs font-semibold">{count} môn</span>
+                      <span className="text-xs text-gray-500">
+                        ({gradeAnalysis.creditAnalysis.creditsBySpecial[scoreType] || 0} TC)
+                      </span>
+                    </div>
+                  </div>
+                ))}
+                
+                {/* Chú thích ngắn gọn */}
+                <div className="mt-3 p-3 bg-blue-50 rounded text-xs">
+                  <div className="font-semibold text-blue-800 mb-1">💡 Chú thích:</div>
+                  <div className="space-y-1 text-blue-700">
+                    <div>• <strong>MT:</strong> Miễn thi (có chứng chỉ tương đương)</div>
+                    <div>• <strong>DT:</strong> Đạt (môn không xét điểm số)</div>
+                    <div>• <strong>CT:</strong> Chuyển tín chỉ từ trường khác</div>
+                    <div>• <strong>VT/VP/KD:</strong> Các trường hợp đặc biệt</div>
+                    <div className="text-xs text-blue-600 italic mt-2">
+                      ⚠️ Điểm đặc biệt không được tính vào GPA và điểm trung bình
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
         </div>
 
@@ -1086,6 +1216,31 @@ const Transcript = () => {
                 )}
               </div>
             </div>
+            
+            {/* Thống kê điểm đặc biệt nếu có */}
+            {Object.keys(gradeAnalysis.specialScoreCount).length > 0 && (
+              <div className="mt-4 pt-3 border-t border-blue-200">
+                <h4 className="text-sm font-semibold text-blue-800 mb-2">🔸 Điểm đặc biệt</h4>
+                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-2 text-xs">
+                  {Object.entries(gradeAnalysis.specialScoreCount).map(([scoreType, count]) => (
+                    <div key={scoreType} className="bg-white rounded p-2 text-center">
+                      <div className={`font-semibold text-xs mb-1
+                        ${scoreType === 'MT' ? 'text-purple-600' :
+                          scoreType === 'DT' ? 'text-green-600' :
+                          scoreType === 'CT' ? 'text-indigo-600' :
+                          'text-gray-600'
+                        }`}>
+                        {scoreType}
+                      </div>
+                      <div className="text-gray-500">{count} môn</div>
+                    </div>
+                  ))}
+                </div>
+                <div className="text-xs text-blue-600 mt-2 italic">
+                  💡 Hover vào điểm đặc biệt trong bảng để xem chi tiết
+                </div>
+              </div>
+            )}
           </div>
 
           {/* Search và Filter */}
@@ -1217,18 +1372,48 @@ const Transcript = () => {
                           <td className="border px-4 py-2">{course.TENMONHOC}</td>
                           <td className="border px-4 py-2 text-center font-semibold">{course.SOTC}</td>
                           <td className="border px-4 py-2 text-center">
-                            <span className={`px-2 py-1 rounded text-sm font-semibold ${
-                              course.diemChu === 'A+' || course.diemChu === 'A' ? 'bg-green-100 text-green-800' :
-                              course.diemChu === 'B+' || course.diemChu === 'B' ? 'bg-blue-100 text-blue-800' :
-                              course.diemChu === 'C+' || course.diemChu === 'C' ? 'bg-yellow-100 text-yellow-800' :
-                              course.diemChu === 'D+' || course.diemChu === 'D' ? 'bg-orange-100 text-orange-800' :
-                              course.diemChu === 'F' ? 'bg-red-100 text-red-800' : 'bg-gray-100 text-gray-800'
-                            }`}>
-                              {course.diemChu}
-                            </span>
+                            {course.isSpecial ? (
+                              <div className="relative group">
+                                <span className={`px-2 py-1 rounded text-sm font-semibold cursor-help
+                                  ${course.diemChu === 'MT' ? 'bg-purple-100 text-purple-800' :
+                                    course.diemChu === 'DT' ? 'bg-green-100 text-green-800' :
+                                    course.diemChu === 'CT' ? 'bg-indigo-100 text-indigo-800' :
+                                    course.diemChu === 'VT' ? 'bg-red-100 text-red-800' :
+                                    course.diemChu === 'VP' ? 'bg-red-200 text-red-900' :
+                                    course.diemChu === 'HT' ? 'bg-yellow-100 text-yellow-800' :
+                                    course.diemChu === 'CH' ? 'bg-gray-100 text-gray-800' :
+                                    course.diemChu === 'RT' ? 'bg-orange-100 text-orange-800' :
+                                    course.diemChu === 'KD' ? 'bg-red-100 text-red-800' :
+                                    course.diemChu === 'KDT' ? 'bg-red-200 text-red-900' :
+                                    'bg-gray-100 text-gray-800'
+                                  }`}>
+                                  {course.diemChu}
+                                </span>
+                                {/* Tooltip */}
+                                <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-3 py-2 bg-gray-900 text-white text-xs rounded shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none z-10 whitespace-nowrap">
+                                  <div className="font-semibold">{course.specialInfo?.label}</div>
+                                  <div className="text-gray-300">{course.specialInfo?.description}</div>
+                                  <div className="absolute top-full left-1/2 transform -translate-x-1/2 border-4 border-transparent border-t-gray-900"></div>
+                                </div>
+                              </div>
+                            ) : (
+                              <span className={`px-2 py-1 rounded text-sm font-semibold ${
+                                course.diemChu === 'A+' || course.diemChu === 'A' ? 'bg-green-100 text-green-800' :
+                                course.diemChu === 'B+' || course.diemChu === 'B' ? 'bg-blue-100 text-blue-800' :
+                                course.diemChu === 'C+' || course.diemChu === 'C' ? 'bg-yellow-100 text-yellow-800' :
+                                course.diemChu === 'D+' || course.diemChu === 'D' ? 'bg-orange-100 text-orange-800' :
+                                course.diemChu === 'F' ? 'bg-red-100 text-red-800' : 'bg-gray-100 text-gray-800'
+                              }`}>
+                                {course.diemChu}
+                              </span>
+                            )}
                           </td>
                           <td className="border px-4 py-2 text-center font-semibold">
-                            {course.diemSo !== null ? course.diemSo : "--"}
+                            {course.isSpecial ? (
+                              <span className="text-gray-500 italic">--</span>
+                            ) : (
+                              course.diemSo !== null ? course.diemSo : "--"
+                            )}
                           </td>
                           <td className="border px-4 py-2 text-center font-semibold">
                             {course.diemHe4 !== "--" ? course.diemHe4 : "--"}
@@ -1562,29 +1747,60 @@ const Transcript = () => {
                           className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-green-500"
                         >
                           <option value="">Chọn điểm chữ</option>
-                          <option value="A+">A+</option>
-                          <option value="A">A</option>
-                          <option value="B+">B+</option>
-                          <option value="B">B</option>
-                          <option value="C+">C+</option>
-                          <option value="C">C</option>
-                          <option value="D+">D+</option>
-                          <option value="D">D</option>
-                          <option value="F">F</option>
+                          <optgroup label="Điểm thường">
+                            <option value="A+">A+</option>
+                            <option value="A">A</option>
+                            <option value="B+">B+</option>
+                            <option value="B">B</option>
+                            <option value="C+">C+</option>
+                            <option value="C">C</option>
+                            <option value="D+">D+</option>
+                            <option value="D">D</option>
+                            <option value="F">F</option>
+                          </optgroup>
+                          <optgroup label="Điểm đặc biệt">
+                            <option value="MT">MT - Miễn thi</option>
+                            <option value="DT">DT - Đạt</option>
+                            <option value="CT">CT - Chuyển tín chỉ</option>
+                            <option value="VT">VT - Vắng thi</option>
+                            <option value="VP">VP - Vi phạm</option>
+                            <option value="HT">HT - Hoãn thi</option>
+                            <option value="CH">CH - Chưa có điểm</option>
+                            <option value="RT">RT - Rút môn</option>
+                            <option value="KD">KD - Không đủ điều kiện</option>
+                            <option value="KDT">KDT - Không đạt</option>
+                          </optgroup>
                         </select>
+                        {scoreForm.DIEMCHU && SPECIAL_SCORES[scoreForm.DIEMCHU] && (
+                          <div className="mt-1 text-xs text-blue-600 bg-blue-50 p-2 rounded">
+                            💡 <strong>{SPECIAL_SCORES[scoreForm.DIEMCHU].label}:</strong> {SPECIAL_SCORES[scoreForm.DIEMCHU].description}
+                            <br />⚠️ Điểm này sẽ không được tính vào GPA
+                          </div>
+                        )}
                       </div>
                       <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">Điểm số</label>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                          Điểm số
+                          {scoreForm.DIEMCHU && SPECIAL_SCORES[scoreForm.DIEMCHU] && (
+                            <span className="text-xs text-gray-500 ml-1">(không bắt buộc với điểm đặc biệt)</span>
+                          )}
+                        </label>
                         <input
                           type="number"
                           value={scoreForm.DIEMSO}
                           onChange={(e) => setScoreForm({...scoreForm, DIEMSO: e.target.value})}
                           className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-green-500"
-                          placeholder="VD: 8.5"
+                          placeholder={scoreForm.DIEMCHU && SPECIAL_SCORES[scoreForm.DIEMCHU] ? "Tùy chọn" : "VD: 8.5"}
                           min="0"
                           max="10"
                           step="0.1"
+                          disabled={scoreForm.DIEMCHU && SPECIAL_SCORES[scoreForm.DIEMCHU]}
                         />
+                        {scoreForm.DIEMCHU && SPECIAL_SCORES[scoreForm.DIEMCHU] && (
+                          <div className="mt-1 text-xs text-gray-500">
+                            ℹ️ Điểm đặc biệt không cần điểm số
+                          </div>
+                        )}
                       </div>
                     </div>
                     <div className="mt-4 flex gap-2">
