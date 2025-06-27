@@ -36,13 +36,67 @@ const Photobooth = () => {
   // Số giây đếm tùy chỉnh (mặc định là 3 giây)
   const [customCountdown, setCustomCountdown] = useState(3);
 
+  // Hàm dừng camera thủ công
+  const stopCamera = () => {
+    if (stream) {
+      stream.getTracks().forEach((track) => {
+        track.stop();
+        console.log("Manual stop camera track:", track.kind);
+      });
+      setStream(null);
+    }
+    if (videoRef.current) {
+      videoRef.current.srcObject = null;
+    }
+  };
+
+  // Hàm khởi động lại camera
+  const startCamera = async () => {
+    try {
+      const mediaStream = await navigator.mediaDevices.getUserMedia({
+        video: true,
+      });
+      if (videoRef.current) {
+        videoRef.current.srcObject = mediaStream;
+        setStream(mediaStream);
+      }
+    } catch (err) {
+      console.error("Lỗi khởi động camera:", err);
+    }
+  };
+
   useEffect(() => {
     const today = new Date();
     const yyyy = today.getFullYear();
     const mm = String(today.getMonth() + 1).padStart(2, "0");
     const dd = String(today.getDate()).padStart(2, "0");
     setDateText(`${yyyy}.${mm}.${dd}`);
-  }, []);  
+  }, []);
+
+  // Tự động tắt camera khi user rời khỏi tab
+  useEffect(() => {
+    const handleVisibilityChange = () => {
+      if (document.hidden && stream) {
+        console.log("Tab hidden, stopping camera");
+        stopCamera();
+      }
+    };
+
+    const handleBeforeUnload = () => {
+      if (stream) {
+        console.log("Page unload, stopping camera");
+        stopCamera();
+      }
+    };
+
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+    window.addEventListener('beforeunload', handleBeforeUnload);
+
+    return () => {
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+      window.removeEventListener('beforeunload', handleBeforeUnload);
+    };
+  }, [stream]);  
 
   // Setup camera: giữ nguyên kích thước gốc, không scale
   useEffect(() => {
@@ -51,8 +105,10 @@ const Photobooth = () => {
         const mediaStream = await navigator.mediaDevices.getUserMedia({
           video: true,
         });
-        videoRef.current.srcObject = mediaStream;
-        setStream(mediaStream);
+        if (videoRef.current) {
+          videoRef.current.srcObject = mediaStream;
+          setStream(mediaStream);
+        }
       } catch (err) {
         console.error("Lỗi camera:", err);
       }
@@ -61,17 +117,45 @@ const Photobooth = () => {
 
     // Khi component unmount, dừng camera
     return () => {
-      if (videoRef.current && videoRef.current.srcObject) {
-        videoRef.current.srcObject.getTracks().forEach((track) => track.stop());
+      // Dừng tất cả tracks từ stream
+      if (stream) {
+        stream.getTracks().forEach((track) => {
+          track.stop();
+          console.log("Camera track stopped:", track.kind);
+        });
       }
+      
+      // Dừng tracks từ video element (backup)
+      if (videoRef.current && videoRef.current.srcObject) {
+        const tracks = videoRef.current.srcObject.getTracks();
+        tracks.forEach((track) => {
+          track.stop();
+          console.log("Video element track stopped:", track.kind);
+        });
+        videoRef.current.srcObject = null;
+      }
+      
+      // Reset stream state
+      setStream(null);
     };
-  }, []);
+  }, []); // Không dependencies để tránh re-run
 
   // Khi đổi template => reset slot
   useEffect(() => {
     const template = templates[selectedTemplateKey];
     setFrameSlots(Array(template.slots.length).fill(null));
   }, [selectedTemplateKey]);
+
+  // Cleanup effect riêng cho stream
+  useEffect(() => {
+    return () => {
+      if (stream) {
+        stream.getTracks().forEach((track) => {
+          track.stop();
+        });
+      }
+    };
+  }, [stream]);
 
   // Hàm chụp ảnh: không scale, giữ nguyên kích thước video
   const capture = () => {
@@ -250,11 +334,22 @@ const Photobooth = () => {
 
       {/* Video & Canvas ẩn */}
       <div className="mb-4">
+        <div className="flex items-center gap-2 mb-2">
+          <div className={`w-3 h-3 rounded-full ${stream ? 'bg-green-500' : 'bg-red-500'}`}></div>
+          <span className="text-sm">
+            Camera: {stream ? 'Đang hoạt động' : 'Đã tắt'}
+          </span>
+        </div>
         <video
           ref={videoRef}
           autoPlay
           className="border"
-          style={{ width: "400px", height: "300px", transform: "scaleX(-1)" }}
+          style={{ 
+            width: "400px", 
+            height: "300px", 
+            transform: "scaleX(-1)",
+            opacity: stream ? 1 : 0.5 
+          }}
         ></video>
         <canvas ref={canvasRef} style={{ display: "none" }} />
       </div>
@@ -267,7 +362,7 @@ const Photobooth = () => {
         <button
           onClick={startCountdown}
           className="px-4 py-2 bg-blue-500 text-white rounded"
-          disabled={countdown > 0}
+          disabled={countdown > 0 || !stream}
         >
           Chụp Ảnh
         </button>
@@ -277,6 +372,25 @@ const Photobooth = () => {
         >
           Clear All
         </button>
+        
+        {/* Nút điều khiển camera */}
+        <div className="flex gap-2">
+          {stream ? (
+            <button
+              onClick={stopCamera}
+              className="px-4 py-2 bg-orange-500 text-white rounded"
+            >
+              🔴 Tắt Camera
+            </button>
+          ) : (
+            <button
+              onClick={startCamera}
+              className="px-4 py-2 bg-green-500 text-white rounded"
+            >
+              📹 Bật Camera
+            </button>
+          )}
+        </div>
       </div>
 
       {/* Gallery ảnh đã chụp với xoá & kéo-drag */}
