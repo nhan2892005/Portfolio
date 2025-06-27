@@ -1,13 +1,23 @@
 // src/pages/Photobooth.jsx
 
 import React, { useState, useRef, useEffect } from "react";
+import * as faceapi from 'face-api.js';
 import { templates } from "../templates";
 import MultiFrameCollage from "../components/MultiFrameCollage";
 
 const Photobooth = () => {
   const videoRef = useRef(null);
   const canvasRef = useRef(null);
+  const faceCanvasRef = useRef(null); // Canvas cho face detection overlay
   const [stream, setStream] = useState(null);
+
+  // Face Detection States
+  const [faceDetectionEnabled, setFaceDetectionEnabled] = useState(false);
+  const [isModelLoaded, setIsModelLoaded] = useState(false);
+  const [detectedFaces, setDetectedFaces] = useState([]);
+  const [faceAnalysis, setFaceAnalysis] = useState(null);
+  const [autoCapture, setAutoCapture] = useState(false);
+  const [lastSmileTime, setLastSmileTime] = useState(0);
 
   // Danh sách ảnh đã chụp
   const [capturedImages, setCapturedImages] = useState([]);
@@ -36,6 +46,168 @@ const Photobooth = () => {
   // Số giây đếm tùy chỉnh (mặc định là 3 giây)
   const [customCountdown, setCustomCountdown] = useState(3);
 
+  // Load face-api.js models
+  useEffect(() => {
+    const loadModels = async () => {
+      try {
+        console.log('🔄 Loading face-api.js models...');
+        
+        // Load from CDN để tránh phải tải file local
+        const MODEL_URL = 'https://raw.githubusercontent.com/justadudewhohacks/face-api.js/master/weights';
+        
+        await Promise.all([
+          faceapi.nets.tinyFaceDetector.loadFromUri(MODEL_URL),
+          faceapi.nets.faceLandmark68Net.loadFromUri(MODEL_URL),
+          faceapi.nets.faceRecognitionNet.loadFromUri(MODEL_URL),
+          faceapi.nets.faceExpressionNet.loadFromUri(MODEL_URL),
+          faceapi.nets.ageGenderNet.loadFromUri(MODEL_URL),
+        ]);
+        
+        console.log('✅ Face-api.js models loaded successfully');
+        setIsModelLoaded(true);
+      } catch (error) {
+        console.error('❌ Error loading face-api.js models:', error);
+      }
+    };
+    
+    loadModels();
+  }, []);
+
+  // Face detection loop
+  useEffect(() => {
+    let detectionInterval;
+    
+    if (faceDetectionEnabled && isModelLoaded && stream && videoRef.current) {
+      detectionInterval = setInterval(async () => {
+        await detectFaces();
+      }, 150); // Detect every 150ms để balance performance
+    }
+    
+    return () => {
+      if (detectionInterval) {
+        clearInterval(detectionInterval);
+      }
+    };
+  }, [faceDetectionEnabled, isModelLoaded, stream]);
+
+  // Face detection function
+  const detectFaces = async () => {
+    const video = videoRef.current;
+    const canvas = faceCanvasRef.current;
+    
+    if (!video || !canvas || video.paused || video.ended || !video.videoWidth) return;
+    
+    try {
+      // Detect faces with all features
+      const detections = await faceapi
+        .detectAllFaces(video, new faceapi.TinyFaceDetectorOptions({
+          inputSize: 416,
+          scoreThreshold: 0.5
+        }))
+        .withFaceLandmarks()
+        .withFaceExpressions()
+        .withAgeAndGender();
+      
+      setDetectedFaces(detections);
+      
+      // Analyze first face
+      if (detections.length > 0) {
+        const face = detections[0];
+        const expressions = face.expressions;
+        const dominantExpression = Object.keys(expressions).reduce((a, b) => 
+          expressions[a] > expressions[b] ? a : b
+        );
+        
+        const analysis = {
+          count: detections.length,
+          age: Math.round(face.age),
+          gender: face.gender,
+          genderProbability: Math.round(face.genderProbability * 100),
+          expression: dominantExpression,
+          expressionConfidence: Math.round(expressions[dominantExpression] * 100),
+          expressions: Object.keys(expressions).map(exp => ({
+            name: exp,
+            confidence: Math.round(expressions[exp] * 100)
+          })).sort((a, b) => b.confidence - a.confidence),
+          isSmiling: expressions.happy > 0.7
+        };
+        
+        setFaceAnalysis(analysis);
+        
+        // Auto capture on smile
+        if (autoCapture && analysis.isSmiling && !countdown) {
+          const now = Date.now();
+          if (now - lastSmileTime > 3000) { // Cooldown 3 giây
+            setLastSmileTime(now);
+            startCountdown();
+          }
+        }
+      } else {
+        setFaceAnalysis(null);
+      }
+      
+      // Draw detection overlay
+      drawFaceDetections(canvas, video, detections);
+      
+    } catch (error) {
+      console.error('Face detection error:', error);
+    }
+  };
+
+  // Draw face detection overlay
+  const drawFaceDetections = (canvas, video, detections) => {
+    const ctx = canvas.getContext('2d');
+    
+    // Set canvas size to match video
+    canvas.width = video.offsetWidth;
+    canvas.height = video.offsetHeight;
+    
+    // Clear previous drawings
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    
+    if (detections.length === 0) return;
+    
+    // Calculate scale factors
+    const scaleX = canvas.width / video.videoWidth;
+    const scaleY = canvas.height / video.videoHeight;
+    
+    detections.forEach((detection, index) => {
+      const { x, y, width, height } = detection.detection.box;
+      
+      // Scale coordinates
+      const scaledX = x * scaleX;
+      const scaledY = y * scaleY;
+      const scaledWidth = width * scaleX;
+      const scaledHeight = height * scaleY;
+      
+      // Draw face box
+      ctx.strokeStyle = '#00ff00';
+      ctx.lineWidth = 2;
+      ctx.strokeRect(scaledX, scaledY, scaledWidth, scaledHeight);
+      
+      // Draw face info
+      ctx.fillStyle = 'rgba(0, 255, 0, 0.8)';
+      ctx.fillRect(scaledX, scaledY - 25, 120, 25);
+      ctx.fillStyle = 'black';
+      ctx.font = '12px Arial';
+      ctx.fillText(`Face ${index + 1}`, scaledX + 5, scaledY - 8);
+      
+      // Draw landmarks (68 points)
+      if (detection.landmarks) {
+        ctx.fillStyle = '#ff0000';
+        detection.landmarks.positions.forEach(point => {
+          const scaledPoint = {
+            x: point.x * scaleX,
+            y: point.y * scaleY
+          };
+          ctx.beginPath();
+          ctx.arc(scaledPoint.x, scaledPoint.y, 1, 0, 2 * Math.PI);
+          ctx.fill();
+        });
+      }
+    });
+  };
+
   // Hàm dừng camera thủ công
   const stopCamera = () => {
     if (stream) {
@@ -48,6 +220,10 @@ const Photobooth = () => {
     if (videoRef.current) {
       videoRef.current.srcObject = null;
     }
+    // Stop face detection when camera stops
+    setFaceDetectionEnabled(false);
+    setFaceAnalysis(null);
+    setDetectedFaces([]);
   };
 
   // Hàm khởi động lại camera
@@ -225,7 +401,119 @@ const Photobooth = () => {
 
   return (
     <div className="min-h-screen flex flex-col items-center pt-20 py-4 px-20">
-      <h1 className="text-3xl font-bold mb-4">Photobooth</h1>
+      <h1 className="text-3xl font-bold mb-4">📸 Photobooth with Face Detection</h1>
+
+      {/* Face Detection Panel */}
+      {stream && (
+        <div className="mb-6 p-4 bg-gradient-to-r from-purple-50 to-blue-50 rounded-lg border border-purple-200 w-full max-w-4xl">
+          <h3 className="text-lg font-semibold mb-3 flex items-center">
+            🔍 Face Detection Controls
+          </h3>
+          
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+            {/* Model Status */}
+            <div className="flex items-center space-x-2">
+              <div className={`w-3 h-3 rounded-full ${isModelLoaded ? 'bg-green-500' : 'bg-orange-500'}`}></div>
+              <span className="text-sm font-medium">
+                Models: {isModelLoaded ? 'Ready ✅' : 'Loading... ⏳'}
+              </span>
+            </div>
+            
+            {/* Detection Toggle */}
+            <div className="flex items-center space-x-2">
+              <button
+                onClick={() => setFaceDetectionEnabled(!faceDetectionEnabled)}
+                disabled={!isModelLoaded}
+                className={`px-4 py-2 rounded-lg font-medium transition-colors ${
+                  faceDetectionEnabled 
+                    ? 'bg-red-500 hover:bg-red-600 text-white' 
+                    : 'bg-blue-500 hover:bg-blue-600 text-white'
+                } disabled:bg-gray-400 disabled:cursor-not-allowed`}
+              >
+                {faceDetectionEnabled ? '🔴 Stop Detection' : '👁️ Start Detection'}
+              </button>
+            </div>
+            
+            {/* Auto Capture */}
+            <div className="flex items-center space-x-2">
+              <label className="flex items-center cursor-pointer">
+                <input
+                  type="checkbox"
+                  checked={autoCapture}
+                  onChange={(e) => setAutoCapture(e.target.checked)}
+                  disabled={!faceDetectionEnabled}
+                  className="mr-2"
+                />
+                <span className="text-sm font-medium">😊 Auto capture on smile</span>
+              </label>
+            </div>
+          </div>
+          
+          {/* Face Analysis Display */}
+          {faceDetectionEnabled && faceAnalysis && (
+            <div className="mt-4 p-4 bg-white rounded-lg border shadow-sm">
+              <h4 className="font-medium mb-3 text-gray-800">📊 Real-time Face Analysis:</h4>
+              
+              <div className="grid grid-cols-2 md:grid-cols-5 gap-4 text-sm">
+                <div className="text-center">
+                  <div className="text-lg font-bold text-blue-600">{faceAnalysis.count}</div>
+                  <div className="text-gray-600">Face(s)</div>
+                </div>
+                
+                <div className="text-center">
+                  <div className="text-lg font-bold text-green-600">~{faceAnalysis.age}</div>
+                  <div className="text-gray-600">Years old</div>
+                </div>
+                
+                <div className="text-center">
+                  <div className="text-lg font-bold text-purple-600">
+                    {faceAnalysis.gender === 'male' ? '👨' : '👩'} {faceAnalysis.genderProbability}%
+                  </div>
+                  <div className="text-gray-600">{faceAnalysis.gender}</div>
+                </div>
+                
+                <div className="text-center">
+                  <div className="text-lg font-bold text-orange-600">
+                    {faceAnalysis.expression === 'happy' ? '😊' : 
+                     faceAnalysis.expression === 'sad' ? '😢' :
+                     faceAnalysis.expression === 'angry' ? '😠' :
+                     faceAnalysis.expression === 'surprised' ? '😲' :
+                     faceAnalysis.expression === 'fearful' ? '😨' :
+                     faceAnalysis.expression === 'disgusted' ? '🤢' : '😐'}
+                  </div>
+                  <div className="text-gray-600">{faceAnalysis.expression} ({faceAnalysis.expressionConfidence}%)</div>
+                </div>
+                
+                <div className="text-center">
+                  <div className={`text-lg font-bold ${faceAnalysis.isSmiling ? 'text-yellow-500' : 'text-gray-400'}`}>
+                    {faceAnalysis.isSmiling ? '😄' : '😐'}
+                  </div>
+                  <div className="text-gray-600">{faceAnalysis.isSmiling ? 'Smiling!' : 'Not smiling'}</div>
+                </div>
+              </div>
+              
+              {/* Top 3 expressions */}
+              <div className="mt-3 flex flex-wrap gap-2">
+                <span className="text-xs font-medium text-gray-600">Top emotions:</span>
+                {faceAnalysis.expressions.slice(0, 3).map((exp, idx) => (
+                  <span 
+                    key={idx}
+                    className="text-xs px-2 py-1 bg-gray-100 rounded-full"
+                  >
+                    {exp.name}: {exp.confidence}%
+                  </span>
+                ))}
+              </div>
+            </div>
+          )}
+          
+          {faceDetectionEnabled && !faceAnalysis && (
+            <div className="mt-4 p-3 bg-yellow-50 rounded-lg border border-yellow-200 text-center">
+              <span className="text-yellow-800">👁️ Looking for faces...</span>
+            </div>
+          )}
+        </div>
+      )}
 
       <div className="flex flex-wrap items-center gap-4 mb-4">
         <div className="flex items-center">
@@ -332,25 +620,62 @@ const Photobooth = () => {
         </div>
       </div>
 
-      {/* Video & Canvas ẩn */}
+      {/* Video & Face Detection Overlay */}
       <div className="mb-4">
-        <div className="flex items-center gap-2 mb-2">
-          <div className={`w-3 h-3 rounded-full ${stream ? 'bg-green-500' : 'bg-red-500'}`}></div>
-          <span className="text-sm">
-            Camera: {stream ? 'Đang hoạt động' : 'Đã tắt'}
-          </span>
+        <div className="flex items-center gap-4 mb-2">
+          <div className="flex items-center gap-2">
+            <div className={`w-3 h-3 rounded-full ${stream ? 'bg-green-500' : 'bg-red-500'}`}></div>
+            <span className="text-sm font-medium">
+              Camera: {stream ? 'Active 📹' : 'Inactive 📵'}
+            </span>
+          </div>
+          
+          {faceDetectionEnabled && (
+            <div className="flex items-center gap-2">
+              <div className="w-3 h-3 rounded-full bg-purple-500 animate-pulse"></div>
+              <span className="text-sm text-purple-600 font-medium">Face Detection: ON</span>
+            </div>
+          )}
+          
+          {faceAnalysis && (
+            <div className="text-sm text-green-600 font-medium">
+              {faceAnalysis.count} face(s) detected
+            </div>
+          )}
         </div>
-        <video
-          ref={videoRef}
-          autoPlay
-          className="border"
-          style={{ 
-            width: "400px", 
-            height: "300px", 
-            transform: "scaleX(-1)",
-            opacity: stream ? 1 : 0.5 
-          }}
-        ></video>
+        
+        <div className="relative inline-block">
+          <video
+            ref={videoRef}
+            autoPlay
+            className="border-2 border-gray-300 rounded-lg"
+            style={{ 
+              width: "400px", 
+              height: "300px", 
+              transform: "scaleX(-1)",
+              opacity: stream ? 1 : 0.5 
+            }}
+          />
+          
+          {/* Face Detection Overlay Canvas */}
+          <canvas
+            ref={faceCanvasRef}
+            className="absolute top-0 left-0 pointer-events-none rounded-lg"
+            style={{ 
+              width: "400px", 
+              height: "300px",
+              transform: "scaleX(-1)"
+            }}
+          />
+          
+          {/* Detection Status Overlay */}
+          {faceDetectionEnabled && (
+            <div className="absolute top-2 left-2 bg-black bg-opacity-70 text-white px-2 py-1 rounded text-xs">
+              {faceAnalysis ? `${faceAnalysis.count} face(s)` : 'Scanning...'}
+            </div>
+          )}
+        </div>
+        
         <canvas ref={canvasRef} style={{ display: "none" }} />
       </div>
 
@@ -358,39 +683,47 @@ const Photobooth = () => {
         <div className="text-4xl font-bold mb-4">{countdown}</div>
       )}
 
-      <div className="mb-4 flex gap-4">
+      <div className="mb-4 flex gap-4 flex-wrap">
         <button
           onClick={startCountdown}
-          className="px-4 py-2 bg-blue-500 text-white rounded"
+          className="px-6 py-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors font-medium"
           disabled={countdown > 0 || !stream}
         >
-          Chụp Ảnh
-        </button>
-        <button
-          onClick={clearAll}
-          className="px-4 py-2 bg-red-500 text-white rounded"
-        >
-          Clear All
+          📸 {countdown > 0 ? `Chụp sau ${countdown}s` : 'Chụp Ảnh'}
         </button>
         
-        {/* Nút điều khiển camera */}
+        <button
+          onClick={clearAll}
+          className="px-6 py-3 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors font-medium"
+        >
+          🗑️ Clear All
+        </button>
+        
+        {/* Camera Controls */}
         <div className="flex gap-2">
           {stream ? (
             <button
               onClick={stopCamera}
-              className="px-4 py-2 bg-orange-500 text-white rounded"
+              className="px-4 py-3 bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition-colors font-medium"
             >
               🔴 Tắt Camera
             </button>
           ) : (
             <button
               onClick={startCamera}
-              className="px-4 py-2 bg-green-500 text-white rounded"
+              className="px-4 py-3 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors font-medium"
             >
               📹 Bật Camera
             </button>
           )}
         </div>
+        
+        {/* Auto Capture Status */}
+        {autoCapture && faceDetectionEnabled && (
+          <div className="px-4 py-3 bg-yellow-100 text-yellow-800 rounded-lg border border-yellow-300 font-medium">
+            😊 Auto-capture: Smile to take photo!
+          </div>
+        )}
       </div>
 
       {/* Gallery ảnh đã chụp với xoá & kéo-drag */}
