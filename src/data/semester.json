@@ -88,7 +88,7 @@
                 "dtbtl": "3.8",
                 "capnhat": "05/03/2024 10:01",
                 "nhomlop": "L02",
-                "diemthanhphanjson": "[{\"ma\":\"tkethp\",\"ten\":\"Tổng kết HP\",\"stt\":0,\"diem\":8.7,\"tyLe\":100},{\"ma\":\"tket\",\"ten\":\"Tổng kết\",\"stt\":0,\"diem\":8.7,\"tyLe\":100},{\"ma\":\"kiemTra\",\"ten\":\"Kiểm tra\",\"stt\":1,\"diem\":7.5,\"tyLe\":20},{\"ma\":\"thiNghiem\",\"ten\":\"Thí nghiệm\",\"stt\":4,\"diem\":9,\"tyLe\":30},{\"ma\":\"thi\",\"ten\":\"Thi\",\"stt\":5,\"diem\":9,\"tyLe\":50}]",
+                "diemthanhphanjson": "[{\"ma\":\"tkethp\",\"ten\":\"Tổng kết HP\",\"stt\":0,\"diem\":10,\"tyLe\":100},{\"ma\":\"tket\",\"ten\":\"Tổng kết\",\"stt\":0,\"diem\":10,\"tyLe\":100},{\"ma\":\"baiTapLon_TieuLuan\",\"ten\":\"Bài tập lớn\",\"stt\":3,\"diem\":10,\"tyLe\":30},{\"ma\":\"baiTapTrenLop\",\"ten\":\"Bài Tập Trên Lớp\",\"stt\":4,\"diem\":10,\"tyLe\":20},{\"ma\":\"thi\",\"ten\":\"Thi\",\"stt\":5,\"diem\":9,\"tyLe\":50}]",
                 "tinhtrangdiem": "CTH"
             },
             {
