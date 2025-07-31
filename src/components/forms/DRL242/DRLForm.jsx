@@ -72,6 +72,14 @@ const DRLForm = () => {
     setError(null);
 
     try {
+      if (!searchValue) {
+        throw new Error('Hãy nhập giá trị tìm kiếm.');
+      }
+
+      if (!password) {
+        throw new Error('Hãy nhập mật khẩu để tra cứu, nếu chưa có mật khẩu, bấm nút cập nhật mật khẩu. Nếu gặp khó khăn, hãy liên hệ với Phúc Nhân.');
+      }
+
       const data = await searchFormData({
         type: searchType,
         value: searchValue,
@@ -84,7 +92,7 @@ const DRLForm = () => {
       setSubmittedData(data);
     } catch (err) {
       setError(err.message);
-      alert('Error searching data. Please try again.');
+      alert('Error searching data: ' + err.message);
     } finally {
       setLoading(false);
     }
