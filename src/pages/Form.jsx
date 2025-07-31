@@ -74,7 +74,7 @@ const Form = () => {
     <section className='max-container'>
       <h1 className='head-text'>
         <span className='blue-gradient_text font-semibold drop-shadow'>
-          {selectedForm ? selectedForm.title : 'Các mẫu đơn'}
+          {selectedForm ? selectedForm.title : 'Các form hiện có'}
         </span>
       </h1>
       
@@ -82,7 +82,7 @@ const Form = () => {
         <p>
           {selectedForm 
             ? selectedForm.description
-            : 'Chọn mẫu đơn phù hợp với nhu cầu của bạn từ danh sách dưới đây.'}
+            : 'Chọn form cần điền dưới đây.'}
         </p>
       </div>
 
