@@ -19,11 +19,12 @@ export const submitForm = async (formData) => {
   }
 };
 
-export const searchFormData = async ({ type, value }) => {
+export const searchFormData = async ({ type, value, password }) => {
   try {
     const params = new URLSearchParams({
       action: 'filter',
-      [type === 'studentId' ? 'studentId' : 'name']: value
+      [type === 'studentId' ? 'studentId' : 'name']: value,
+      password: password,
     });
 
     // Get filtered data
@@ -32,6 +33,8 @@ export const searchFormData = async ({ type, value }) => {
       throw new Error('Network response was not ok');
     }
     const data = await dataResponse.json();
+
+    if (data.error) throw new Error(data.error);
 
     return {
       ...data

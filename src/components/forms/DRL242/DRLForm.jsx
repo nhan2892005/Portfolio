@@ -5,6 +5,7 @@ import DRLStats from './DRLStats';
 
 const DRLForm = () => {
   const [activeTab, setActiveTab] = useState('search'); // 'form' or 'search'
+  const [password, setPassword] = useState('');
   const [formData, setFormData] = useState({
     lastName: '',
     firstName: '',
@@ -20,7 +21,8 @@ const DRLForm = () => {
     evidence5: '',
     score6: 0,
     evidence6: '',
-    notes: ''
+    notes: '',
+    password: ''
   });
   const [submittedData, setSubmittedData] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -28,6 +30,9 @@ const DRLForm = () => {
   const [searchType, setSearchType] = useState('studentId');
   const [searchValue, setSearchValue] = useState('');
   const [formStats, setFormStats] = useState(null);
+  const [showUpdateBlock, setShowUpdateBlock] = useState(false);
+  const [updateStudentId, setUpdateStudentId] = useState('');
+  const [newPassword, setNewPassword] = useState('');
 
   const calculateTotalScore = () => {
     return Number(formData.score1) + Number(formData.score2) + Number(formData.score3) + 
@@ -69,7 +74,8 @@ const DRLForm = () => {
     try {
       const data = await searchFormData({
         type: searchType,
-        value: searchValue
+        value: searchValue,
+        password: password
       });
       // handle case where no data is found
       if (!data || data.length === 0) {
@@ -81,6 +87,30 @@ const DRLForm = () => {
       alert('Error searching data. Please try again.');
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleUpdatePassword = async () => {
+    if (!updateStudentId || !newPassword) {
+      return alert('Please provide both Student ID and new password.');
+    }
+
+    if (newPassword.length < 8 || newPassword.length > 12) {
+      return alert("Mật khẩu phải từ 8 đến 12 ký tự.");
+    }
+
+    try {
+      const result = await submitForm({
+        studentId: updateStudentId,
+        password: newPassword
+      });
+      alert(result.result || "Cập nhật mật khẩu thành công!");
+      setShowUpdateBlock(false);
+      setUpdateStudentId('');
+      setNewPassword('');
+    } catch (err) {
+      alert("Lỗi khi cập nhật mật khẩu.");
+      console.error(err);
     }
   };
 
@@ -130,6 +160,7 @@ const DRLForm = () => {
 
             {/* Search Section */}
             {activeTab === 'search' && (
+              <div className='mt-5 bg-white p-5 rounded-lg shadow-md flex flex-col gap-5'>
                 <div className='mt-5 flex gap-5 bg-white p-5 rounded-lg shadow-md'>
                 <select 
                     value={searchType}
@@ -139,13 +170,27 @@ const DRLForm = () => {
                     <option value="studentId">Tìm theo MSSV</option>
                     <option value="name">Tìm theo họ tên</option>
                 </select>
+                <div className='flex flex-col gap-2'>
                 <input
                     type="text"
                     value={searchValue}
                     onChange={(e) => setSearchValue(e.target.value)}
                     placeholder={searchType === 'studentId' ? 'Nhập MSSV...' : 'Nhập họ tên...'}
                     className='flex-1 border p-2 rounded'
+                    required
                 />
+                <input
+                    type="text"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    placeholder={'Nhập mật khẩu'}
+                    className='flex-1 border p-2 rounded'
+                    required
+                    minLength={8}
+                    maxLength={12}
+                    pattern=".{8,12}"
+                />
+                </div>
                 <button 
                     onClick={handleSearch}
                     disabled={loading}
@@ -153,7 +198,40 @@ const DRLForm = () => {
                 >
                     {loading ? 'Đang tìm...' : 'Tìm kiếm'}
                 </button>
+                <div>
+                  <button
+                    onClick={() => setShowUpdateBlock(prev => !prev)}
+                    className="text-sm text-blue-600 hover:underline"
+                  >
+                    {showUpdateBlock ? 'Ẩn cập nhật mật khẩu' : 'Cập nhật mật khẩu'}
+                  </button>
                 </div>
+                </div>
+                {showUpdateBlock && (
+                  <div className="bg-gray-50 border border-gray-200 p-4 rounded flex flex-col gap-3 max-w-md">
+                    <input
+                      type="text"
+                      value={updateStudentId}
+                      onChange={(e) => setUpdateStudentId(e.target.value)}
+                      placeholder="Mã số sinh viên"
+                      className='border p-2 rounded'
+                    />
+                    <input
+                      type="password"
+                      value={newPassword}
+                      onChange={(e) => setNewPassword(e.target.value)}
+                      placeholder="Mật khẩu mới (8–12 ký tự)"
+                      className='border p-2 rounded'
+                    />
+                    <button
+                      onClick={async () => await handleUpdatePassword()}
+                      className='bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600'
+                    >
+                      Xác nhận cập nhật
+                    </button>
+                  </div>
+                )}
+              </div>
             )}
 
             {/* Form Section */}
@@ -251,6 +329,21 @@ const DRLForm = () => {
                     className='w-full border p-2 rounded'
                     rows="4"
                 />
+                </div>
+
+                <div className='mt-5'>
+                  <label className='block mb-2'>Mật khẩu (8–12 ký tự)</label>
+                  <input
+                    type="password"
+                    name="password"
+                    value={formData.password}
+                    onChange={handleInputChange}
+                    minLength={8}
+                    maxLength={12}
+                    placeholder="Đặt mật khẩu để chỉnh sửa sau"
+                    className='w-full border p-2 rounded'
+                    required
+                  />
                 </div>
 
                 <div className='mt-5 flex justify-between items-center'>
