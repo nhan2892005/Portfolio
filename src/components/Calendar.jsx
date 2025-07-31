@@ -12,14 +12,14 @@ export default function ModernCalendar({
       color: '#3c78d8',
     },
     {
-      id: 'c_6b237cf1cd4d3919fd7706e17beeaf9c05de6180675f73ab3240d6f679ac5edf@group.calendar.google.com',
+        id: 'rc7rh85au8ic0c8026hocdqhv6euehhq@import.calendar.google.com',
         timezone: 'Asia/Ho_Chi_Minh',
         embedUrl:
-        'https://calendar.google.com/calendar/embed?src=c_6b237cf1cd4d3919fd7706e17beeaf9c05de6180675f73ab3240d6f679ac5edf%40group.calendar.google.com&ctz=Asia%2FHo_Chi_Minh',
+          'https://calendar.google.com/calendar/embed?src=rc7rh85au8ic0c8026hocdqhv6euehhq%40import.calendar.google.com&ctz=Asia%2FHo_Chi_Minh',
         icalUrl:
-        'https://calendar.google.com/calendar/ical/c_6b237cf1cd4d3919fd7706e17beeaf9c05de6180675f73ab3240d6f679ac5edf%40group.calendar.google.com/public/basic.ics',
-        color: '#d83c78',
-    },
+          'https://calendar.google.com/calendar/ical/rc7rh85au8ic0c8026hocdqhv6euehhq%40import.calendar.google.com/public/basic.ics',
+        color: '#78d83c',
+    }
   ],
 }) {
   const [view, setView] = useState('embed'); // 'custom' | 'embed'
