@@ -8,6 +8,7 @@ import ChatBtn from "./components/ChatBtn";
 import TranscriptPage from "./pages/Transcript";
 import Blog from "./pages/Blog";
 import BlogPost from "./components/BlogPost";
+import Canales from "./pages/Canales";
 
 const App = () => {
   return (
@@ -32,6 +33,7 @@ const App = () => {
                   <Route path="/blog/:slug" element={<BlogPost />} />
                   <Route path="/calendar" element={<CalendarPage />} />
                   <Route path="/form" element={<Form />} />
+                  <Route path="/canales" element={<Canales />} />
                 </Routes>
               </>
             }
