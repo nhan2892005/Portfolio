@@ -30,6 +30,9 @@ const Navbar = () => {
         <NavLink to="/calendar" className={({ isActive }) => isActive ? "text-blue-600" : "text-black"}>
           Calendar
         </NavLink>
+        <NavLink to="/form" className={({ isActive }) => isActive ? "text-blue-600" : "text-black"}>
+          Form
+        </NavLink>
       </nav>
     </header>
   );

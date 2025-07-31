@@ -2,8 +2,8 @@ import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import { Footer, Navbar } from "./components";
 import { About, Contact, Home, Projects, SorryPage } from "./pages";
 import Photobooth from "./pages/Photobooth";
-import CalendarPage from "./pages/CalendarPage"; // Giả sử bạn lưu Photobooth.jsx trong folder pages
-//import VintageCakePage from "./pages/VintageCakePage"; // Giả sử bạn lưu VintageCakePage.jsx trong folder pages
+import CalendarPage from "./pages/CalendarPage";
+import Form from "./pages/Form";
 import ChatBtn from "./components/ChatBtn";
 import TranscriptPage from "./pages/Transcript";
 import Blog from "./pages/Blog";
@@ -31,6 +31,7 @@ const App = () => {
                   <Route path="/blog" element={<Blog />} />
                   <Route path="/blog/:slug" element={<BlogPost />} />
                   <Route path="/calendar" element={<CalendarPage />} />
+                  <Route path="/form" element={<Form />} />
                 </Routes>
               </>
             }
