@@ -45,7 +45,6 @@ export const searchFormData = async ({ type, value }) => {
 export const getFormStats = async () => {
   try {
     const response = await fetch(`${API_URL}?action=stats`);
-    console.log('Fetching form stats from:', API_URL);
     if (!response.ok) {
       throw new Error('Network response was not ok');
     }
