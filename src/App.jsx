@@ -1,7 +1,8 @@
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import { Footer, Navbar } from "./components";
 import { About, Contact, Home, Projects, SorryPage } from "./pages";
-import Photobooth from "./pages/Photobooth"; // Giả sử bạn lưu Photobooth.jsx trong folder pages
+import Photobooth from "./pages/Photobooth";
+import CalendarPage from "./pages/CalendarPage"; // Giả sử bạn lưu Photobooth.jsx trong folder pages
 //import VintageCakePage from "./pages/VintageCakePage"; // Giả sử bạn lưu VintageCakePage.jsx trong folder pages
 import ChatBtn from "./components/ChatBtn";
 import TranscriptPage from "./pages/Transcript";
@@ -29,6 +30,7 @@ const App = () => {
                   <Route path="/transcript" element={<TranscriptPage />} />
                   <Route path="/blog" element={<Blog />} />
                   <Route path="/blog/:slug" element={<BlogPost />} />
+                  <Route path="/calendar" element={<CalendarPage />} />
                 </Routes>
               </>
             }
