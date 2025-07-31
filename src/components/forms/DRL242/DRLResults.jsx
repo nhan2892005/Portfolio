@@ -1,26 +1,96 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 
-const ScoreCard = ({ title, score, evidence }) => (
-  <div className="bg-white p-4 rounded-lg shadow-sm border hover:shadow-md transition-shadow">
-    <h3 className="font-medium text-gray-700">{title}</h3>
-    <div className="mt-2 flex justify-between items-center">
-      <span className="text-2xl font-bold text-blue-600">{score}</span>
-      {evidence && (
-        <a
-          href={evidence}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="text-blue-500 hover:text-blue-700 flex items-center"
-        >
-          <svg className="w-5 h-5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 7l-5 5m0 0l-5-5m5 5v12" />
-          </svg>
-          Minh chứng
-        </a>
-      )}
+const ScoreCard = ({ title, score, evidence }) => {
+  const [hoveredIndex, setHoveredIndex] = useState(null);
+
+  const isImage = (link) => link && link.match(/\.(jpeg|jpg|png|webp|gif)$/i);
+
+  return (
+    <div className="bg-white p-4 rounded-lg shadow-sm border hover:shadow-md transition-shadow relative">
+      <h3 className="font-medium text-gray-700">{title}</h3>
+      <div className="mt-2 flex justify-between items-center">
+        <span className="text-2xl font-bold text-blue-600">{score}</span>
+
+        {/* --- BẮT ĐẦU RENDER MINH CHỨNG --- */}
+        {(() => {
+          if (!evidence || (Array.isArray(evidence) && evidence.length === 0)) {
+            return (
+              <span className="text-sm text-gray-400 italic">
+                Không có minh chứng
+              </span>
+            );
+          }
+
+          if (Array.isArray(evidence)) {
+            return (
+              <div className="flex flex-col items-end">
+                {evidence.map((link, idx) => (
+                  <div
+                    key={idx}
+                    className="relative group text-sm mt-1"
+                    onMouseEnter={() => setHoveredIndex(idx)}
+                    onMouseLeave={() => setHoveredIndex(null)}
+                  >
+                    <a
+                      href={link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-blue-500 hover:text-blue-700 flex items-center"
+                    >
+                      <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 7l-5 5m0 0l-5-5m5 5v12" />
+                      </svg>
+                      Minh chứng {idx + 1}
+                    </a>
+
+                    {hoveredIndex === idx && isImage(link) && (
+                      <div className="absolute -left-64 top-0 z-50 w-60 h-auto border border-gray-300 shadow-xl bg-white rounded">
+                        <img src={link} alt={`Minh chứng ${idx + 1}`} className="rounded w-full object-contain" />
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </div>
+            );
+          }
+
+          return (
+            <div
+              className="relative group"
+              onMouseEnter={() => setHoveredIndex(0)}
+              onMouseLeave={() => setHoveredIndex(null)}
+            >
+              <a
+                href={evidence}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-blue-500 hover:text-blue-700 flex items-center"
+              >
+                <svg className="w-5 h-5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 7l-5 5m0 0l-5-5m5 5v12" />
+                </svg>
+                Minh chứng
+              </a>
+
+              {hoveredIndex === 0 && isImage(evidence) && (
+                <div className="absolute -left-64 top-0 z-50 w-60 h-auto border border-gray-300 shadow-xl bg-white rounded">
+                  <img src={evidence} alt="Minh chứng" className="rounded w-full object-contain" />
+                </div>
+              )}
+            </div>
+          );
+        })()}
+        {/* --- KẾT THÚC RENDER MINH CHỨNG --- */}
+      </div>
     </div>
-  </div>
-);
+  );
+};
+
+const parseEvidence = (evidenceStr) => {
+  if (!evidenceStr) return null;
+  const parts = evidenceStr.split(/\n+/).map(s => s.trim()).filter(Boolean);
+  return parts.length > 1 ? parts : parts[0];
+};
 
 const DRLResults = ({ data }) => {
   if (!data || data.length === 0) {
@@ -44,22 +114,22 @@ const DRLResults = ({ data }) => {
     {
       title: "3. Ý thức tham gia hoạt động",
       score: result["3. Ý thức tham gia các hoạt động chính trị, xã hội, văn hoá, văn nghệ, thể thao, phòng chống tội phạm và các tệ nạn xã hội."],
-      evidence: result["Minh chứng mục 3"],
+      evidence: parseEvidence(result["Minh chứng mục 3"]),
     },
     {
       title: "4. Ý thức công dân",
       score: result["4. Ý thức công dân, quan hệ cộng đồng"],
-      evidence: result["Minh chứng mục 4"],
+      evidence: parseEvidence(result["Minh chứng mục 4"]),
     },
     {
       title: "5. Ý thức tham gia công tác lớp",
       score: result["5. Ý thức và kết quả khi tham gia công tác cán bộ lớp, các đoàn thể, tổ chức trong trường"],
-      evidence: result["Minh chứng mục 5"],
+      evidence: parseEvidence(result["Minh chứng mục 5"]),
     },
     {
       title: "6. Điểm thưởng đặc biệt",
       score: result["6. Điểm thưởng đặc biệt"],
-      evidence: result["Minh chứng mục 6"],
+      evidence: parseEvidence(result["Minh chứng mục 6"]),
     },
   ];
 
@@ -118,7 +188,7 @@ const DRLResults = ({ data }) => {
             </div>
           </div>
         </div>
-      </div>      
+      </div>
     </div>
   );
 };
