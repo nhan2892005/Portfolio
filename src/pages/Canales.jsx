@@ -1,29 +1,11 @@
 import React, { useState } from 'react';
 import { Facebook, Instagram, Phone, MapPin } from 'lucide-react';
-import { original, chocolate, rice, cafe, strawberry, matcha, mix6, greenie, brownie, cheesecake, logo_caneles } from '../assets/images';
+import { logo_caneles } from '../assets/images';
 import { tiktok } from '../assets/icons';
+import { products, colorMap } from '../constants';
 
 export default function App() {
   const [cart, setCart] = useState({});
-
-  const products = [
-    { id: 1, key: 'original', name: 'Original Canelés', desc: 'Ca-nơ-lề vị truyền thống', img: original, unitPrice: 20000, comboPrice: 215000 },
-    { id: 2, key: 'chocolate', name: 'Chocolate Canelés', desc: 'Vị đậm đà chocolate', img: chocolate, unitPrice: 25000, comboPrice: 265000 },
-    { id: 3, key: 'rice', name: 'Roasted Rice Canelés', desc: 'Vị gạo rang bổ dưỡng', img: rice, unitPrice: 30000, comboPrice: 330000 },
-    { id: 4, key: 'cafe', name: 'Café Canelés', desc: 'Vị cà phê đắng tình yêu', img: cafe, unitPrice: 25000, comboPrice: 265000 },
-    { id: 5, key: 'strawberry', name: 'Strawberry Canelés', desc: 'Vị dâu Đà Lạt tươi ngon', img: strawberry, unitPrice: 33000, comboPrice: 360000 },
-    { id: 6, key: 'matcha', name: 'Matcha Canelés', desc: 'Vị trà xanh thanh mát', img: matcha, unitPrice: 28000, comboPrice: 300000 },
-    { id: 7, key: 'mix6', name: 'Mix 6 vị Canelés', desc: 'Mỗi vị 2 cái', img: mix6, unitPrice: null, comboPrice: 310000 },
-    { id: 8, key: 'greenie', name: 'Greenie', desc: 'Bánh Matcha mềm ẩm', img: greenie, unitPrice: 120000, comboPrice: null },
-    { id: 9, key: 'brownie', name: 'Brownie', desc: 'Chocolate mềm, ẩm nặng', img: brownie, unitPrice: 90000, comboPrice: null },
-    { id: 10, key: 'cheesecake', name: 'Cheesecake', desc: 'Bánh sữa chua phô mai nướng', img: cheesecake, unitPrice: 20000, comboPrice: null }
-  ];
-
-  const colorMap = {
-    original: '#4b3e2b', chocolate: '#3b2f2f', rice: '#d9b382', cafe: '#5b4636',
-    strawberry: '#f28ca0', matcha: '#a2d39c', mix6: '#7f5f3b', greenie: '#b7d7b0',
-    brownie: '#2e1a16', cheesecake: '#eae0c8'
-  };
 
   function handleQuantityChange(id, type, delta) {
     setCart(prev => {
@@ -155,7 +137,6 @@ export default function App() {
                 height="200"
                 style={{ border: 0 }}
                 loading="lazy"
-                // Replace YOUR_API_KEY with your real key and adjust q parameter as needed
                 src="https://www.google.com/maps/embed/v1/place?key=AIzaSyA8SjDTHR6bvi5q_D-dL4FA2SfUfJG2GSc&q=Caneles+Dalat+79+Phan+Bội+Châu,+Đà+Lạt,+Lâm+Đồng"
               ></iframe>
             </div>
