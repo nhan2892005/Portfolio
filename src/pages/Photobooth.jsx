@@ -400,8 +400,8 @@ const Photobooth = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center pt-20 py-4 px-20">
-      <h1 className="text-3xl font-bold mb-4">📸 Photobooth with Face Detection</h1>
+    <div className="min-h-screen flex flex-col items-center pt-20 py-4 px-4 md:px-20">
+      <h1 className="text-2xl md:text-3xl font-bold mb-4 text-center">📸 Photobooth with Face Detection</h1>
 
       {/* Face Detection Panel */}
       {stream && (
@@ -515,7 +515,7 @@ const Photobooth = () => {
         </div>
       )}
 
-      <div className="flex flex-wrap items-center gap-4 mb-4">
+      <div className="flex flex-col md:flex-wrap md:flex-row items-start gap-4 mb-4 w-full max-w-5xl">
         <div className="flex items-center">
           <label className="mr-1">Chọn template:</label>
           <select
@@ -587,7 +587,6 @@ const Photobooth = () => {
           />
         </div>
 
-        {/* Input chọn màu chữ */}
         <div className="flex items-center">
           <label className="mr-1">Màu chữ:</label>
           <input
@@ -656,8 +655,6 @@ const Photobooth = () => {
               opacity: stream ? 1 : 0.5 
             }}
           />
-          
-          {/* Face Detection Overlay Canvas */}
           <canvas
             ref={faceCanvasRef}
             className="absolute top-0 left-0 pointer-events-none rounded-lg"
@@ -667,10 +664,8 @@ const Photobooth = () => {
               transform: "scaleX(-1)"
             }}
           />
-          
-          {/* Detection Status Overlay */}
           {faceDetectionEnabled && (
-            <div className="absolute top-2 left-2 bg-black bg-opacity-70 text-white px-2 py-1 rounded text-xs">
+            <div className="absolute top-2 left-2 bg-black/70 text-white px-2 py-1 rounded text-xs">
               {faceAnalysis ? `${faceAnalysis.count} face(s)` : 'Scanning...'}
             </div>
           )}
@@ -680,7 +675,7 @@ const Photobooth = () => {
       </div>
 
       {countdown > 0 && (
-        <div className="text-4xl font-bold mb-4">{countdown}</div>
+        <div className="text-4xl font-bold mb-4 text-center">{countdown}</div>
       )}
 
       <div className="mb-4 flex gap-4 flex-wrap">
@@ -698,9 +693,7 @@ const Photobooth = () => {
         >
           🗑️ Clear All
         </button>
-        
-        {/* Camera Controls */}
-        <div className="flex gap-2">
+        <div className="flex gap-2 w-full md:w-auto justify-center">
           {stream ? (
             <button
               onClick={stopCamera}
@@ -718,7 +711,6 @@ const Photobooth = () => {
           )}
         </div>
         
-        {/* Auto Capture Status */}
         {autoCapture && faceDetectionEnabled && (
           <div className="px-4 py-3 bg-yellow-100 text-yellow-800 rounded-lg border border-yellow-300 font-medium">
             😊 Auto-capture: Smile to take photo!
@@ -728,8 +720,8 @@ const Photobooth = () => {
 
       {/* Gallery ảnh đã chụp với xoá & kéo-drag */}
       <div className="mb-4 w-full max-w-3xl">
-        <h2 className="text-xl mb-2">Gallery ảnh</h2>
-        <div className="flex gap-2 flex-wrap">
+        <h2 className="text-xl mb-2 text-center md:text-left">Gallery ảnh</h2>
+        <div className="flex gap-2 flex-wrap justify-center">
           {capturedImages.map((img, idx) => (
             <div key={idx} className="relative">
               <img
@@ -752,10 +744,9 @@ const Photobooth = () => {
         </div>
       </div>
 
-      {/* Các slot kéo thả */}
       <div className="mb-4 w-full max-w-3xl">
-        <h2 className="text-xl mb-2">Gán ảnh vào slots</h2>
-        <div className="flex flex-wrap gap-4">
+        <h2 className="text-xl mb-2 text-center md:text-left">Gán ảnh vào slots</h2>
+        <div className="flex flex-wrap gap-4 justify-center">
           {frameSlots.map((slotImg, i) => (
             <div
               key={i}

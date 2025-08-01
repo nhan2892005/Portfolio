@@ -31,7 +31,7 @@ export default function Navbar() {
           onClick={() => setOpen(o => !o)}
           aria-label="Toggle menu"
         >
-          {open ? <X size={24} className="text-white" /> : <Menu size={24} className="text-white" />}
+          {open ? <X size={24} className="text-black" /> : <Menu size={24} className="text-black" />}
         </button>
 
         {/* Desktop nav */}

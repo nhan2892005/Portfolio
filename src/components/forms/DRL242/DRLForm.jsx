@@ -168,52 +168,55 @@ const DRLForm = () => {
 
             {/* Search Section */}
             {activeTab === 'search' && (
-              <div className='mt-5 bg-white p-5 rounded-lg shadow-md flex flex-col gap-5'>
-                <div className='mt-5 flex gap-5 bg-white p-5 rounded-lg shadow-md'>
-                <select 
+              <div className="mt-5 bg-white p-5 rounded-lg shadow-md flex flex-col gap-5">
+                <div className="flex flex-col md:flex-row gap-4 md:items-end bg-white p-5 rounded-lg shadow-md w-full">
+                  <select
                     value={searchType}
                     onChange={(e) => setSearchType(e.target.value)}
-                    className='border p-2 rounded'
-                >
+                    className="border p-2 rounded w-full md:w-auto"
+                  >
                     <option value="studentId">Tìm theo MSSV</option>
                     <option value="name">Tìm theo họ tên</option>
-                </select>
-                <div className='flex flex-col gap-2'>
-                <input
-                    type="text"
-                    value={searchValue}
-                    onChange={(e) => setSearchValue(e.target.value)}
-                    placeholder={searchType === 'studentId' ? 'Nhập MSSV...' : 'Nhập họ tên...'}
-                    className='flex-1 border p-2 rounded'
-                    required
-                />
-                <input
-                    type="text"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    placeholder={'Nhập mật khẩu'}
-                    className='flex-1 border p-2 rounded'
-                    required
-                    minLength={8}
-                    maxLength={12}
-                    pattern=".{8,12}"
-                />
-                </div>
-                <button 
+                  </select>
+
+                  <div className="flex flex-col gap-2 w-full md:w-[300px]">
+                    <input
+                      type="text"
+                      value={searchValue}
+                      onChange={(e) => setSearchValue(e.target.value)}
+                      placeholder={searchType === 'studentId' ? 'Nhập MSSV...' : 'Nhập họ tên...'}
+                      className="border p-2 rounded w-full"
+                      required
+                    />
+                    <input
+                      type="text"
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                      placeholder="Nhập mật khẩu"
+                      className="border p-2 rounded w-full"
+                      required
+                      minLength={8}
+                      maxLength={12}
+                      pattern=".{8,12}"
+                    />
+                  </div>
+
+                  <button
                     onClick={handleSearch}
                     disabled={loading}
-                    className='bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 disabled:bg-gray-400'
-                >
-                    {loading ? 'Đang tìm...' : 'Tìm kiếm'}
-                </button>
-                <div>
-                  <button
-                    onClick={() => setShowUpdateBlock(prev => !prev)}
-                    className="text-sm text-blue-600 hover:underline"
+                    className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 disabled:bg-gray-400 w-full md:w-auto"
                   >
-                    {showUpdateBlock ? 'Ẩn cập nhật mật khẩu' : 'Cập nhật mật khẩu'}
+                    {loading ? 'Đang tìm...' : 'Tìm kiếm'}
                   </button>
-                </div>
+
+                  <div className="mt-2 md:mt-0">
+                    <button
+                      onClick={() => setShowUpdateBlock(prev => !prev)}
+                      className="text-sm text-blue-600 hover:underline"
+                    >
+                      {showUpdateBlock ? 'Ẩn cập nhật mật khẩu' : 'Cập nhật mật khẩu'}
+                    </button>
+                  </div>
                 </div>
                 {showUpdateBlock && (
                   <div className="bg-gray-50 border border-gray-200 p-4 rounded flex flex-col gap-3 max-w-md">
