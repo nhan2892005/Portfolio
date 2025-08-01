@@ -5,6 +5,7 @@ import Navbar from "./Navbar";
 import Footer from "./Footer";
 import HomeInfo from "./HomeInfo";
 import BlogPost from "./BlogPost";
+import BoxPacking from "./BoxPacking";
 
 export {
     CTA,
@@ -13,5 +14,6 @@ export {
     Navbar,
     Footer,
     HomeInfo,
-    BlogPost
+    BlogPost,
+    BoxPacking
 }

@@ -1,11 +1,16 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { Facebook, Instagram, Phone, MapPin } from 'lucide-react';
 import { logo_caneles } from '../assets/images';
 import { tiktok } from '../assets/icons';
 import { products, colorMap } from '../constants';
+import { BoxPacking } from '../components';
 
-export default function App() {
+export default function Caneles() {
   const [cart, setCart] = useState({});
+  const [packingCost, setPackingCost] = useState(0);
+  const [deliveryMethod, setDeliveryMethod] = useState('pickup');
+  const [desiredDateTime, setDesiredDateTime] = useState('');
+  const [boxes, setBoxes] = useState([]);
 
   function handleQuantityChange(id, type, delta) {
     setCart(prev => {
@@ -29,6 +34,38 @@ export default function App() {
     const p = products.find(x => x.id === +i);
     return sum + (c.unit || 0) * (p.unitPrice || 0) + (c.combo || 0) * (p.comboPrice || 0);
   }, 0);
+
+  function handleSubmit(e) {
+    e.preventDefault();
+    const order = {
+      cart,
+      total,
+      boxes,
+      packingCost,
+      deliveryMethod,
+      desiredDateTime,
+      // Ghi chú thêm tùy phương thức
+      note:
+        deliveryMethod === 'pickup'
+          ? `Thời gian đến nhận: ${desiredDateTime}`
+          : deliveryMethod === 'ship_dl'
+          ? `Ship nội thành (Grab), thời gian mong muốn: ${desiredTime}`
+          : `Ship ngoại thành, thời gian dự kiến giao: 1-2 ngày`
+    };
+    console.log('Đặt hàng', order);
+    // submit lên server...
+  }
+
+  const cartItems = useMemo(() => 
+    Object.entries(cart).map(([key, { unit, combo }]) => ({
+      id: +key,
+      type: products.find(p => p.id === +key).key,
+      count: products.find(p => p.id === +key).key === 'mix6' 
+        ? combo 
+        : combo * 12 + unit
+    })),
+    [cart]
+  );
 
   return (
     <div className="min-h-screen p-6" style={{ backgroundColor: '#3a2e2b' }}>
@@ -76,7 +113,11 @@ export default function App() {
               );
             })}
           </ul>
-          <div className="mt-4 font-bold text-gray-900 text-lg">Tổng: {total.toLocaleString()}₫</div>
+          <div className="mt-4 font-bold text-gray-900 text-lg">
+            Tiền bánh: {total.toLocaleString()}₫<br />
+            Tiền hộp: {packingCost.toLocaleString()}₫<br />
+            Tổng: {(total + packingCost).toLocaleString()}₫
+          </div>
         </aside>
 
         <main className="col-span-6 grid grid-cols-3 gap-4">
@@ -115,17 +156,49 @@ export default function App() {
 
         <aside className="col-span-3 bg-white/90 p-4 rounded-lg shadow-lg">
           <h2 className="text-xl font-bold mb-4 text-gray-800">Thông tin khách</h2>
-          <form className="space-y-3 text-gray-800">
+          <form onSubmit={handleSubmit} className="mt-6 bg-white/90 p-4 rounded-lg shadow-lg space-y-4">
+            <h2 className="text-xl font-bold text-gray-800">Thông tin khách</h2>
+
             <input type="text" placeholder="Họ và tên" className="w-full border p-2 rounded text-sm" required />
             <input type="tel" placeholder="Số điện thoại" className="w-full border p-2 rounded text-sm" required />
-            <select className="w-full border p-2 rounded text-sm" required>
-              <option value="pickup">Nhận quầy</option>
-              <option value="ship_dl">Ship Đà Lạt</option>
+
+            <select
+              className="w-full border p-2 rounded text-sm"
+              value={deliveryMethod}
+              onChange={e => setDeliveryMethod(e.target.value)}
+              required
+            >
+              <option value="pickup">Nhận tại quầy</option>
+              <option value="ship_dl">Ship nội thành</option>
               <option value="ship_else">Ship ngoại thành</option>
             </select>
-            <input type="time" className="w-full border p-2 rounded text-sm" required />
-            <input type="text" placeholder="Địa chỉ (nếu ship)" className="w-full border p-2 rounded text-sm" />
-            <button type="submit" className="w-full bg-[#b0916a] text-white p-2 rounded text-sm">Đặt bánh</button>
+
+            {deliveryMethod !== 'ship_else' && (
+              <div>
+                <label className="block text-sm mb-1">
+                  {deliveryMethod === 'pickup'
+                    ? 'Ngày & giờ đến nhận'
+                    : 'Ngày & giờ mong muốn giao'}
+                </label>
+                <input
+                  type="datetime-local"
+                  className="w-full border p-2 rounded text-sm"
+                  value={desiredDateTime}
+                  onChange={e => setDesiredDateTime(e.target.value)}
+                  required
+                />
+              </div>
+            )}
+
+            {deliveryMethod === 'ship_else' && (
+              <p className="text-sm text-gray-600">
+                Ship ngoại thành, thời gian dự kiến giao hàng: 1-2 ngày
+              </p>
+            )}
+
+            <button type="submit" className="w-full bg-[#b0916a] text-white p-2 rounded text-sm">
+              Đặt bánh
+            </button>
           </form>
           <div className="mt-4 space-y-2 text-gray-900">
             <div className="flex items-center text-sm"><Phone size={16} className="mr-1"/>0332.043.550</div>
@@ -143,6 +216,11 @@ export default function App() {
           </div>
         </aside>
       </div>
+      <BoxPacking 
+        cartItems={cartItems}
+        onPackingCostChange={setPackingCost} // Truyền callback
+        onBoxesChange={setBoxes} // Truyền callback để cập nhật hộp
+      />
     </div>
   );
 }
