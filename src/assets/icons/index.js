@@ -51,6 +51,7 @@ import ann from './ann.svg'
 import cv from './cv.svg'
 import tiki from './tiki.svg'
 import enjoy from './enjoy.svg'
+import tiktok from './tiktok.svg'
 
 export {
     enjoy,
@@ -105,5 +106,6 @@ export {
     azure,
     fablab,
     bigdata,
-    paper
+    paper,
+    tiktok
 }

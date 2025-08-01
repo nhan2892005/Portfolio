@@ -17,8 +17,6 @@ const App = () => {
         <Navbar />
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/photobooth" element={<Photobooth />} />
-          {/*<Route path="/canales" element={<VintageCakePage />} />*/}
           <Route
             path="/*"
             element={
@@ -33,7 +31,8 @@ const App = () => {
                   <Route path="/blog/:slug" element={<BlogPost />} />
                   <Route path="/calendar" element={<CalendarPage />} />
                   <Route path="/form" element={<Form />} />
-                  <Route path="/canales" element={<Canales />} />
+                  <Route path="/caneles" element={<Canales />} />
+                  <Route path="/photobooth" element={<Photobooth />} />
                 </Routes>
               </>
             }

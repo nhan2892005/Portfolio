@@ -1,20 +1,22 @@
 import React, { useState } from 'react';
 import { Facebook, Instagram, Phone, MapPin } from 'lucide-react';
+import { original, chocolate, rice, cafe, strawberry, matcha, mix6, greenie, brownie, cheesecake, logo_caneles } from '../assets/images';
+import { tiktok } from '../assets/icons';
 
 export default function App() {
   const [cart, setCart] = useState({});
 
   const products = [
-    { id: 1, key: 'original', name: 'Original Canelés', desc: 'Ca-nơ-lề vị truyền thống', img: '../src/assets/images/original.jpg', unitPrice: 20000, comboPrice: 215000 },
-    { id: 2, key: 'chocolate', name: 'Chocolate Canelés', desc: 'Vị đậm đà chocolate', img: '../src/assets/images/chocolate.jpg', unitPrice: 25000, comboPrice: 265000 },
-    { id: 3, key: 'rice', name: 'Roasted Rice Canelés', desc: 'Vị gạo rang bổ dưỡng', img: '../src/assets/images/roasted_rice.jpg', unitPrice: 30000, comboPrice: 330000 },
-    { id: 4, key: 'cafe', name: 'Café Canelés', desc: 'Vị cà phê đắng tình yêu', img: '../src/assets/images/cafe.jpg', unitPrice: 25000, comboPrice: 265000 },
-    { id: 5, key: 'strawberry', name: 'Strawberry Canelés', desc: 'Vị dâu Đà Lạt tươi ngon', img: '../src/assets/images/strawberry.jpg', unitPrice: 33000, comboPrice: 360000 },
-    { id: 6, key: 'matcha', name: 'Matcha Canelés', desc: 'Vị trà xanh thanh mát', img: '../src/assets/images/matcha.jpg', unitPrice: 28000, comboPrice: 300000 },
-    { id: 7, key: 'mix6', name: 'Mix 6 vị Canelés', desc: 'Mỗi vị 2 cái', img: '../src/assets/images/mix6.jpg', unitPrice: null, comboPrice: 310000 },
-    { id: 8, key: 'greenie', name: 'Greenie', desc: 'Bánh Matcha mềm ẩm', img: '../src/assets/images/greenie.jpg', unitPrice: 120000, comboPrice: null },
-    { id: 9, key: 'brownie', name: 'Brownie', desc: 'Chocolate mềm, ẩm nặng', img: '../src/assets/images/brownie.jpg', unitPrice: 90000, comboPrice: null },
-    { id: 10, key: 'cheesecake', name: 'Cheesecake', desc: 'Bánh sữa chua phô mai nướng', img: '../src/assets/images/cheesecake.jpg', unitPrice: 20000, comboPrice: null }
+    { id: 1, key: 'original', name: 'Original Canelés', desc: 'Ca-nơ-lề vị truyền thống', img: original, unitPrice: 20000, comboPrice: 215000 },
+    { id: 2, key: 'chocolate', name: 'Chocolate Canelés', desc: 'Vị đậm đà chocolate', img: chocolate, unitPrice: 25000, comboPrice: 265000 },
+    { id: 3, key: 'rice', name: 'Roasted Rice Canelés', desc: 'Vị gạo rang bổ dưỡng', img: rice, unitPrice: 30000, comboPrice: 330000 },
+    { id: 4, key: 'cafe', name: 'Café Canelés', desc: 'Vị cà phê đắng tình yêu', img: cafe, unitPrice: 25000, comboPrice: 265000 },
+    { id: 5, key: 'strawberry', name: 'Strawberry Canelés', desc: 'Vị dâu Đà Lạt tươi ngon', img: strawberry, unitPrice: 33000, comboPrice: 360000 },
+    { id: 6, key: 'matcha', name: 'Matcha Canelés', desc: 'Vị trà xanh thanh mát', img: matcha, unitPrice: 28000, comboPrice: 300000 },
+    { id: 7, key: 'mix6', name: 'Mix 6 vị Canelés', desc: 'Mỗi vị 2 cái', img: mix6, unitPrice: null, comboPrice: 310000 },
+    { id: 8, key: 'greenie', name: 'Greenie', desc: 'Bánh Matcha mềm ẩm', img: greenie, unitPrice: 120000, comboPrice: null },
+    { id: 9, key: 'brownie', name: 'Brownie', desc: 'Chocolate mềm, ẩm nặng', img: brownie, unitPrice: 90000, comboPrice: null },
+    { id: 10, key: 'cheesecake', name: 'Cheesecake', desc: 'Bánh sữa chua phô mai nướng', img: cheesecake, unitPrice: 20000, comboPrice: null }
   ];
 
   const colorMap = {
@@ -51,7 +53,7 @@ export default function App() {
       <header className="flex items-center justify-between mb-6">
         <div className="flex items-center space-x-4">
           <div className="w-16 h-16 rounded-full overflow-hidden bg-white">
-            <img src="../src/assets/images/logo_caneles.jpg" alt="Logo" className="w-full h-full object-cover" />
+            <img src={logo_caneles} alt="Logo" className="w-full h-full object-cover" />
           </div>
           <div className="text-white">
             <h1 className="text-2xl font-bold">Canelés Dalat since 2020</h1>
@@ -66,7 +68,7 @@ export default function App() {
             <Instagram size={24} />
           </a>
           <a href="https://www.tiktok.com/@canelesdalat" target="_blank" rel="noopener noreferrer" className="text-white hover:opacity-80">
-            <img src="../src/assets/icons/tiktok.svg" alt="TikTok" className="w-8 h-8" />
+            <img src={tiktok} alt="TikTok" className="w-8 h-8" />
           </a>
           <a href="tel:0332043550" className="text-white hover:opacity-80">
             <Phone size={24} />
