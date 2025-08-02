@@ -78,7 +78,7 @@ const Blog = () => {
               ...parsed.attributes,
               content: parsed.body,
               slug,
-              readTime: Math.ceil(parsed.body.length / 200), // Ước tính thời gian đọc
+              readTime: Math.ceil(parsed.body.length / 600),
             };
           } catch (err) {
             console.error('Error parsing post:', path, err);
