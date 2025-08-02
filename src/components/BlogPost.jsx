@@ -139,7 +139,7 @@ const BlogPost = () => {
                 
                 <div className="flex items-center gap-2">
                   <span>⏱️</span>
-                  <span>{Math.ceil((post.content?.length || 0) / 200)} phút đọc</span>
+                  <span>{Math.ceil((post.content?.length || 0) / 500)} phút đọc</span>
                 </div>
               </div>
               
