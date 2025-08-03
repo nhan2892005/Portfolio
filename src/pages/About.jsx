@@ -7,7 +7,7 @@ import { CTA } from "../components";
 import { experiences, research_experiences } from "../constants";
 import SkillsGroup from "../components/SkillsGroup";
 import ExperienceGroup from "../components/ExperienceGroup";
-import { frontendsk, backendsk, database, svc_cicd, os, big_data, data_visualize, cloud } from "../constants";
+import { frontendsk, backendsk, database, svc_cicd, os, big_data, data_visualize, cloud, pro_lang } from "../constants";
 
 import "react-vertical-timeline-component/style.min.css";
 
@@ -32,16 +32,17 @@ const About = () => {
 
       <div className='py-10 flex flex-col'>
         <h3 className='subhead-text'>My Skills</h3>
-        <SkillsGroup title="Frontend" skills={frontendsk} />
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 p-8">
-          <SkillsGroup title="Backend" skills={backendsk} />
-          <SkillsGroup title="Databases" skills={database} />
+        <SkillsGroup title="Programming Languages" skills={pro_lang} />
+        <SkillsGroup title="Databases" skills={database} />
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8 p-8">
+          <SkillsGroup title="Frontend Framework" skills={frontendsk} />
+          <SkillsGroup title="Backend Framework" skills={backendsk} />
           <SkillsGroup title="CI/CD" skills={svc_cicd} />
           <SkillsGroup title="OS" skills={os} />
           <SkillsGroup title="Data Engineering" skills={big_data} />
           <SkillsGroup title="Data Visualize" skills={data_visualize} />
+          <SkillsGroup title="Cloud" skills={cloud} />
         </div>
-        <SkillsGroup title="Cloud" skills={cloud} />
       </div>
 
       <div className='py-16'>

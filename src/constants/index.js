@@ -45,6 +45,10 @@ import {
     fablab,
     paper,
     matrix,
+    java,
+    springboot,
+    postgres,
+    matplotlib
 } from "../assets/icons";
 import { a } from "@react-spring/three";
 
@@ -67,28 +71,27 @@ export const pro_lang = [
         name: "Python",
         type: "Programming Language",
     },
-]
-
-export const frontendsk = [
     {
-        imageUrl: css,
-        name: "CSS",
-        type: "Frontend",
-    },
-    {
-        imageUrl: html,
-        name: "HTML",
-        type: "Frontend",
+        imageUrl: java,
+        name: "Java",
+        type: "Programming Language",
     },
     {
         imageUrl: javascript,
         name: "JavaScript",
-        type: "Frontend",
+        type: "Programming Language",
     },
-    
+    // {
+    //     imageUrl: typescript,
+    //     name: "TypeScript",
+    //     type: "Frontend",
+    // },
+]
+
+export const frontendsk = [   
     {
-        imageUrl: mui,
-        name: "Material-UI",
+        imageUrl: react,
+        name: "React",
         type: "Frontend",
     },
     {
@@ -96,21 +99,10 @@ export const frontendsk = [
         name: "Next.js",
         type: "Frontend",
     },
-    
     {
-        imageUrl: tailwindcss,
-        name: "Tailwind CSS",
-        type: "Frontend",
-    },
-    {
-        imageUrl: typescript,
-        name: "TypeScript",
-        type: "Frontend",
-    },
-    {
-        imageUrl: react,
-        name: "React",
-        type: "Frontend",
+        imageUrl: redux,
+        name: "Redux",
+        type: "State Management",
     },
 ]
 
@@ -126,9 +118,9 @@ export const backendsk = [
         type: "Backend",
     },
     {
-        imageUrl: redux,
-        name: "Redux",
-        type: "State Management",
+        imageUrl: springboot,
+        name: "Spring Boot",
+        type: "Backend",
     },
 ];
 
@@ -151,15 +143,15 @@ export const database = [
         name: "BigQuery",
         type: "Database",
     },
+    // Postgres
+    {
+        imageUrl: postgres,
+        name: "Postgresql",
+        type: "Database",
+    }
 ]
 
 export const svc_cicd = [
-    // git
-    {
-        imageUrl: git,
-        name: "Git",
-        type: "Version Control",
-    },
     // github
     {
         imageUrl: github,
@@ -229,6 +221,11 @@ export const data_visualize = [
         name: "Tableau",
         type: "Data Visualization",
     },
+    {
+        imageUrl: matplotlib,
+        name: "Matplotlib",
+        type: "Data Visualization"
+    }
 ]
 
 export const cloud = [

@@ -52,6 +52,10 @@ import cv from './cv.svg'
 import tiki from './tiki.svg'
 import enjoy from './enjoy.svg'
 import tiktok from './tiktok.svg'
+import java from './java.svg'
+import springboot from './springio-icon.svg'
+import postgres from './postgresql-vertical.svg'
+import matplotlib from './Matplotlib.svg'
 
 export {
     enjoy,
@@ -107,5 +111,9 @@ export {
     fablab,
     bigdata,
     paper,
-    tiktok
+    tiktok,
+    java,
+    springboot,
+    postgres,
+    matplotlib
 }
