@@ -34,13 +34,11 @@ const ChatBtn = () => {
         model: "gemini-2.5-flash",
         contents: `${SYSTEM_PROMPT}, Sau đây là input của người dùng ${input}`,
       });
-      console.log(response)
       const text = response.text
 
       const botReply = { role: "bot", content: text || "Không có phản hồi." };
       setMessages((prev) => [...prev, botReply]);
     } catch (err) {
-      console.log(err)
       setMessages((prev) => [
         ...prev,
         { role: "bot", content: "Lỗi kết nối đến server." },
