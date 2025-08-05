@@ -1,18 +1,48 @@
 import React, { useState, useRef, useEffect } from "react";
+import { useLocation } from "react-router-dom"
 import { GoogleGenAI } from "@google/genai";
 import MarkdownPreview from "@uiw/react-markdown-preview";
 import { SYSTEM_PROMPT } from "../constants";
 
 const ai = new GoogleGenAI({ apiKey: import.meta.env.VITE_CHAT_API });
 
+function usePageText(callback) {
+  const location = useLocation();
+
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      const text = document.body.innerText.trim();
+      if (text) {
+        callback(text);
+      }
+    }, 0); 
+
+    return () => clearTimeout(timeout);
+  }, [location.pathname]);
+}
+
 const ChatBtn = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState("");
   const [size, setSize] = useState({ width: 78, height: 78 });
+  const [pageContext, setPageContext] = useState("")
+  const [showHint, setShowHint] = useState(true);
 
   const containerRef = useRef(null);
   const bottomRef = useRef(null);
+
+  usePageText((text) => {
+    setPageContext(text)
+  });
+
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      setShowHint(false);
+    }, 20000);
+
+    return () => clearTimeout(timeout);
+  }, []);
 
   useEffect(() => {
     if (bottomRef.current) {
@@ -32,7 +62,14 @@ const ChatBtn = () => {
     try {
       const response = await ai.models.generateContent({
         model: "gemini-2.5-flash",
-        contents: `${SYSTEM_PROMPT}, Sau đây là input của người dùng ${input}`,
+        contents: `Đây là yêu cầu của hệ thống: ${SYSTEM_PROMPT}, 
+                    Đây là nội dung hiện tại của trang: ${pageContext}
+                    Đây là yêu cầu từ người dùng ${input}`,
+        config: {
+          thinkingConfig: {
+            thinkingBudget: 0,
+          },
+        },
       });
       const text = response.text
 
@@ -56,6 +93,11 @@ const ChatBtn = () => {
       >
         💬
       </button>
+      {!isOpen && showHint && (
+        <div className="fixed bottom-24 right-6 z-50 animate-bounce bg-blue-600 text-white text-sm px-4 py-2 rounded-lg shadow-lg">
+          Trợ lý ảo sẽ hỗ trợ bạn!
+        </div>
+      )}
 
       {isOpen && (
         <div
@@ -102,6 +144,21 @@ const ChatBtn = () => {
 
           {/* Messages container */}
           <div ref={containerRef} className="flex-1 px-4 py-2 overflow-y-auto space-y-3 text-sm">
+            <div className="text-gray-400 text-sm italic bg-gray-800 p-3 rounded-lg">
+              🤖 Xin chào! Tôi là trợ lý AI của Phúc Nhân.
+              <br />
+              Tôi có thể giúp bạn:
+              <ul className="list-disc list-inside ml-2 mt-1">
+                <li>Hiểu rõ hơn về Phúc Nhân</li>
+                <li>Hỗ trợ một số công việc cơ bản (viết lách, coding, làm toán)</li>
+                <li>Giải thích nội dung của trang hiện tại</li>
+                <li>Gợi ý khám phá các trang như Dự án, Blog, Liên hệ...</li>
+              </ul>
+              👉 Bạn có thể bắt đầu bằng cách hỏi: <br />
+              <span className="underline text-blue-400">
+                “Bạn có thể giới thiệu về Phúc Nhân không?”
+              </span>
+            </div>
             {messages.map((msg, index) => (
               <div
                 key={index}
