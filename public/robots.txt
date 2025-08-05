@@ -13,7 +13,7 @@ Disallow: /private
 Disallow: /sorry
 
 # Sitemap
-Sitemap: https://phucnhan.vercel.app/mapsite.xml
+Sitemap: https://phucnhan.asia/mapsite.xml
 
 # Crawl delay (tùy chọn)
 Crawl-delay: 1

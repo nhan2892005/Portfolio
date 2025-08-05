@@ -2,69 +2,69 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <!-- Trang chủ -->
   <url>
-    <loc>https://phucnhan.vercel.app/</loc>
+    <loc>https://phucnhan.asia/</loc>
     <lastmod>2025-06-28</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
   <!-- Trang About -->
   <url>
-    <loc>https://phucnhan.vercel.app/about</loc>
+    <loc>https://phucnhan.asia/about</loc>
     <lastmod>2025-06-28</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <!-- Trang Projects -->
   <url>
-    <loc>https://phucnhan.vercel.app/projects</loc>
+    <loc>https://phucnhan.asia/projects</loc>
     <lastmod>2025-06-28</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <!-- Trang Contact -->
   <url>
-    <loc>https://phucnhan.vercel.app/contact</loc>
+    <loc>https://phucnhan.asia/contact</loc>
     <lastmod>2025-06-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <!-- Trang Blog -->
   <url>
-    <loc>https://phucnhan.vercel.app/blog</loc>
+    <loc>https://phucnhan.asia/blog</loc>
     <lastmod>2025-06-28</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <!-- Trang Transcript -->
   <url>
-    <loc>https://phucnhan.vercel.app/transcript</loc>
+    <loc>https://phucnhan.asia/transcript</loc>
     <lastmod>2025-06-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   <!-- Trang Photobooth -->
   <url>
-    <loc>https://phucnhan.vercel.app/photobooth</loc>
+    <loc>https://phucnhan.asia/photobooth</loc>
     <lastmod>2025-06-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <!-- Trang Form -->
   <url>
-    <loc>https://phucnhan.vercel.app/form</loc>
+    <loc>https://phucnhan.asia/form</loc>
     <lastmod>2025-06-01</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <!-- Blog Post: Giới thiệu về Phúc Nhân - Lập trình viên & Kỹ sư Dữ liệu -->
   <url>
-    <loc>https://phucnhan.vercel.app/blog/gioi-thieu-phuc-nhan</loc>
+    <loc>https://phucnhan.asia/blog/gioi-thieu-phuc-nhan</loc>
     <lastmod>2025-06-27</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://phucnhan.vercel.app/blog/green-hpc</loc>
+    <loc>https://phucnhan.asia/blog/green-hpc</loc>
     <lastmod>2025-08-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>

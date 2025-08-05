@@ -36,7 +36,7 @@ Tôi luôn tìm cách áp dụng công nghệ để giải quyết các vấn đ
 
 Bạn có thể tìm hiểu thêm về tôi và các dự án của tôi qua:
 
-- **Portfolio**: [phucnhan.vercel.app](https://phucnhan.vercel.app)
+- **Portfolio**: [phucnhan.asia](https://phucnhan.asia)
 - **LinkedIn**: [linkedin.com/in/phucnhannguyen](https://linkedin.com/in/phucnhannguyen)  
 - **GitHub**: [github.com/nhan2892005](https://github.com/nhan2892005)
 - **Email**: [nhan.nguyen2005phuyen@hcmut.edu.vn || phucnhan289@gmail.com](mailto:nhan.nguyen2005phuyen@hcmut.edu.vn)

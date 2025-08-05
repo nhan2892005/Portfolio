@@ -29,11 +29,11 @@ const Blog = () => {
       "@type": "Blog",
       "name": "Blog của Phúc Nhân",
       "description": "Blog cá nhân về lập trình, data science và công nghệ",
-      "url": "https://phucnhan.vercel.app/blog",
+      "url": "https://phucnhan.asia/blog",
       "author": {
         "@type": "Person",
         "name": "Phúc Nhân",
-        "url": "https://phucnhan.vercel.app"
+        "url": "https://phucnhan.asia"
       },
       "inLanguage": "vi-VN"
     };
