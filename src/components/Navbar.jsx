@@ -13,6 +13,7 @@ const links = [
   { to: "/blog", label: "Blog" },
   { to: "/calendar", label: "Calendar" },
   { to: "/form", label: "Form" },
+  { to: "/games", label: "Games" },
 ];
 
 export default function Navbar() {

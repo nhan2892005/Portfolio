@@ -500,4 +500,12 @@ export const games = [
       gradientTo: 'teal-600',
       path: '/sudoku',
     },
+    {
+      title: 'Game 1024',
+      description: 'Trò chơi hợp nhất số hiện đại, thử thách giới hạn của bạn!',
+      icon: '🧠',
+      gradientFrom: 'yellow-400',
+      gradientTo: 'orange-600',
+      path: '/game1024',
+    }
   ];
