@@ -44,7 +44,7 @@ import gcp from './gcp.svg'
 import aws from './aws.svg'
 import azure from './azure.svg'
 import fablab from './fablab.svg'
-import bigdata from './bigdataclub.svg'
+import bigdata from './bdclogo.png'
 import paper from './paper.svg'
 import matrix from './matrix.svg'
 import ann from './ann.svg'
@@ -57,8 +57,11 @@ import springboot from './springio-icon.svg'
 import postgres from './postgresql-vertical.svg'
 import matplotlib from './Matplotlib.svg'
 import hpcc from './hpcc.svg'
-import synergia from './synergia.svg'
+import synergia from './synergia.png'
 import huyhieudoan from './huyhieudoan.svg'
+import bk from './logobk.png'
+import google from './google.png'
+import codingame from './codingame.png'
 
 export {
     enjoy,
@@ -121,5 +124,8 @@ export {
     matplotlib,
     hpcc,
     huyhieudoan,
-    synergia
+    synergia,
+    bk,
+    google,
+    codingame
 }

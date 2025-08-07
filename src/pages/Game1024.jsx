@@ -55,17 +55,14 @@ function moveGrid(grid, direction) {
     });
     newGrid = newGrid.map((row, r) => movedCols.map(col => col[r]));
     if (!moved) {
-      // detect movement by compare trans
       moved = !newGrid.flat().every((v,i) => grid.flat()[i] === v);
     }
   }
   return moved ? addRandomTile(newGrid) : grid;
 }
 
-// Check game over
 function isGameOver(grid) {
   if (grid.some(row => row.includes(0))) return false;
-  // check merges
   for (let r=0; r<4; r++) for (let c=0; c<4; c++) {
     const v = grid[r][c];
     if ((r<3 && grid[r+1][c]===v) || (c<3 && grid[r][c+1]===v)) return false;
@@ -74,11 +71,13 @@ function isGameOver(grid) {
 }
 
 export default function Game1024() {
-  const [grid, setGrid] = useState(() => addRandomTile(addRandomTile(createEmptyGrid())));
+  const [grid, setGrid]   = useState(() => addRandomTile(addRandomTile(createEmptyGrid())));
   const [moves, setMoves] = useState(0);
-  const [over, setOver] = useState(false);
+  const [over, setOver]   = useState(false);
   const [confetti, setConfetti] = useState(false);
+  const [energy, setEnergy] = useState(0);
 
+  const maxEnergy = 10000; // threshold for energy bar
   const thresholds = [101,201,401,501,601,801,1001];
 
   const handleMove = useCallback(dir => {
@@ -86,8 +85,21 @@ export default function Game1024() {
     setGrid(g => {
       const newG = moveGrid(g, dir);
       if (newG !== g) {
-        setMoves(m => {
-          const nm = m+1;
+        // moves count
+        setMoves(m => m+1);
+        // energy increment
+        setEnergy(e => {
+          const ne = e + 1;
+          if (ne >= maxEnergy) {
+            // release and reset map, keep moves
+            setGrid(addRandomTile(addRandomTile(createEmptyGrid())));
+            return 0;
+          }
+          return ne;
+        });
+        // confetti on move milestones
+        setMoves(m2 => {
+          const nm = m2;
           if (thresholds.includes(nm)) {
             setConfetti(true);
             setTimeout(() => setConfetti(false), 3000);
@@ -104,9 +116,9 @@ export default function Game1024() {
   useEffect(() => {
     const listener = e => {
       switch (e.key) {
-        case 'ArrowUp': handleMove('up'); break;
-        case 'ArrowDown': handleMove('down'); break;
-        case 'ArrowLeft': handleMove('left'); break;
+        case 'ArrowUp':    handleMove('up'); break;
+        case 'ArrowDown':  handleMove('down'); break;
+        case 'ArrowLeft':  handleMove('left'); break;
         case 'ArrowRight': handleMove('right'); break;
         default: return;
       }
@@ -116,11 +128,23 @@ export default function Game1024() {
     return () => window.removeEventListener('keydown', listener);
   }, [handleMove]);
 
+  // Score display
+  const score = moves/2 + 0.5;
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-100 to-pink-100 flex flex-col items-center pt-24 p-4">
       {confetti && <Confetti />}
       <h1 className="text-4xl font-bold mb-4">1024 Game</h1>
-      <div className="text-lg mb-2">Scores: {moves / 2 + 0.5}</div>
+      <div className="w-full max-w-md mb-4">
+        <div className="h-4 bg-gray-300 rounded-full overflow-hidden">
+          <div
+            className="h-full bg-green-400"
+            style={{ width: `${(energy / maxEnergy) * 100}%` }}
+          />
+        </div>
+        <div className="text-right text-sm mt-1">Energy: {energy} / {maxEnergy}</div>
+      </div>
+      <div className="text-lg mb-2">Score: {score.toFixed(1)}</div>
       <div className="grid grid-cols-4 gap-2 bg-white p-4 rounded-xl shadow-xl">
         {grid.flat().map((v,i) => (
           <div key={i} className={classNames(
@@ -132,11 +156,15 @@ export default function Game1024() {
       <div className="mt-4 flex gap-4">
         {['up','left','down','right'].map(dir => (
           <button key={dir} onClick={() => handleMove(dir)} className="p-3 bg-white rounded-full shadow hover:bg-gray-100 transition">
-            {dir==='up' && <ArrowUp />}  {dir==='down' && <ArrowDown />}  {dir==='left' && <ArrowLeft />}  {dir==='right' && <ArrowRight />}
+            {dir==='up' && <ArrowUp />} {dir==='down' && <ArrowDown />} {dir==='left' && <ArrowLeft />} {dir==='right' && <ArrowRight />}
           </button>
         ))}
       </div>
-      {over && <div className="mt-4 text-2xl font-semibold text-red-600">Game Over</div>}
+      {over && (
+        <div className="mt-4 text-2xl font-semibold text-red-600">
+          Bạn đã hoàn thành với số điểm {score.toFixed(1)}
+        </div>
+      )}
     </div>
   );
 }

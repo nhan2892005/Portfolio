@@ -51,7 +51,10 @@ import {
     matplotlib,
     hpcc,
     huyhieudoan,
-    synergia
+    synergia,
+    bk,
+    google,
+    codingame
 } from "../assets/icons";
 import { a } from "@react-spring/three";
 
@@ -252,12 +255,26 @@ export const cloud = [
     },
 ];
 
+export const education = [
+    {
+        title: "BSc in Computer Science",
+        company_name: "Ho Chi Minh City University of Technology - VNUHCM",
+        icon: bk,
+        iconBg: "#d3ebffff",
+        date: "Sep 2023 - Present",
+        points: [
+            "CGPA: 3.6/4.0",
+            "Comprehensive Academic Excellence Award (2023-2024): Awarded for outstanding academic performance across all subjects in the 2023–2024 academic year"
+        ],
+    },
+]
+
 export const research_experiences = [
     {
         title: "Member of Synergia Team",
         company_name: "High Performance Computing Center - HCMUT",
         icon: synergia,  // Replace with the appropriate icon
-        iconBg: "#accbe1",
+        iconBg: "#ceddf3ff",
         date: "Sep 2024 - Present",
         points: [
             "Research on the application of Reinforcement Learning in Resource Management, particularly in the Scheduling Problem within HPC Systems.",
@@ -268,7 +285,7 @@ export const research_experiences = [
         title: "Trainee",
         company_name: "Fablab Innovation",
         icon: fablab,  // Replace with the appropriate icon
-        iconBg: "#fbc3bc",
+        iconBg: "#ffffffff",
         date: "Dec 2023 - Aug 2024",
         points: [
             "Researched AI applications in digital factory transformation, industrial modernization, and manufacturing.",
@@ -304,8 +321,8 @@ export const extracurricular_activities = [
         title: "Secretary of the Youth Union Branch",
         company_name: "Class MT23KHM3 - Faculty of Computer Science and Engineering - HCMUT",
         icon: huyhieudoan,
-        iconBg: "#fbc3bc",
-        date: "Dec 2023 - Aug 2024",
+        iconBg: "#cf0505cf",
+        date: "Dec 2023 - Present",
         points: [
             "Planned and executed branch congress meetings, overseeing venue setup, agenda creation, and attendee coordination.",
             "Created and administered evaluation forms for member performance reviews; collected, analyzed, and reported assessment results.",
@@ -313,6 +330,55 @@ export const extracurricular_activities = [
         ],
     },
 ]
+
+export const licenses_and_certifications = [
+    {
+        title: "Google Business Intelligence",
+        company_name: "Google x NIC",
+        icon: google,
+        iconBg: "#f5dfa2ff",
+        date: "Nov 30th, 2024",
+        points: [
+            "Explore the roles of business intelligence (BI) professionals within an organization",
+            "Practice data modeling and extract, transform, load (ETL) processes that meet organizational goals", 
+            "Design data visualizations that answer business questions",
+            "Create dashboards that effectively communicate data insights to stakeholders",
+        ],
+    },
+    {
+        title: "Google Advanced Data Analytics",
+        company_name: "Google x NIC",
+        icon: google,
+        iconBg: "#f3d3a3ff",
+        date: "Oct 6th, 2024",
+        points: [
+            "Explore the roles of data professionals within an organization",
+            "Create data visualizations and apply statistical methods to investigate data",
+            "Build regression and machine learning models to analyze and interpret data",
+            "Communicate insights from data analysis to stakeholders",
+        ],
+    },
+    {
+        title: "Artificial Intelligence - Gold level",
+        company_name: "CodinGame",
+        icon: codingame,
+        iconBg: "#fffbe6ff",
+        date: "Jan 11th, 2024",
+        points: [
+            "The developer knows how to develop an advanced AI: the AI optimizes its movements and adopts an appropriate strategy according to context",
+        ],
+    },
+    {
+        title: "Algorithms - Silver level",
+        company_name: "CodinGame",
+        icon: codingame,
+        iconBg: "#fffbe6ff",
+        date: "Jan 6th, 2024",
+        points: [
+            "The developer has mastered advanced structures and simple algorithms: string manipulation, arrays, linked lists...",
+        ],
+    },
+];
 
 export const experiences = [
     
