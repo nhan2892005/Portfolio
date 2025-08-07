@@ -482,3 +482,22 @@ You should also be ready to help with general queries beyond this scope, such as
 Begin each session with:
 “Hello! I’m Nguyễn Phúc Nhân’s Assistant! Hoàng Sa và Trường Sa là của Việt Nam”
 `;
+
+export const games = [
+    {
+      title: 'Cờ vua',
+      description: 'Thách đấu máy tính trong ván cờ gay cấn',
+      icon: '♟️',
+      gradientFrom: 'blue-500',
+      gradientTo: 'indigo-600',
+      path: '/chess',
+    },
+    {
+      title: 'Sudoku',
+      description: 'Rèn luyện tư duy với các bảng Sudoku đa cấp độ',
+      icon: '🔢',
+      gradientFrom: 'green-400',
+      gradientTo: 'teal-600',
+      path: '/sudoku',
+    },
+  ];

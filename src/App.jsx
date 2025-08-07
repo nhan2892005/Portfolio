@@ -9,6 +9,10 @@ import TranscriptPage from "./pages/Transcript";
 import Blog from "./pages/Blog";
 import BlogPost from "./components/BlogPost";
 import Canales from "./pages/Canales";
+import GameSelector from './pages/GameSelector';
+import ChessGame from "./pages/ChessGame";
+import SudokuGame from "./components/SudokuGame";
+import Game1024 from "./pages/Game1024";
 
 const App = () => {
   return (
@@ -33,6 +37,10 @@ const App = () => {
                   <Route path="/form" element={<Form />} />
                   <Route path="/caneles" element={<Canales />} />
                   <Route path="/photobooth" element={<Photobooth />} />
+                  <Route path="/games" element={<GameSelector />} />
+                  <Route path="/chess" element={<ChessGame />} />
+                  <Route path="/sudoku" element={<SudokuGame />} />
+                  <Route path="/game1024" element={<Game1024 />} />
                 </Routes>
               </>
             }
