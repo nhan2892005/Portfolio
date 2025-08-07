@@ -1,7 +1,7 @@
 ---
 title: "Giới thiệu về Phúc Nhân - Lập trình viên & Kỹ sư Dữ liệu"
 description: "Tìm hiểu về hành trình của Phúc Nhân (Nguyễn Phúc Nhân) trong lĩnh vực lập trình, HPC, Big Data và AI."
-date: "27-06-2025"
+date: "06-27-2025"
 tags: ["Phúc Nhân", "portfolio", "career", "programming", "data-science", "AI", "HPC"]
 author: "Phúc Nhân"
 slug: "gioi-thieu-phuc-nhan"

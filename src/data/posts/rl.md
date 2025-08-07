@@ -1,7 +1,7 @@
 ---
 title: 'Reinforcement Learning: Hãy học từ "kiến thức, kinh nghiệm và trải nghiệm"'
 description: "Khám phá Reinforcement Learning - lĩnh vực AI mạnh mẽ giúp agent học hỏi qua trải nghiệm, từ game, robot đến tài chính, y tế, công nghệ."
-date: "03-08-2025"
+date: "08-03-2025"
 tags: ["Phúc Nhân", "AI", "Reinforcement Learning", "Machine Learning", "Deep Learning", "Neural Networks", "Data Science", "Research"]
 author: "Phúc Nhân"
 slug: "reinforcement-learning"
@@ -246,7 +246,7 @@ Reinforcement Learning không chỉ là tập hợp thuật toán – đó là *
 * **Tự thưởng và tự phạt**
   Giống như agent, hãy chủ động gán “phần thưởng” cho bản thân khi hoàn thành mục tiêu nhỏ (ví dụ: dành thời gian thư giãn, mua một cuốn sách bạn yêu thích) và “hình phạt” khi bỏ bê kế hoạch (ví dụ: cắt giảm thời gian giải trí). Việc này giúp bạn liên kết rõ ràng giữa hành động và kết quả, từ đó rút ra bài học sâu sắc dựa trên **kiến thức**, **kinh nghiệm** và **trải nghiệm** cá nhân.
 
-* **Knowledge – Kinh nghiệm – Trải nghiệm**
+* **Kiến thức – Kinh nghiệm – Trải nghiệm**
 
   1. **Kiến thức**: Nền tảng lý thuyết, các công thức, thuật ngữ và nguyên lý cơ bản.
   2. **Kinh nghiệm**: Những phương pháp đã thử và điều chỉnh qua nhiều lần lặp.
