@@ -56,6 +56,9 @@ import java from './java.svg'
 import springboot from './springio-icon.svg'
 import postgres from './postgresql-vertical.svg'
 import matplotlib from './Matplotlib.svg'
+import hpcc from './hpcc.svg'
+import synergia from './synergia.svg'
+import huyhieudoan from './huyhieudoan.svg'
 
 export {
     enjoy,
@@ -115,5 +118,8 @@ export {
     java,
     springboot,
     postgres,
-    matplotlib
+    matplotlib,
+    hpcc,
+    huyhieudoan,
+    synergia
 }

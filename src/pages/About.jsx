@@ -4,7 +4,7 @@ import {
 } from "react-vertical-timeline-component";
 
 import { CTA } from "../components";
-import { experiences, research_experiences } from "../constants";
+import { experiences, extracurricular_activities, research_experiences } from "../constants";
 import SkillsGroup from "../components/SkillsGroup";
 import ExperienceGroup from "../components/ExperienceGroup";
 import { frontendsk, backendsk, database, svc_cicd, os, big_data, data_visualize, cloud, pro_lang } from "../constants";
@@ -47,7 +47,8 @@ const About = () => {
 
       <div className='py-16'>
         <ExperienceGroup title="Research Experiences" experiences={research_experiences} />
-        <ExperienceGroup title="Work Experiences" experiences={experiences} />
+        <ExperienceGroup title="Extracurricular Activities" experiences={extracurricular_activities} />
+        {/* <ExperienceGroup title="Work Experiences" experiences={experiences} /> */}
       </div>
 
       <hr className='border-slate-200' />

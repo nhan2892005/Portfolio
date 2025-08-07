@@ -48,7 +48,10 @@ import {
     java,
     springboot,
     postgres,
-    matplotlib
+    matplotlib,
+    hpcc,
+    huyhieudoan,
+    synergia
 } from "../assets/icons";
 import { a } from "@react-spring/three";
 
@@ -251,9 +254,9 @@ export const cloud = [
 
 export const research_experiences = [
     {
-        title: "Member",
-        company_name: "Big Data Club",
-        icon: bigdata,  // Replace with the appropriate icon
+        title: "Member of Synergia Team",
+        company_name: "High Performance Computing Center - HCMUT",
+        icon: synergia,  // Replace with the appropriate icon
         iconBg: "#accbe1",
         date: "Sep 2024 - Present",
         points: [
@@ -262,7 +265,7 @@ export const research_experiences = [
         ],
     },
     {
-        title: "Member",
+        title: "Trainee",
         company_name: "Fablab Innovation",
         icon: fablab,  // Replace with the appropriate icon
         iconBg: "#fbc3bc",
@@ -273,16 +276,43 @@ export const research_experiences = [
             "Utilized Python for AI model development and applied WinForms for UI development in .NET.",
         ],
     },
+    // {
+    //     title: "Publications",
+    //     company_name: "",
+    //     icon: paper,  // Replace with the appropriate icon
+    //     iconBg: "#fbc3bc",
+    //     date: "",
+    //     points: [
+    //     ],
+    // },
+];
+
+export const extracurricular_activities = [
     {
-        title: "Publications",
-        company_name: "",
-        icon: paper,  // Replace with the appropriate icon
-        iconBg: "#fbc3bc",
-        date: "",
+        title: "Head of Media Design",
+        company_name: "Big Data Club - HCMUT",
+        icon: bigdata,
+        iconBg: "#accbe1",
+        date: "Sep 2024 - Present",
         points: [
+            "Developed and maintained visual assets for the club’s fanpage, including banners, posts, and event announcements.",
+            "Designed “goods” (stickers, T-shirt mockups, ID cards, etc.) for club members to promote engagement and brand identity.",
+            "Managed on-site and digital imagery for academic seminars, kick-off sessions, and member training workshops to ensure consistent, professional branding."
         ],
     },
-];
+    {
+        title: "Secretary of the Youth Union Branch",
+        company_name: "Class MT23KHM3 - Faculty of Computer Science and Engineering - HCMUT",
+        icon: huyhieudoan,
+        iconBg: "#fbc3bc",
+        date: "Dec 2023 - Aug 2024",
+        points: [
+            "Planned and executed branch congress meetings, overseeing venue setup, agenda creation, and attendee coordination.",
+            "Created and administered evaluation forms for member performance reviews; collected, analyzed, and reported assessment results.",
+            "Assigned and supervised branch activities ensuring clear roles, timelines, and follow-up.",
+        ],
+    },
+]
 
 export const experiences = [
     
