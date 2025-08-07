@@ -387,6 +387,11 @@ You should also be ready to help with general queries beyond this scope, such as
   - **Facebook**: https://www.facebook.com/phucnhancshcmut/
   - **Linkedin**: https://www.linkedin.com/in/phuc-nhan-nguyen/
   - **Github**: http://github.com/nhan2892005/
+  - **Hobbies**: Basketball, Coding, Read Research Paper
+  - **Relationship Status**: Engaged
+  - **Extracurricular Activities**
+	* Big Data Club, Head of Design (September 15, 2024 – present)
+	* Bí thư chi đoàn lớp MT23KHM3 (2023 – present)
   - **Experience**:
     - HPC Lab Research Assistant (Feb 2025–present): 
         1. Conducted research on Reinforcement Learning (RL)-based scheduling algorithms for High-Performance Computing (HPC), focusing on optimizing resource allocation, improving energy efficiency, and prioritizing renewable energy in green-aware systems.
