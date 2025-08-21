@@ -306,7 +306,7 @@ export const research_experiences = [
 
 export const extracurricular_activities = [
     {
-        title: "Head of Media Design",
+        title: "Media Design Team",
         company_name: "Big Data Club - HCMUT",
         icon: bigdata,
         iconBg: "#accbe1",
