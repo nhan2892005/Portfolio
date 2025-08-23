@@ -19,6 +19,15 @@ export default function ModernCalendar({
         icalUrl:
           'https://calendar.google.com/calendar/ical/rc7rh85au8ic0c8026hocdqhv6euehhq%40import.calendar.google.com/public/basic.ics',
         color: '#78d83c',
+    },
+    {
+        id: 'c_ddbf515f3be7dbfd943622808130011b61ee9174a87982374334ea85e72b4c78@group.calendar.google.com',
+        timezone: 'Asia/Ho_Chi_Minh',
+        embedUrl:
+          'https://calendar.google.com/calendar/embed?src=c_ddbf515f3be7dbfd943622808130011b61ee9174a87982374334ea85e72b4c78%40group.calendar.google.com&ctz=Asia%2FHo_Chi_Minh',
+        icalUrl:
+          'https://calendar.google.com/calendar/ical/c_ddbf515f3be7dbfd943622808130011b61ee9174a87982374334ea85e72b4c78%40group.calendar.google.com/public/basic.ics',
+        color: '#78d83c',
     }
   ],
 }) {
