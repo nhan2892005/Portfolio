@@ -713,6 +713,14 @@
         "MAMONHOC": "IM1021",
         "TENMONHOC": "Khởi nghiệp",
         "SOTC": 3
+      },
+      {
+        "KHOIKIENTHUCID": 27893,
+        "TENKHOIKIENTHUC": "Tự chọn tự do",
+        "MONHOCID": 37629,
+        "MAMONHOC": "IM3047",
+        "TENMONHOC": "Giao tiếp trong kinh doanh",
+        "SOTC": 3
       }
     ],
     "khoiKienThucMoRong": null,
