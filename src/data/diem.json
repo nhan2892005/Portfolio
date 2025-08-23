@@ -822,6 +822,18 @@
         "UUTIEN": 8.5
       },
       {
+        "MONHOCID": 37629,
+        "MONHOCTUONGDUONG": null,
+        "MAMONHOC": "IM3047",
+        "TENMONHOC": "Giao tiếp trong kinh doanh",
+        "SOTC": 3,
+        "DIEMDAT": "1",
+        "DIEM": "CH",
+        "DIEMSO": 15,
+        "DIEMCHU": "CH",
+        "UUTIEN": 15
+      },
+      {
         "MONHOCID": 6655,
         "MONHOCTUONGDUONG": null,
         "MAMONHOC": "PH1003",
