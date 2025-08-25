@@ -14,6 +14,7 @@ const links = [
   { to: "/calendar", label: "Calendar" },
   { to: "/form", label: "Form" },
   { to: "/games", label: "Games" },
+  { to: "/exams", label: "Exams" },
 ];
 
 export default function Navbar() {
