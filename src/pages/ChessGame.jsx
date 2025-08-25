@@ -26,12 +26,15 @@ export default function ChessGame() {
   const [legalMoves, setLegalMoves] = useState([]);
 
   const boardContainerRef = useRef(null);
-  const [boardWidth, setBoardWidth] = useState(400);
+  const [boardWidth, setBoardWidth] = useState(320);
   useEffect(() => {
     const updateSize = () => {
       if (!boardContainerRef.current) return;
-      const avail = boardContainerRef.current.offsetWidth - 180;
-      setBoardWidth(Math.max(320, Math.min(640, avail)));
+      const avail = Math.min(
+        boardContainerRef.current.offsetWidth - (window.innerWidth >= 768 ? 180 : 20),
+        window.innerHeight - 200
+      );
+      setBoardWidth(Math.max(280, Math.min(640, avail)));
     };
     updateSize();
     window.addEventListener('resize', updateSize);
@@ -73,6 +76,9 @@ export default function ChessGame() {
     }
   }, [apiResponse]);
 
+  const [gameOver, setGameOver] = useState(false);
+  const [gameResult, setGameResult] = useState('');
+
   const handleMove = (author, san, mv) => {
     setFen(gameRef.current.fen());
     setHistory(h => [...h, `${author}: ${san}`]);
@@ -82,6 +88,16 @@ export default function ChessGame() {
     }
     setSelectedSquare(null);
     setLegalMoves([]);
+
+    // Check game state after move
+    const game = gameRef.current;
+    if (game.isCheckmate()) {
+      setGameOver(true);
+      setGameResult(author === 'You' ? 'win' : 'lose');
+    } else if (game.isDraw() || game.isStalemate() || game.isThreefoldRepetition()) {
+      setGameOver(true);
+      setGameResult('draw');
+    }
   };
 
   const onSquareClick = square => {
@@ -177,12 +193,34 @@ export default function ChessGame() {
   );
 
   return(
-    <div ref={boardContainerRef} className="pt-24 flex bg-gradient-to-tr from-gray-100 to-gray-200 min-h-screen">
-      <button onClick={()=>setShowPanel(!showPanel)} className="fixed top-20 right-6 p-2 bg-white shadow-lg rounded-full z-20">{showPanel?<X size={20}/> : <Menu size={20}/>}</button>
-      <div className={`${showPanel?'block':'hidden'} md:block w-80 p-6 fixed right-0 top-20 h-full overflow-y-auto bg-white bg-opacity-80 backdrop-blur-md`}><Panel/></div>
-      <div className="flex-1 flex flex-col items-center px-6">
-        <h2 className="text-2xl font-bold mb-4">{gameRef.current.turn()==='w'?'White to move':'Black to move'}</h2>
-        <div className="bg-white p-6 rounded-3xl shadow-2xl">
+    <div ref={boardContainerRef} className="pt-16 sm:pt-24 flex bg-gradient-to-tr from-gray-100 to-gray-200 min-h-screen">
+      <button onClick={()=>setShowPanel(!showPanel)} className="fixed top-16 sm:top-20 right-4 sm:right-6 p-2 bg-white shadow-lg rounded-full z-20">{showPanel?<X size={20}/> : <Menu size={20}/>}</button>
+      <div className={`${showPanel?'block':'hidden'} md:block w-72 sm:w-80 p-4 sm:p-6 fixed right-0 top-16 sm:top-20 h-full overflow-y-auto bg-white bg-opacity-90 backdrop-blur-md shadow-lg`}><Panel/></div>
+      <div className="flex-1 flex flex-col items-center px-2 sm:px-6">
+        {gameOver ? (
+          <div className="text-xl sm:text-2xl font-bold mb-4 space-y-4">
+            <div className={`text-${gameResult === 'win' ? 'green' : gameResult === 'lose' ? 'red' : 'blue'}-600`}>
+              {gameResult === 'win' ? 'You Won!' : gameResult === 'lose' ? 'You Lost!' : 'Draw!'}
+            </div>
+            <div className="flex gap-4">
+              <button 
+                onClick={resetGame} 
+                className="px-6 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition"
+              >
+                Play Again
+              </button>
+              <button 
+                onClick={() => window.location.href = '/games'} 
+                className="px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition"
+              >
+                Back to Menu
+              </button>
+            </div>
+          </div>
+        ) : (
+          <h2 className="text-xl sm:text-2xl font-bold mb-4">{gameRef.current.turn()==='w'?'White to move':'Black to move'}</h2>
+        )}
+        <div className="bg-white p-2 sm:p-6 rounded-3xl shadow-2xl">
           <Chessboard width={boardWidth} position={fen} onDrop={onDrop} onDragStart={onDragStart} onSquareClick={onSquareClick} squareStyles={squareStyles}/>
         </div>
         <div className="w-full flex justify-between mt-6 px-10 items-center">
@@ -190,6 +228,12 @@ export default function ChessGame() {
           <button onClick={undoMove} className="p-2 bg-white shadow rounded-full"><Undo2 size={20}/></button>
           <div><div className="text-sm mb-1">Black Captured</div>{renderCaptured(blackCaptured,'black')}</div>
         </div>
+        <button 
+          onClick={() => window.location.href = '/games'}
+          className="mt-8 px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition flex items-center gap-2"
+        >
+          ← Back to Menu
+        </button>
       </div>
     </div>
   );

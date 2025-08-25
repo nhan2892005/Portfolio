@@ -132,10 +132,10 @@ export default function Game1024() {
   const score = moves/2 + 0.5;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-100 to-pink-100 flex flex-col items-center pt-24 p-4">
+    <div className="min-h-screen bg-gradient-to-br from-purple-100 to-pink-100 flex flex-col items-center pt-16 sm:pt-24 px-2 sm:px-4">
       {confetti && <Confetti />}
-      <h1 className="text-4xl font-bold mb-4">1024 Game</h1>
-      <div className="w-full max-w-md mb-4">
+      <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4">1024 Game</h1>
+      <div className="w-full max-w-md mb-4 px-2">
         <div className="h-4 bg-gray-300 rounded-full overflow-hidden">
           <div
             className="h-full bg-green-400"
@@ -148,7 +148,7 @@ export default function Game1024() {
       <div className="grid grid-cols-4 gap-2 bg-white p-4 rounded-xl shadow-xl">
         {grid.flat().map((v,i) => (
           <div key={i} className={classNames(
-            'w-20 h-20 flex items-center justify-center text-xl font-bold rounded',
+            'w-14 h-14 sm:w-16 sm:h-16 md:w-20 md:h-20 flex items-center justify-center text-base sm:text-lg md:text-xl font-bold rounded',
             v===0 ? 'bg-gray-200' : 'bg-purple-300'
           )}>{v||''}</div>
         ))}
@@ -161,10 +161,32 @@ export default function Game1024() {
         ))}
       </div>
       {over && (
-        <div className="mt-4 text-2xl font-semibold text-red-600">
-          Bạn đã hoàn thành với số điểm {score.toFixed(1)}
+        <div className="mt-4 space-y-4">
+          <div className="text-2xl font-semibold text-red-600">
+            Bạn đã hoàn thành với số điểm {score.toFixed(1)}
+          </div>
+          <div className="flex gap-4 justify-center">
+            <button 
+              onClick={() => window.location.reload()} 
+              className="px-6 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition"
+            >
+              Chơi lại
+            </button>
+            <button 
+              onClick={() => window.location.href = '/games'} 
+              className="px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition"
+            >
+              Quay về menu
+            </button>
+          </div>
         </div>
       )}
+      <button 
+        onClick={() => window.location.href = '/games'}
+        className="mt-8 px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition flex items-center gap-2"
+      >
+        ← Quay về menu
+      </button>
     </div>
   );
 }

@@ -131,7 +131,7 @@ export default function SudokuGame() {
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-200 pt-28 pb-12 px-4 flex flex-col items-center">
       <h1 className="text-4xl font-bold mb-6 text-gray-800">Sudoku</h1>
 
-      <div className="mb-4 flex flex-wrap justify-center gap-3">
+      <div className="mb-4 flex flex-wrap justify-center gap-2 sm:gap-3">
         {[{ label: 'Dễ', value: 'easy' },
           { label: 'Vừa', value: 'medium' },
           { label: 'Khó', value: 'hard' },
@@ -165,7 +165,7 @@ export default function SudokuGame() {
         <button onClick={surrender} className="px-5 py-2 bg-gray-700 text-white rounded-full hover:bg-gray-800 transition">Đầu hàng</button>
       </div>
 
-      <div className="grid grid-cols-9 gap-0.5 bg-white p-2 rounded-xl shadow-xl">
+      <div className="grid grid-cols-9 gap-0.5 bg-white p-1 sm:p-2 rounded-xl shadow-xl">
         {userGrid.map((row, r) =>
           row.map((val, c) => {
             const isPrefilled   = puzzle[r][c] !== '';
@@ -209,7 +209,7 @@ export default function SudokuGame() {
                 key={`${r}-${c}`}
                 onClick={() => handleCellClick(r, c)}
                 className={classNames(
-                  'w-14 h-14 flex items-center justify-center cursor-pointer select-none border border-gray-400',
+                  'w-8 h-8 sm:w-12 sm:h-12 md:w-14 md:h-14 flex items-center justify-center cursor-pointer select-none border border-gray-400',
                   bgClass,
                   (r%3===2&&r!==8)&&'border-b-2 border-gray-600',
                   (c%3===2&&c!==8)&&'border-r-2 border-gray-600'
@@ -250,19 +250,44 @@ export default function SudokuGame() {
         )}
       </div>
 
-      <div className="mt-6 grid grid-cols-9 gap-1">
+      <div className="mt-6 grid grid-cols-9 gap-0.5 sm:gap-1">
         {Array.from({ length: 9 }, (_, i) => i + 1).map(n => (
           <button
             key={n}
             onClick={() => handleNumberInput(String(n))}
-            className="w-14 h-14 bg-white rounded-lg shadow-md hover:shadow-lg transition font-bold text-xl text-gray-800"
+            className="w-8 h-8 sm:w-12 sm:h-12 md:w-14 md:h-14 bg-white rounded-lg shadow-md hover:shadow-lg transition font-bold text-base sm:text-lg md:text-xl text-gray-800"
           >{n}</button>
         ))}
       </div>
 
       {message && (
-        <div className="mt-6 text-3xl font-bold text-green-600">{message}</div>
+        <div className="mt-6 space-y-4">
+          <div className="text-3xl font-bold text-green-600">{message}</div>
+          {message.includes('Lose') && (
+            <div className="flex gap-4 justify-center">
+              <button 
+                onClick={startNew} 
+                className="px-6 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition"
+              >
+                Chơi lại
+              </button>
+              <button 
+                onClick={() => window.location.href = '/games'} 
+                className="px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition"
+              >
+                Quay về menu
+              </button>
+            </div>
+          )}
+        </div>
       )}
+
+      <button 
+        onClick={() => window.location.href = '/games'}
+        className="mt-8 px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition flex items-center gap-2"
+      >
+        ← Quay về menu
+      </button>
     </div>
   );
 }

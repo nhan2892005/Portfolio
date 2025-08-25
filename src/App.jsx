@@ -11,7 +11,7 @@ import BlogPost from "./components/BlogPost";
 import Canales from "./pages/Canales";
 import GameSelector from './pages/GameSelector';
 import ChessGame from "./pages/ChessGame";
-import SudokuGame from "./components/SudokuGame";
+import SudokuGame from "./pages/SudokuGame";
 import Game1024 from "./pages/Game1024";
 
 const App = () => {
