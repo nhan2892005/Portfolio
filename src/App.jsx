@@ -13,8 +13,6 @@ import GameSelector from './pages/GameSelector';
 import ChessGame from "./pages/ChessGame";
 import SudokuGame from "./components/SudokuGame";
 import Game1024 from "./pages/Game1024";
-import ExamList from "./pages/ExamPage";
-import Question from "./pages/Question";
 
 const App = () => {
   return (
@@ -31,7 +29,6 @@ const App = () => {
                   <Route path="/about" element={<About />} />
                   <Route path="/projects" element={<Projects />} />
                   <Route path="/contact" element={<Contact />} />
-                  <Route path="/sorry" element={<SorryPage />} />
                   <Route path="/transcript" element={<TranscriptPage />} />
                   <Route path="/blog" element={<Blog />} />
                   <Route path="/blog/:slug" element={<BlogPost />} />
@@ -43,8 +40,7 @@ const App = () => {
                   <Route path="/chess" element={<ChessGame />} />
                   <Route path="/sudoku" element={<SudokuGame />} />
                   <Route path="/game1024" element={<Game1024 />} />
-                  <Route path="/exams" element={<ExamList />} />
-                  <Route path="/exams/:courseCode/:examId" element={<Question />} />
+                  <Route path="/*" element={<SorryPage />} />
                 </Routes>
               </>
             }
