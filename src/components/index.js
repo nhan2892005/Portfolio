@@ -6,6 +6,10 @@ import Footer from "./Footer";
 import HomeInfo from "./HomeInfo";
 import BlogPost from "./post/BlogPost";
 import BoxPacking from "./BoxPacking";
+import ModernCalendar from "./ModernCalendar";
+import DRLForm from "./forms/DRL242/DRLForm";
+import MultiFrameCollage from "./MultiFrameCollage";
+import ChatBtn from "./ChatBtn";
 
 export {
     CTA,
@@ -15,5 +19,9 @@ export {
     Footer,
     HomeInfo,
     BlogPost,
-    BoxPacking
+    BoxPacking,
+    ModernCalendar,
+    DRLForm,
+    MultiFrameCollage,
+    ChatBtn
 }

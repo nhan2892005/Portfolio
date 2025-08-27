@@ -1,12 +1,7 @@
-import {
-  VerticalTimeline,
-  VerticalTimelineElement,
-} from "react-vertical-timeline-component";
-
 import { CTA } from "../components";
 import { education, experiences, extracurricular_activities, licenses_and_certifications, research_experiences } from "../constants";
-import SkillsGroup from "../components/SkillsGroup";
-import ExperienceGroup from "../components/ExperienceGroup";
+import SkillsGroup from "../components/about/SkillsGroup";
+import ExperienceGroup from "../components/about/ExperienceGroup";
 import { frontendsk, backendsk, database, svc_cicd, os, big_data, data_visualize, cloud, pro_lang } from "../constants";
 
 import "react-vertical-timeline-component/style.min.css";

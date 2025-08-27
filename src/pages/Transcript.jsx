@@ -2,134 +2,16 @@ import React, { useState, useMemo } from "react";
 import transcriptData from "../data/diem.json";
 import semesterData from "../data/semester.json";
 import { PieChart, Pie, Cell, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
-
-const gradeToGPA = {
-  "A+": 4.0,
-  "A": 4.0,
-  "B+": 3.5,
-  "B": 3.0,
-  "C+": 2.5,
-  "C": 2.0,
-  "D+": 1.5,
-  "D": 1.0,
-  "F": 0.0,
-};
-
-// Hàm chuyển đổi điểm số (hệ 10) sang điểm chữ
-const scoreToGrade = (score) => {
-  if (score >= 9.45) return "A+";
-  if (score >= 8.45) return "A";
-  if (score >= 7.95) return "B+";
-  if (score >= 6.95) return "B";
-  if (score >= 6.45) return "C+";
-  if (score >= 5.45) return "C";
-  if (score >= 4.95) return "D+";
-  if (score >= 3.95) return "D";
-  return "F";
-};
-
-// Hàm tính điểm học phần từ điểm thành phần
-const calculateCourseScore = (components) => {
-  if (!components || components.length === 0) return null;
-  
-  // Lọc bỏ các thành phần "Tổng kết" và "Tổng kết HP"
-  const validComponents = components.filter(comp => 
-    comp.ten !== "Tổng kết" && comp.ten !== "Tổng kết HP"
-  );
-  
-  if (validComponents.length === 0) return null;
-  
-  // Tính tổng trọng số
-  const totalWeight = validComponents.reduce((sum, comp) => sum + (comp.tyLe || 0), 0);
-  
-  if (totalWeight === 0) return null;
-  
-  // Tính điểm trung bình có trọng số
-  const weightedSum = validComponents.reduce((sum, comp) => {
-    return sum + (comp.diem || 0) * (comp.tyLe || 0);
-  }, 0);
-  
-  const finalScore = weightedSum / totalWeight;
-  
-  // Làm tròn lên 1 chữ số thập phân, sau đó làm tròn tiếp để hiển thị 2 chữ số
-  const roundedScore = Math.ceil(finalScore * 10) / 10; // Làm tròn lên 1 chữ số
-  const displayScore = Math.round(roundedScore * 100) / 100; // Đảm bảo 2 chữ số thập phân
-  
-  return {
-    score: displayScore,
-    grade: scoreToGrade(finalScore), // Dùng điểm gốc để xác định grade
-    gpa: gradeToGPA[scoreToGrade(finalScore)], // Dùng điểm gốc để xác định GPA
-    components: validComponents,
-    totalWeight
-  };
-};
-
-// Các loại điểm đặc biệt và ý nghĩa
-const SPECIAL_SCORES = {
-  "CT": { label: "Cấm thi", description: "Tính điểm 0.0", includeInGPA: true, scoreValue: 0.0, numericCode: 11 },
-  "MT": { label: "Miễn học, miễn thi", description: "Đạt, không tính vào điểm trung bình", includeInGPA: false, numericCode: 12 },
-  "VT": { label: "Vắng thi", description: "Tính điểm 0.0", includeInGPA: true, scoreValue: 0.0, numericCode: 13 },
-  "VP": { label: "Vắng thi có phép", description: "Chưa đạt, không tính vào điểm trung bình", includeInGPA: false, numericCode: 22 },
-  "HT": { label: "Hoãn thi", description: "Chưa đạt, không tính vào điểm trung bình", includeInGPA: false, numericCode: 14 },
-  "CH": { label: "Chưa có điểm", description: "Chưa tính số tín chỉ tích luỹ, điểm trung bình", includeInGPA: false, numericCode: 15 },
-  "RT": { label: "Rút môn học", description: "Không ghi vào bảng điểm", includeInGPA: false, numericCode: 17 },
-  "KD": { label: "Không đạt", description: "Tính điểm 0.0", includeInGPA: true, scoreValue: 0.0, numericCode: 20 },
-  "DT": { label: "Đạt", description: "Đạt", includeInGPA: false, numericCode: 21 }
-};
-
-// Hàm kiểm tra xem có phải là điểm đặc biệt không
-const isSpecialScore = (diemChu, diemSo) => {
-  // Kiểm tra theo điểm chữ trước
-  if (SPECIAL_SCORES.hasOwnProperty(diemChu)) {
-    return true;
-  }
-  
-  // Kiểm tra theo điểm số (các mã số đặc biệt)
-  if (typeof diemSo === 'number') {
-    const specialCodes = Object.values(SPECIAL_SCORES).map(s => s.numericCode);
-    return specialCodes.includes(diemSo);
-  }
-  
-  return false;
-};
-
-// Hàm lấy thông tin điểm đặc biệt
-const getSpecialScoreInfo = (diemChu, diemSo) => {
-  // Ưu tiên theo điểm chữ
-  if (SPECIAL_SCORES.hasOwnProperty(diemChu)) {
-    return SPECIAL_SCORES[diemChu];
-  }
-  
-  // Tìm theo điểm số
-  if (typeof diemSo === 'number') {
-    const entry = Object.entries(SPECIAL_SCORES).find(([_, info]) => info.numericCode === diemSo);
-    if (entry) {
-      return { ...entry[1], displayCode: entry[0] };
-    }
-  }
-  
-  return null;
-};
-
-// Hàm kiểm tra xem có phải là điểm số hợp lệ (0-10) không
-const isValidNumericalScore = (diemSo) => {
-  return typeof diemSo === 'number' && diemSo >= 0 && diemSo <= 10;
-};
-
-// Hàm format điểm số để hiển thị đúng 2 chữ số thập phân (cho điểm từ thành phần)
-const formatScore = (score) => {
-  if (score === null || score === undefined) return "--";
-  if (typeof score !== 'number') return score;
-  return score.toFixed(2);
-};
+import { gradeToGPA, SPECIAL_SCORES } from "../constants";
+import { formatScore, scoreToGrade, calculateCourseScore, isSpecialScore, getSpecialScoreInfo } from "../utils";
 
 const Transcript = () => {
-  // State cho dữ liệu (có thể chỉnh sửa)
+  // State for data
   const [currentData, setCurrentData] = useState(transcriptData.data);
   const [semesterScores, setSemesterScores] = useState(semesterData.data.diem);
   const { diemSinhVien, khoiKienThuc } = currentData;
   
-  // State cho search và filter
+  // State for search and filter
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedKKT, setSelectedKKT] = useState("");
   const [minScore, setMinScore] = useState("");
@@ -137,10 +19,10 @@ const Transcript = () => {
   const [minCredits, setMinCredits] = useState("");
   const [maxCredits, setMaxCredits] = useState("");
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [sidebarWidth, setSidebarWidth] = useState(320); // Default width
+  const [sidebarWidth, setSidebarWidth] = useState(320);
   const [isResizing, setIsResizing] = useState(false);
 
-  // State cho quản lý môn học và điểm
+  // State for manage course and grade
   const [showManagementModal, setShowManagementModal] = useState(false);
   const [activeTab, setActiveTab] = useState('courses'); // 'courses', 'scores', 'semesters', 'components'
   const [editingCourse, setEditingCourse] = useState(null);

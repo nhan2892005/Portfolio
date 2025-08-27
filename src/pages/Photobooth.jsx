@@ -1,14 +1,12 @@
-// src/pages/Photobooth.jsx
-
 import React, { useState, useRef, useEffect } from "react";
 import * as faceapi from 'face-api.js';
 import { templates } from "../templates";
-import MultiFrameCollage from "../components/MultiFrameCollage";
+import { MultiFrameCollage } from "../components";
 
 const Photobooth = () => {
   const videoRef = useRef(null);
   const canvasRef = useRef(null);
-  const faceCanvasRef = useRef(null); // Canvas cho face detection overlay
+  const faceCanvasRef = useRef(null);
   const [stream, setStream] = useState(null);
 
   // Face Detection States

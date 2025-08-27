@@ -1,5 +1,5 @@
 import React from 'react';
-import GoogleCalendarComponent from '../components/Calendar';
+import { ModernCalendar } from '../components';
 
 const CalendarPage = () => {
   return (
@@ -17,7 +17,7 @@ const CalendarPage = () => {
       </div>
 
       <div className='mt-10 w-full bg-white rounded-lg shadow-lg p-6'>
-        <GoogleCalendarComponent />
+        <ModernCalendar />
       </div>
     </section>
   );

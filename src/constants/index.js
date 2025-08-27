@@ -575,3 +575,28 @@ export const games = [
       path: '/game1024',
     }
   ];
+
+
+export const gradeToGPA = {
+  "A+": 4.0,
+  "A": 4.0,
+  "B+": 3.5,
+  "B": 3.0,
+  "C+": 2.5,
+  "C": 2.0,
+  "D+": 1.5,
+  "D": 1.0,
+  "F": 0.0,
+};
+
+export const SPECIAL_SCORES = {
+  "CT": { label: "Cấm thi", description: "Tính điểm 0.0", includeInGPA: true, scoreValue: 0.0, numericCode: 11 },
+  "MT": { label: "Miễn học, miễn thi", description: "Đạt, không tính vào điểm trung bình", includeInGPA: false, numericCode: 12 },
+  "VT": { label: "Vắng thi", description: "Tính điểm 0.0", includeInGPA: true, scoreValue: 0.0, numericCode: 13 },
+  "VP": { label: "Vắng thi có phép", description: "Chưa đạt, không tính vào điểm trung bình", includeInGPA: false, numericCode: 22 },
+  "HT": { label: "Hoãn thi", description: "Chưa đạt, không tính vào điểm trung bình", includeInGPA: false, numericCode: 14 },
+  "CH": { label: "Chưa có điểm", description: "Chưa tính số tín chỉ tích luỹ, điểm trung bình", includeInGPA: false, numericCode: 15 },
+  "RT": { label: "Rút môn học", description: "Không ghi vào bảng điểm", includeInGPA: false, numericCode: 17 },
+  "KD": { label: "Không đạt", description: "Tính điểm 0.0", includeInGPA: true, scoreValue: 0.0, numericCode: 20 },
+  "DT": { label: "Đạt", description: "Đạt", includeInGPA: false, numericCode: 21 }
+};

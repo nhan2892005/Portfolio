@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import DRLForm from '../components/forms/DRL242/DRLForm';
+import { DRLForm } from '../components/';
 
 const FORM_TYPES = {
   DRL: {

@@ -1,13 +1,13 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { games } from '../constants';
+import { games } from '../../constants';
 
 // Generic GameCard component
 function GameCard({ title, description, icon, gradientFrom, gradientTo, path }) {
   const navigate = useNavigate();
   return (
     <div
-      onClick={() => navigate(path)}
+      onClick={() => navigate(`/games${path}`)}
       className="relative bg-white rounded-2xl shadow-lg overflow-hidden cursor-pointer transform transition hover:scale-105 hover:shadow-2xl"
     >
       <div

@@ -1,5 +1,3 @@
-// src/templates.js
-
 export const templates = {
   twoByFourWhite: {
     label: "2×4 White Background",

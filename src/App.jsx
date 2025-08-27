@@ -1,18 +1,12 @@
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
-import { Footer, Navbar } from "./components";
-import { About, Contact, Home, Projects, SorryPage } from "./pages";
-import Photobooth from "./pages/Photobooth";
-import CalendarPage from "./pages/CalendarPage";
-import Form from "./pages/Form";
-import ChatBtn from "./components/ChatBtn";
-import TranscriptPage from "./pages/Transcript";
-import Blog from "./pages/Blog";
-import BlogPost from "./components/post/BlogPost";
+import { Footer, Navbar, ChatBtn, BlogPost } from "./components";
+import { 
+  Home, About, Projects, Contact, Photobooth, Transcript, CalendarPage, Form, Blog,
+  GameSelector, Game1024, ChessGame, SudokuGame,
+  SorryPage,
+} from "./pages";
+
 import Canales from "./pages/Canales";
-import GameSelector from './pages/GameSelector';
-import ChessGame from "./pages/ChessGame";
-import SudokuGame from "./pages/SudokuGame";
-import Game1024 from "./pages/Game1024";
 
 const App = () => {
   return (
@@ -29,7 +23,7 @@ const App = () => {
                   <Route path="/about" element={<About />} />
                   <Route path="/projects" element={<Projects />} />
                   <Route path="/contact" element={<Contact />} />
-                  <Route path="/transcript" element={<TranscriptPage />} />
+                  <Route path="/transcript" element={<Transcript />} />
                   <Route path="/blog" element={<Blog />} />
                   <Route path="/blog/:slug" element={<BlogPost />} />
                   <Route path="/calendar" element={<CalendarPage />} />
@@ -37,9 +31,18 @@ const App = () => {
                   <Route path="/caneles" element={<Canales />} />
                   <Route path="/photobooth" element={<Photobooth />} />
                   <Route path="/games" element={<GameSelector />} />
-                  <Route path="/chess" element={<ChessGame />} />
-                  <Route path="/sudoku" element={<SudokuGame />} />
-                  <Route path="/game1024" element={<Game1024 />} />
+                  <Route
+                    path="/games/*"
+                    element={
+                      <>
+                        <Routes>
+                          <Route path="/chess" element={<ChessGame />} />
+                          <Route path="/sudoku" element={<SudokuGame />} />
+                          <Route path="/game1024" element={<Game1024 />} />
+                        </Routes>
+                      </>
+                    }
+                  />
                   <Route path="/*" element={<SorryPage />} />
                 </Routes>
               </>
