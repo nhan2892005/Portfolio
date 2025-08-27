@@ -7,7 +7,7 @@ import Form from "./pages/Form";
 import ChatBtn from "./components/ChatBtn";
 import TranscriptPage from "./pages/Transcript";
 import Blog from "./pages/Blog";
-import BlogPost from "./components/BlogPost";
+import BlogPost from "./components/post/BlogPost";
 import Canales from "./pages/Canales";
 import GameSelector from './pages/GameSelector';
 import ChessGame from "./pages/ChessGame";
