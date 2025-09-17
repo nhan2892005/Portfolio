@@ -5,6 +5,7 @@ import {
   GameSelector, Game1024, ChessGame, SudokuGame,
   SorryPage,
 } from "./pages";
+import { Analytics } from '@vercel/analytics/react';
 
 import Canales from "./pages/Canales";
 
@@ -50,6 +51,7 @@ const App = () => {
           />
         </Routes>
         <Footer />
+        <Analytics />
         <ChatBtn />
       </Router>
     </main>
