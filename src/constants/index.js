@@ -304,6 +304,20 @@ export const research_experiences = [
     // },
 ];
 
+export const publications = [
+  {
+    title:
+      "Toward Sustainable and Cost-Efficient HPC Systems: A Deep Reinforcement Learning Job Scheduling Approach",
+    authors:
+      "Thanh Hoang Le Hai, Nhan Nguyen Phuc, Mai Nguyen Tran Phuong, Minh Bui Ngoc, Nam Thoai",
+    venue: "MIWAI 2025 - Lecture Notes in Artificial Intelligence",
+    year: "2025",
+    doi: "To appear, expected publication December 2025",
+    icon: "📑",
+    iconBg: "#2563EB",
+  },
+];
+
 export const extracurricular_activities = [
     {
         title: "Media Design Team",
