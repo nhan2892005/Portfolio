@@ -5,7 +5,7 @@ import {
 } from "react-vertical-timeline-component";
 import "react-vertical-timeline-component/style.min.css";
 
-const PublicationsGroup = ({ title, publications }) => {
+const PublicationsGroup = ({ title, publications = [] }) => {
   return (
     <div className="py-16">
       <h3 className="subhead-text">{title}</h3>
@@ -41,6 +41,15 @@ const PublicationsGroup = ({ title, publications }) => {
 
               {pub.abstract && (
                 <p className="mt-3 text-black-500/70 text-sm">{pub.abstract}</p>
+              )}
+
+              {pub.keywords && pub.keywords.length > 0 && (
+                <div className="mt-3">
+                  <span className="font-semibold text-sm">Keywords: </span>
+                  <span className="text-black-500/70 text-sm">
+                    {pub.keywords.join(", ")}
+                  </span>
+                </div>
               )}
 
               {pub.doi && (

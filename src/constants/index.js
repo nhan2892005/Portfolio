@@ -312,9 +312,18 @@ export const publications = [
       "Thanh Hoang Le Hai, Nhan Nguyen Phuc, Mai Nguyen Tran Phuong, Minh Bui Ngoc, Nam Thoai",
     venue: "MIWAI 2025 - Lecture Notes in Artificial Intelligence",
     year: "2025",
+    abstract:
+      "Hybrid-powered HPC centers can reduce costs and carbon footprints by aligning job execution with renewable supply and electricity prices. We propose a cost-aware DRL scheduler that decouples job selection from delay.",
+    keywords: [
+      "High Performance Computing",
+      "Job Scheduling",
+      "Green-Aware Scheduling",
+      "Reinforcement Learning",
+      "Multi-objective Reinforcement Learning",
+    ],
     doi: "To appear, expected publication December 2025",
     icon: "📑",
-    iconBg: "#2563EB",
+    iconBg: "#a6c1faff",
   },
 ];
 
