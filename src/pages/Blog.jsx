@@ -4,7 +4,17 @@ import fm from 'front-matter';
 
 // Import tất cả markdown files
 const markdownModules = import.meta.glob('../data/posts/*.md', { as: 'raw', eager: true });
-
+function formatDate(dateStr) {
+  const d = parseDMY(dateStr);
+  return d.toLocaleDateString("vi-VN"); // hiển thị dd/mm/yyyy
+}
+function parseDMY(dateStr) {
+  // chấp nhận cả dd-mm-yyyy hoặc dd/mm/yyyy
+  const parts = dateStr.includes("-") ? dateStr.split("-") : dateStr.split("/");
+  if (parts.length !== 3) return new Date(dateStr); // fallback
+  const [day, month, year] = parts.map(Number);
+  return new Date(year, month - 1, day);
+}
 const Blog = () => {
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -85,12 +95,10 @@ const Blog = () => {
           }
         }).filter(Boolean); // Remove null entries
 
-        console.log('Parsed posts:', parsedPosts);
-
         // Sắp xếp theo ngày mới nhất
         parsedPosts.sort((a, b) => {
-          const dateA = new Date(a.date);
-          const dateB = new Date(b.date);
+          const dateA = parseDMY(a.date);
+          const dateB = parseDMY(b.date);
           return dateB - dateA;
         });
         
@@ -246,7 +254,7 @@ const Blog = () => {
                 <div className="p-6">
                   {/* Meta info */}
                   <div className="flex items-center gap-4 text-sm text-gray-500 mb-3">
-                    <span>📅 {new Date(post.date).toLocaleDateString('vi-VN')}</span>
+                    <span>📅 {formatDate(post.date)}</span>
                     <span>⏱️ {post.readTime} phút đọc</span>
                   </div>
 
