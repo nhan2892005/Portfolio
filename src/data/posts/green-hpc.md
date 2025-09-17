@@ -1,7 +1,7 @@
 ---
 title: "Khi siêu máy tính cũng phải học cách sống xanh"
 description: "Khám phá Green HPC - xu hướng mới trong lĩnh vực High Performance Computing, giúp giảm tiêu thụ năng lượng và phát thải CO₂."
-date: "08-02-2025"
+date: "02-08-2025"
 tags: ["Phúc Nhân", "Data Center", "Research", "Green Computing", "scheduling", "HPC", "sustainability"]
 author: "Phúc Nhân"
 slug: "green-hpc"

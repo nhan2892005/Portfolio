@@ -1,7 +1,7 @@
 ---
 title: '💡 Nguyên Lý Ngôn Ngữ Lập Trình — Từ Ký Tự Đến Chương Trình Chạy Được'
 description: "Khám phá cách một ngôn ngữ lập trình được thiết kế và triển khai, từ cú pháp đến ngữ nghĩa, và vai trò của compiler và runtime."
-date: "08-27-2025"
+date: "27-08-2025"
 tags: ["Phúc Nhân", "Software Engineering", "Principles of Programming Languages", "Research"]
 author: "Phúc Nhân"
 slug: "principles-of-programming-languages"

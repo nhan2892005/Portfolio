@@ -10,7 +10,9 @@ import FixedNavigation from './FixedNavigation';
 
 // Import tất cả markdown files
 const markdownModules = import.meta.glob('../../data/posts/*.md', { as: 'raw', eager: true });
-
+function formatDate(dateStr) {
+  return dateStr.replace(/-/g, "/");
+}
 const BlogPost = () => {
   const { slug } = useParams();
   const [post, setPost] = useState(null);
@@ -86,7 +88,7 @@ const BlogPost = () => {
                   {post.date && (
                     <div className="flex items-center gap-2">
                       <span>📅</span>
-                      <span>{new Date(post.date).toLocaleDateString('vi-VN')}</span>
+                      <span>{formatDate(post.date)}</span>
                     </div>
                   )}
                   

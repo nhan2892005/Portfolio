@@ -1,7 +1,7 @@
 ---
 title: 'Reinforcement Learning: Hãy học từ "kiến thức, kinh nghiệm và trải nghiệm"'
 description: "Khám phá Reinforcement Learning - lĩnh vực AI mạnh mẽ giúp agent học hỏi qua trải nghiệm, từ game, robot đến tài chính, y tế, công nghệ."
-date: "08-03-2025"
+date: "03-08-2025"
 tags: ["Phúc Nhân", "AI", "Reinforcement Learning", "Machine Learning", "Deep Learning", "Neural Networks", "Data Science", "Research"]
 author: "Phúc Nhân"
 slug: "reinforcement-learning"

@@ -1,7 +1,7 @@
 ---
 title: "Microservices — Tách nhỏ để mạnh mẽ"
 description: "Khám phá Microservices - xu hướng trending trong lĩnh vực phát triển phần mềm, giúp giảm độ phức tạp và tăng tính linh hoạt."
-date: "08-25-2025"
+date: "25-08-2025"
 tags: ["Phúc Nhân", "Web Development", "DNS", "Computer Network", "Software Engineering", "Microservices"]
 author: "Phúc Nhân"
 slug: "micro-service"

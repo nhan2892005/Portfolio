@@ -1,7 +1,7 @@
 ---
 title: 'DNS Không Khó: Hướng Dẫn Quản Lý Tên Miền, Trỏ Hosting Và Tối Ưu SEO Hiệu Quả'
 description: "Khám phá quy trình chi tiết từ lý thuyết DNS, cấu hình DNS tại Mắt Bão, kết nối custom domain trên Vercel đến tối ưu bảo mật và SEO, giúp website của bạn hoạt động nhanh, ổn định và thân thiện với Google."
-date: "08-07-2025"
+date: "07-08-2025"
 tags: ["Phúc Nhân", "Web Development", "DNS", "Computer Network", "Software Engineering"]
 author: "Phúc Nhân"
 slug: "dns"
