@@ -6,6 +6,7 @@ import PublicationsGroup from "../components/about/PublicationsGroup";
 import { frontendsk, backendsk, database, svc_cicd, os, big_data, data_visualize, cloud, pro_lang } from "../constants";
 
 import "react-vertical-timeline-component/style.min.css";
+import GithubContributions from "../components/about/GHContributions";
 
 const About = () => {
   return (
@@ -49,7 +50,7 @@ const About = () => {
         <ExperienceGroup title="Licenses & certifications" experiences={licenses_and_certifications} />
         {/* <ExperienceGroup title="Work Experiences" experiences={experiences} /> */}
       </div>
-
+      <GithubContributions username="nhan2892005" token={import.meta.env.VITE_GITHUB_TOKEN}/>
       <hr className='border-slate-200' />
 
       <CTA />
