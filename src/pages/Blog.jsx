@@ -56,7 +56,7 @@ const Blog = () => {
     // Cleanup function
     return () => {
       // Restore original title
-      document.title = "Phúc Nhân - Lập trình viên & Kỹ sư Dữ liệu | HPC | Big Data | AI";
+      document.title = "Phúc Nhân | Portfolio";
       document.head.removeChild(script);
     };
   }, []);
