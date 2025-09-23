@@ -78,6 +78,10 @@ body:has(.card[data-color="green"]:hover) {
     @apply py-3 px-6 rounded-lg text-blue-500 text-center font-semibold sm:w-1/2 w-[90%] -bottom-5 absolute mx-auto right-0 left-0 flex justify-center items-center gap-3;
   }
 
+  .neo-btn-small {
+    @apply py-1 px-1 rounded-lg text-blue-500 text-center font-semibold sm:w-1/2 w-[60%] -bottom-5 absolute mx-auto right-0 left-0 flex justify-center items-center gap-1;
+  }
+
   .cta {
     @apply w-full flex items-center md:flex-row flex-col sm:mt-16 mt-8 gap-7;
   }

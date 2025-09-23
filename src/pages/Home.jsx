@@ -2,7 +2,7 @@ import { Canvas } from "@react-three/fiber";
 import { Suspense, useState } from "react";
 
 import { HomeInfo, Loader } from "../components";
-import { Bird, Island, Plane, Sky } from "../models";
+import { DragonMove, Island, Plane, Sky } from "../models"; // Thay Bird thành DragonMove
 
 import { adjustBiplaneForScreenSize, adjustIslandForScreenSize } from "../utils";
 
@@ -15,7 +15,7 @@ const Home = () => {
 
   return (
     <section className='w-full h-screen relative'>
-      <div className='absolute top-28 left-0 right-0 z-10 flex items-center justify-center'>
+      <div className="absolute top-28 left-1/2 transform -translate-x-1/2 z-10">
         {currentStage && <HomeInfo currentStage={currentStage} />}
       </div>
 
@@ -26,14 +26,14 @@ const Home = () => {
         camera={{ near: 0.1, far: 1000 }}
       >
         <Suspense fallback={<Loader />}>
-          <directionalLight position={[1, 1, 1]} intensity={2} />
+          <directionalLight position={[1, 1, 1]} intensity={3} />
           <ambientLight intensity={0.5} />
-          <pointLight position={[10, 5, 10]} intensity={2} />
+          <pointLight position={[10, 5, 10]} intensity={3} />
           <spotLight
             position={[0, 50, 10]}
             angle={0.15}
             penumbra={1}
-            intensity={2}
+            intensity={3}
           />
           <hemisphereLight
             skyColor='#b1e1ff'
@@ -41,7 +41,17 @@ const Home = () => {
             intensity={1}
           />
 
-          <Bird />
+          {/* Thay Bird bằng DragonMove với các tùy chỉnh */}
+          <DragonMove 
+            dragonColor="golden"
+            currentAnimation="Flying" // Tên animation nếu có
+            initialPosition={[-15, -1000, -15]}
+            scale={[0.007, 0.007, 0.007]}
+            speed={0.005}
+            flyingHeight={2}
+            waveAmplitude={0.8}
+          />
+          
           <Sky isRotating={isRotating} />
           <Island
             isRotating={isRotating}
