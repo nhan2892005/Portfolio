@@ -623,3 +623,13 @@ export const SPECIAL_SCORES = {
   "KD": { label: "Không đạt", description: "Tính điểm 0.0", includeInGPA: true, scoreValue: 0.0, numericCode: 20 },
   "DT": { label: "Đạt", description: "Đạt", includeInGPA: false, numericCode: 21 }
 };
+
+export const MATERIALS = {
+  "miwai25": "https://www.canva.com/design/DAG0OKJM_MA/6gSrr4LLehD0IuIqHMUH4Q/view?embed",
+  "proposal_doges": "https://docs.google.com/presentation/d/e/2PACX-1vSdPHczQqn2fc5xYOl9knBypAI8J96n_bG0j8rXiuvAO9DP81vkAruQt1fF6luSMIxUGYA6yImOt0lq/pubembed?start=false&loop=false&delayms=3000",
+  "hpcdigitaltwins":"https://docs.google.com/presentation/d/e/2PACX-1vTnpIEAEXpPIY1MXQYjNqwoqIiA-ycXCLc3IOG787-ODpU2aYXzy4ySUiKDqX5c4qhlirMo6YkZoKtx/pubembed?start=false&loop=false&delayms=3000"
+};
+
+export const PDF_FILES = {
+  miwai25: "/pdfs/DOGES-RL_MIWAI25.pdf",
+};

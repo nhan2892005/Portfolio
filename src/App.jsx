@@ -1,5 +1,5 @@
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
-import { Footer, Navbar, ChatBtn, BlogPost } from "./components";
+import { Footer, Navbar, ChatBtn, BlogPost, SlideViewer, PdfViewer } from "./components";
 import { 
   Home, About, Projects, Contact, Photobooth, Transcript, CalendarPage, Form, Blog,
   GameSelector, Game1024, ChessGame, SudokuGame,
@@ -32,6 +32,8 @@ const App = () => {
                   <Route path="/caneles" element={<Canales />} />
                   <Route path="/photobooth" element={<Photobooth />} />
                   <Route path="/games" element={<GameSelector />} />
+                  <Route path="/slide/:file" element={<SlideViewer />} />
+                  <Route path="/pdf/:file" element={<PdfViewer />} /> 
                   <Route
                     path="/games/*"
                     element={

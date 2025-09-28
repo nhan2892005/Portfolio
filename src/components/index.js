@@ -10,6 +10,8 @@ import ModernCalendar from "./ModernCalendar";
 import DRLForm from "./forms/DRL242/DRLForm";
 import MultiFrameCollage from "./MultiFrameCollage";
 import ChatBtn from "./ChatBtn";
+import SlideViewer from "./SlideViewer";
+import PdfViewer from "./PdfViewer";
 
 export {
     CTA,
@@ -23,5 +25,7 @@ export {
     ModernCalendar,
     DRLForm,
     MultiFrameCollage,
-    ChatBtn
+    ChatBtn,
+    MaterialViewer,
+    PdfViewer
 }
