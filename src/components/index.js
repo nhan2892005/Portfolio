@@ -26,6 +26,6 @@ export {
     DRLForm,
     MultiFrameCollage,
     ChatBtn,
-    MaterialViewer,
+    SlideViewer,
     PdfViewer
 }
