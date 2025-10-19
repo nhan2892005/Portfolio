@@ -1,3 +1,12 @@
+---
+title: "Khám Phá Apache Kafka"
+description: "Khám phá Apache Kafka - Nền tảng messaging phân tán cho Big Data và ứng dụng phần mềm."
+date: "19-10-2025"
+tags: ["Phúc Nhân", "Data Center", "Research", "Kafka", "Big Data"]
+author: "Phúc Nhân"
+slug: "kafka"
+---
+
 # Khám Phá Apache Kafka: Nền Tảng Messaging Phân Tán Cho Big Data Và Ứng Dụng Phần Mềm
 
 Chào các bạn đam mê công nghệ! Hôm nay, chúng ta sẽ cùng khám phá sâu sắc hơn về Apache Kafka – một nền tảng messaging phân tán mạnh mẽ, được thiết kế để xử lý dữ liệu thời gian thực với độ tin cậy cao và khả năng mở rộng vượt trội. Với giọng điệu nghiêm túc nhưng đôi khi pha chút vui vẻ để giữ sự hấp dẫn, tôi sẽ dẫn dắt bạn qua các khía cạnh cốt lõi, từ lịch sử đến ứng dụng thực tế, nhấn mạnh vào nền tảng lý thuyết, lý do thiết kế và các ứng dụng cụ thể. Blog này khoảng 1200 từ (để đi sâu hơn mà vẫn ngắn gọn), tập trung vào cách Kafka hỗ trợ xử lý dữ liệu IoT, e-commerce và tích hợp với Spark Structured Streaming trong Big Data. Tôi cũng sẽ đề xuất hình ảnh minh họa để blog thêm phần trực quan. Hãy bắt đầu hành trình này một cách nghiêm túc!
