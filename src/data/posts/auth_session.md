@@ -617,7 +617,7 @@ Backend:
 
 ## 🎓 Kết Luận & Bài Học Cuộc Sống
 
-1. **Không có giải pháp hoàn hảo (No Silver Bullet)**
+**Không có giải pháp hoàn hảo (No Silver Bullet)**
 
 Giống như authentication, cuộc sống không có công thức nào hoàn hảo cho mọi tình huống:
 - Session tốt cho A, nhưng không tốt cho B
@@ -626,7 +626,7 @@ Giống như authentication, cuộc sống không có công thức nào hoàn h�
 
 Đừng tìm "giải pháp tốt nhất", hãy tìm "giải pháp phù hợp nhất" với hoàn cảnh của bạn.
 
-2. **Defense in Depth (Phòng thủ nhiều lớp)**
+**Defense in Depth (Phòng thủ nhiều lớp)**
 
 Chúng ta không chỉ dùng 1 biện pháp bảo mật:
 - HTTPS + HttpOnly Cookie + CSRF Token + Rate Limiting + MFA
@@ -636,7 +636,7 @@ Trong cuộc sống, đừng dựa vào 1 "kế hoạch dự phòng" duy nhất.
 - Đừng chỉ có 1 kỹ năng
 - Đừng chỉ tin vào 1 người
 
-3. **Trade-offs (Đánh đổi)**
+**Trade-offs (Đánh đổi)**
 
 Mỗi quyết định đều có trade-off:
 - Session → Dễ implement nhưng khó scale
@@ -650,7 +650,7 @@ Mọi quyết định trong đời đều có giá của nó. Không có "free l
 
 Hãy **biết rõ bạn đang đánh đổi cái gì**, và chấp nhận nó một cách tỉnh táo.
 
-4. **Simplicity is Sophistication (Đơn giản là tinh tế)**
+**Simplicity is Sophistication (Đơn giản là tinh tế)**
 
 Code bảo mật tốt nhất không phải là code phức tạp nhất:
 - Session-based đơn giản nhưng đủ tốt cho 80% use cases
@@ -663,7 +663,7 @@ Code bảo mật tốt nhất không phải là code phức tạp nhất:
 
 "Perfection is achieved, not when there is nothing more to add, but when there is nothing left to take away." - Antoine de Saint-Exupéry
 
-5. **Trust, But Verify (Tin tưởng, nhưng phải kiểm chứng)**
+**Trust, But Verify (Tin tưởng, nhưng phải kiểm chứng)**
 
 OAuth: Tin Google/GitHub, nhưng vẫn phải verify token
 JWT: Tin client gửi token, nhưng vẫn phải verify signature
