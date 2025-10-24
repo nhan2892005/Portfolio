@@ -64,7 +64,7 @@ const BlogPost = () => {
         )}
           
         {/* Main Content */}
-        <div className="flex-1 bg-gray-100 p-4 mt-16 md:mt-0">
+        <div className="flex-1 bg-transparent p-1 mt-10 md:mt-0 max-w-full sm:max-w-xl md:max-w-xl lg:max-w-4xl xl:max-w-7xl mx-auto rounded-lg shadow">
           <div className="mb-8">
             <Link 
               to="/blog" 
