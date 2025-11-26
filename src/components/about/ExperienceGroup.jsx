@@ -54,6 +54,17 @@ const ExperienceGroup = ({ title, experiences }) => {
                   </li>
                 ))}
               </ul>
+
+              {experience.link && (
+                <a
+                  href={`${experience.link}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-blue-600 hover:underline text-sm mt-2 block"
+                >
+                  Click here to view
+                </a>
+              )}
             </VerticalTimelineElement>
           ))}
         </VerticalTimeline>

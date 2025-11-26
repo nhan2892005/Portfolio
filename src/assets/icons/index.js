@@ -62,6 +62,8 @@ import huyhieudoan from './huyhieudoan.svg'
 import bk from './logobk.png'
 import google from './google.png'
 import codingame from './codingame.png'
+import hsv from './hsv.png'
+import oci from './oci.jpg'
 
 export {
     enjoy,
@@ -127,5 +129,7 @@ export {
     synergia,
     bk,
     google,
-    codingame
+    codingame,
+    hsv,
+    oci
 }

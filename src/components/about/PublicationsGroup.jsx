@@ -39,10 +39,6 @@ const PublicationsGroup = ({ title, publications = [] }) => {
                 <p className="text-gray-600 italic text-sm">{pub.venue}</p>
               </div>
 
-              {pub.abstract && (
-                <p className="mt-3 text-black-500/70 text-sm">{pub.abstract}</p>
-              )}
-
               {pub.keywords && pub.keywords.length > 0 && (
                 <div className="mt-3">
                   <span className="font-semibold text-sm">Keywords: </span>

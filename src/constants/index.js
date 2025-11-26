@@ -54,7 +54,9 @@ import {
     synergia,
     bk,
     google,
-    codingame
+    codingame,
+    hsv,
+    oci
 } from "../assets/icons";
 import { a } from "@react-spring/three";
 
@@ -278,7 +280,7 @@ export const research_experiences = [
         date: "Sep 2024 - Present",
         points: [
             "Research on the application of Reinforcement Learning in Resource Management, particularly in the Scheduling Problem within HPC Systems.",
-            "Leveraged Kafka and Spark for data stream processing, real-time analytics and IOT",
+            "Designed simulation frameworks, performed multi-node cluster experiments, contributed to technical publications.",
         ],
     },
     {
@@ -290,18 +292,8 @@ export const research_experiences = [
         points: [
             "Researched AI applications in digital factory transformation, industrial modernization, and manufacturing.",
             "Focused on computer vision technologies for automated factory processes and design of industrial ICs.",
-            "Utilized Python for AI model development and applied WinForms for UI development in .NET.",
         ],
     },
-    // {
-    //     title: "Publications",
-    //     company_name: "",
-    //     icon: paper,  // Replace with the appropriate icon
-    //     iconBg: "#fbc3bc",
-    //     date: "",
-    //     points: [
-    //     ],
-    // },
 ];
 
 export const publications = [
@@ -321,13 +313,41 @@ export const publications = [
       "Reinforcement Learning",
       "Multi-objective Reinforcement Learning",
     ],
-    doi: "To appear, expected publication December 2025",
+    doi: "10.1007/978-981-95-4960-3_33",
     icon: "📑",
     iconBg: "#a6c1faff",
   },
 ];
 
 export const extracurricular_activities = [
+    {
+        title: "Mentor",
+        company_name: "BDC Data Hackathon 2025",
+        icon: bigdata,
+        iconBg: "#accbe1",
+        date: "Nov 2025",
+        points: [
+            "Provided technical mentorship on data processing, algorithm design, and system architecture for the Bus Router challenge.",
+            "Reviewed solutions and offered strategic feedback to help teams refine models and presentations.",
+            "Supported teams throughout the hackathon by answering technical questions and sharing practical insights."
+        ],
+    },
+    {
+        title: "Executive Committee of Academic Network on Quantum Computing, Cloud Computing,and Big Data",
+        company_name: "Vietnam National Union of Students",
+        icon: hsv,
+        iconBg: "#2693e0ec",
+        date: "Oct 2025 - Present",
+        points: [],
+    },
+    {
+        title: "Member of Academic Network on Artificial Intelligence, Digital Twin, Virtual Reality / Augmented Reality (VR/AR)",
+        company_name: "Vietnam National Union of Students",
+        icon: hsv,
+        iconBg: "#2693e0ec",
+        date: "Oct 2025 - Present",
+        points: [],
+    },
     {
         title: "Media Design Team",
         company_name: "Big Data Club - HCMUT",
@@ -356,6 +376,31 @@ export const extracurricular_activities = [
 
 export const licenses_and_certifications = [
     {
+        title: "Oracle Cloud Infrastructure 2025 Certified DevOps Professional",
+        company_name: "Oracle Cloud Infrastructure",
+        icon: oci,
+        iconBg: "#c31010ff",
+        date: "Oct 28th, 2025",
+        points: [
+            "Proficient in provisioning and configuring OCI infrastructure using code and templates, and managing containers with the Container Orchestration Engine.",
+            "Skilled in configuring and managing CI/CD pipelines and implementing DevSecOps practices for secure, automated workflows.",
+            "Experienced in monitoring, observability, and operational management to ensure reliable and efficient application deployment on OCI."
+        ],
+        link: "https://catalog-education.oracle.com/ords/certview/sharebadge?id=4F67A94AFCB299D3B58AAE8AF3CB33FC01C5EC93FB1CE53369EF28FEDF5C1BEA"
+    },
+    {
+        title: "Oracle Cloud Infrastructure 2025 Certified Foundations Associate",
+        company_name: "Oracle Cloud Infrastructure",
+        icon: oci,
+        iconBg: "#c31010ff",
+        date: "Oct 27th, 2025",
+        points: [
+            "Demonstrates fundamental knowledge of cloud concepts and core Oracle Cloud Infrastructure (OCI) services, including Compute, Storage, Networking, Database, Analytics, AI, Observability, and Hybrid services.",
+            "Understands OCI security, identity, compliance, billing, cost management, governance, and administration, suitable for both technical and non-technical roles.",
+        ],
+        link: "https://catalog-education.oracle.com/ords/certview/sharebadge?id=3A269A01917F9D439B143AE73CA0942462C75252FF2F7177C0EDB80D858A9420"
+    },
+    {
         title: "Google Business Intelligence",
         company_name: "Google x NIC",
         icon: google,
@@ -367,6 +412,7 @@ export const licenses_and_certifications = [
             "Design data visualizations that answer business questions",
             "Create dashboards that effectively communicate data insights to stakeholders",
         ],
+        link: "https://www.coursera.org/account/accomplishments/specialization/2SRHF2WWQPGE"
     },
     {
         title: "Google Advanced Data Analytics",
@@ -380,6 +426,7 @@ export const licenses_and_certifications = [
             "Build regression and machine learning models to analyze and interpret data",
             "Communicate insights from data analysis to stakeholders",
         ],
+        link: "https://www.coursera.org/account/accomplishments/specialization/N7H5SFHRVD02"
     },
     {
         title: "Artificial Intelligence - Gold level",
@@ -390,6 +437,7 @@ export const licenses_and_certifications = [
         points: [
             "The developer knows how to develop an advanced AI: the AI optimizes its movements and adopts an appropriate strategy according to context",
         ],
+        link: "https://www.codingame.com/certification/ynuRgEvfKb6dEnoGjG6xzg"
     },
     {
         title: "Algorithms - Silver level",
@@ -400,6 +448,7 @@ export const licenses_and_certifications = [
         points: [
             "The developer has mastered advanced structures and simple algorithms: string manipulation, arrays, linked lists...",
         ],
+        link: "https://www.codingame.com/certification/IUrJAw4WdpZf89_ODIOlVA"
     },
 ];
 
@@ -432,6 +481,45 @@ export const socialLinks = [
 
 export const projects = [
     {
+        iconUrl: bigdata, 
+        theme: 'btn-back-blue',
+        name: ' Club Management Application',
+        description: 'Architected and delivered a production-grade club management platform, handling full-stack development, DevOps, and project management. Built a scalable Java Spring Boot backend with PostgreSQL, resolving performance issues, and developed a performant Next.js frontend for seamless user experience. Managed end-to-end deployment on a virtual machine, including environment setup, HTTPS, DNS, monitoring, and maintenance, while overseeing project planning, release management, and quality assurance to ensure reliable real-world operation.',
+        livesite: 'https://bdc.hpcc.vn',
+    },
+    {
+        iconUrl: bk, 
+        theme: 'btn-back-grey',
+        name: 'Tutor Support Platform',
+        description: 'Developed a Tutor Support System as a course project, creating UML models and building a Next.js/Node.js MVP with real-time multi-channel communication via Socket.io. Designed a scalable PostgreSQL database, migrated to SQL Server for enterprise-grade compatibility, and implemented advanced features including AI-driven tutor–student matching and RAG-based personalized study guidance. Integrated automated scheduling and feedback evaluation, along with SSO authentication and synchronization with the university’s internal systems.',
+        link: 'https://github.com/nhan2892005/TutorPlatform',
+        livesite: 'https://hcmuttutor.onrender.com/',
+    },
+    {
+        iconUrl: enjoy, 
+        theme: 'btn-back-pink',
+        name: 'Social Web App',
+        description: 'A social platform for sharing memories, with features such as Google OAuth, posting, commenting, and searching by tags. Includes pagination and responsive UI.',
+        link: 'https://enjoy-moments.netlify.app/',
+        livesite: 'https://enjoy-moments.netlify.app/',
+    },
+    {
+        iconUrl: tiki, 
+        theme: 'btn-back-yellow',
+        name: 'E-commerce Review Analysis and Data Warehouse',
+        description: 'Developed a data warehouse and NLP-based review summarization system for e-commerce. Designed ETL pipelines and deployed NLP models for real-time product review analysis.',
+        link: 'https://github.com/nhan2892005/AnalystReviewProduct',
+        livesite: 'https://tikiassistant.netlify.app/',
+    },
+    {
+        iconUrl: cv,  
+        theme: 'btn-back-green',
+        name: 'AI-powered SaaS Platform',
+        description: 'Developed an AI-powered image processing SaaS platform. Integrated features such as Image Restoration, Recoloring, Generative Fill, and secure payment integration.',
+        link: 'https://github.com/nhan2892005/FullStack-AI_SaaS_Platform',
+        livesite: 'https://aiyourimage.vercel.app/',
+    },
+    {
         iconUrl: matrix,  
         theme: 'btn-back-blue',
         name: 'Matrix Calculator',
@@ -447,30 +535,6 @@ export const projects = [
         link: 'https://github.com/nhan2892005/DSA_and_MLP',
         livesite: '',
     },
-    {
-        iconUrl: cv,  
-        theme: 'btn-back-green',
-        name: 'AI-powered SaaS Platform',
-        description: 'Developed an AI-powered image processing SaaS platform. Integrated features such as Image Restoration, Recoloring, Generative Fill, and secure payment integration.',
-        link: 'https://github.com/nhan2892005/FullStack-AI_SaaS_Platform',
-        livesite: 'https://aiyourimage.vercel.app/',
-    },
-    {
-        iconUrl: tiki, 
-        theme: 'btn-back-yellow',
-        name: 'E-commerce Review Analysis and Data Warehouse',
-        description: 'Developed a data warehouse and NLP-based review summarization system for e-commerce. Designed ETL pipelines and deployed NLP models for real-time product review analysis.',
-        link: 'https://github.com/nhan2892005/AnalystReviewProduct',
-        livesite: 'https://tikiassistant.netlify.app/',
-    },
-    {
-        iconUrl: enjoy, 
-        theme: 'btn-back-pink',
-        name: 'Social Web App',
-        description: 'A social platform for sharing memories, with features such as Google OAuth, posting, commenting, and searching by tags. Includes pagination and responsive UI.',
-        link: 'https://enjoy-moments.netlify.app/',
-        livesite: 'https://enjoy-moments.netlify.app/',
-    }
 ];
 
 export const products = [
@@ -627,7 +691,6 @@ export const SPECIAL_SCORES = {
 export const MATERIALS = {
   "miwai25": "https://www.canva.com/design/DAG0OKJM_MA/6gSrr4LLehD0IuIqHMUH4Q/view?embed",
   "proposal_doges": "https://docs.google.com/presentation/d/e/2PACX-1vSdPHczQqn2fc5xYOl9knBypAI8J96n_bG0j8rXiuvAO9DP81vkAruQt1fF6luSMIxUGYA6yImOt0lq/pubembed?start=false&loop=false&delayms=3000",
-  "hpcdigitaltwins":"https://docs.google.com/presentation/d/e/2PACX-1vTnpIEAEXpPIY1MXQYjNqwoqIiA-ycXCLc3IOG787-ODpU2aYXzy4ySUiKDqX5c4qhlirMo6YkZoKtx/pubembed?start=false&loop=false&delayms=3000"
 };
 
 export const PDF_FILES = {
