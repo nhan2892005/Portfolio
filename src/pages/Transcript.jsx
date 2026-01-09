@@ -262,6 +262,7 @@ const Transcript = () => {
         let diemHe4 = "--";
         let finalDiemSo = semesterScore.diemso;
         let isCalculated = false;
+        let currentIsSpecial = isSpecial; // Biến để tracking trạng thái đặc biệt hiện tại
         
         if (isSpecial) {
           specialInfo = getSpecialScoreInfo(semesterScore.diemchu, semesterScore.diemso);
@@ -276,11 +277,15 @@ const Transcript = () => {
         const calculatedScore = calculateCourseScore(components);
         const userMode = scoreCalculationMode[semesterScore.mamh] || 'original';
         
-        if (calculatedScore && userMode === 'component') {
+        // Nếu chế độ tính toán là từ thành phần, dùng kết quả tính toán
+        if (userMode === 'component' && calculatedScore) {
           finalDiemSo = calculatedScore.score;
           displayDiemChu = calculatedScore.grade;
           diemHe4 = calculatedScore.gpa;
           isCalculated = true;
+          // Khi tính từ thành phần, điểm không phải là đặc biệt nữa
+          currentIsSpecial = false;
+          specialInfo = null;
         }
         
         const course = {
@@ -292,7 +297,7 @@ const Transcript = () => {
           diemHe4: diemHe4,
           originalDiemChu: semesterScore.diemchu, // Giữ lại điểm gốc
           originalDiemSo: semesterScore.diemso,   // Giữ lại điểm gốc
-          isSpecial: isSpecial,
+          isSpecial: currentIsSpecial, // Dùng trạng thái đặc biệt hiện tại (có thể thay đổi khi tính từ thành phần)
           specialInfo: specialInfo,
           components: components,
           calculatedScore: calculatedScore, // Thêm thông tin tính toán
@@ -2033,7 +2038,7 @@ const Transcript = () => {
                           </td>
                           <td className="border px-4 py-2 text-center font-semibold">
                             {course.isSpecial ? (
-                              <span className="text-gray-500 italic">--</span>
+                              <span className="text-gray-500 italic">{formatScore(course.diemSo)}</span>
                             ) : (
                               <div className="flex items-center justify-center gap-1">
                                 <span>{formatScore(course.diemSo)}</span>
