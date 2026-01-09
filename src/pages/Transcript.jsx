@@ -317,8 +317,92 @@ const Transcript = () => {
     }
   }, [filteredGroupedByKKT, selectedSemester, semesterScores, khoiKienThuc, scoreCalculationMode]);
 
-  const avgGPA = (totalWeightedGPA / totalCredits).toFixed(2);
-  const avg10 = (totalWeightedScore10 / totalCredits).toFixed(2);
+  // Tính GPA realtime từ displayData (tùy theo mode hiện tại: original hay component)
+  // Được cập nhật tự động khi user thay đổi chế độ tính điểm
+  const computeGPA = useMemo(() => {
+    // Lấy tất cả khóa học từ displayData (đã tính realtime)
+    const allCourses = Object.values(displayData).flat();
+    
+    if (allCourses.length === 0) {
+      return { avgGPA: "N/A", avg10: "N/A" };
+    }
+
+    // Tính hệ 4
+    const validCoursesGPA = allCourses.filter(course => {
+      const isSpecial = isSpecialScore(course.diemChu, course.diemSo);
+      
+      if (isSpecial) {
+        const specialInfo = getSpecialScoreInfo(course.diemChu, course.diemSo);
+        return specialInfo?.includeInGPA && course.SOTC > 0;
+      } else {
+        return course.diemHe4 !== null && 
+               course.diemHe4 !== "--" && 
+               typeof course.diemHe4 === "number" && 
+               course.SOTC > 0;
+      }
+    });
+
+    // Tính hệ 10
+    const validCoursesScore10 = allCourses.filter(course => {
+      const isSpecial = isSpecialScore(course.diemChu, course.diemSo);
+      
+      if (isSpecial) {
+        const specialInfo = getSpecialScoreInfo(course.diemChu, course.diemSo);
+        return specialInfo?.includeInGPA && specialInfo?.scoreValue !== undefined && course.SOTC > 0;
+      } else {
+        return course.diemSo !== null && 
+               !isNaN(course.diemSo) && 
+               course.diemSo >= 0 && 
+               course.diemSo <= 10 && 
+               course.SOTC > 0;
+      }
+    });
+
+    // Tính GPA hệ 4
+    let avgGPA = "N/A";
+    if (validCoursesGPA.length > 0) {
+      const totalWeightedGPA = validCoursesGPA.reduce((sum, course) => {
+        const isSpecial = isSpecialScore(course.diemChu, course.diemSo);
+        let gpaToUse = course.diemHe4;
+        
+        if (isSpecial) {
+          const specialInfo = getSpecialScoreInfo(course.diemChu, course.diemSo);
+          if (specialInfo?.includeInGPA && specialInfo?.scoreValue !== undefined) {
+            const grade = scoreToGrade(specialInfo.scoreValue);
+            gpaToUse = gradeToGPA[grade] || 0;
+          } else {
+            gpaToUse = 0;
+          }
+        }
+        
+        return sum + gpaToUse * course.SOTC;
+      }, 0);
+      
+      const totalCreditsGPA = validCoursesGPA.reduce((sum, course) => sum + course.SOTC, 0);
+      avgGPA = (totalWeightedGPA / totalCreditsGPA).toFixed(2);
+    }
+
+    // Tính GPA hệ 10
+    let avg10 = "N/A";
+    if (validCoursesScore10.length > 0) {
+      const totalWeightedScore10 = validCoursesScore10.reduce((sum, course) => {
+        const isSpecial = isSpecialScore(course.diemChu, course.diemSo);
+        let scoreToUse = course.diemSo;
+        
+        if (isSpecial) {
+          const specialInfo = getSpecialScoreInfo(course.diemChu, course.diemSo);
+          scoreToUse = specialInfo?.scoreValue || 0;
+        }
+        
+        return sum + scoreToUse * course.SOTC;
+      }, 0);
+      
+      const totalCreditsScore10 = validCoursesScore10.reduce((sum, course) => sum + course.SOTC, 0);
+      avg10 = (totalWeightedScore10 / totalCreditsScore10).toFixed(2);
+    }
+
+    return { avgGPA, avg10 };
+  }, [displayData]);
 
   // Phân tích dữ liệu cho biểu đồ
   const gradeAnalysis = useMemo(() => {
@@ -1938,11 +2022,11 @@ const Transcript = () => {
                   </div>
                   <div>
                     <p className="text-sm text-gray-600">Điểm trung bình hệ 4</p>
-                    <p className="text-xl font-bold text-green-600">{avgGPA}</p>
+                    <p className="text-xl font-bold text-green-600">{computeGPA.avgGPA}</p>
                   </div>
                   <div>
                     <p className="text-sm text-gray-600">Điểm trung bình hệ 10</p>
-                    <p className="text-xl font-bold text-purple-600">{avg10}</p>
+                    <p className="text-xl font-bold text-purple-600">{computeGPA.avg10}</p>
                   </div>
                   <div>
                     <p className="text-sm text-gray-600">Dữ liệu khuyết</p>
