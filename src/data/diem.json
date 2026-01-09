@@ -1079,11 +1079,11 @@
         "MAMONHOC": "CO3005",
         "TENMONHOC": "Nguyên lý Ngôn ngữ Lập trình",
         "SOTC": 4,
-        "DIEMCHU": "CH",
-        "DIEMSO": 15,
-        "DIEM": "CH",
+        "DIEMCHU": "B",
+        "DIEMSO": 7.8,
+        "DIEM": "B",
         "DIEMDAT": "1",
-        "UUTIEN": 15
+        "UUTIEN": 7.8
       },
       {
         "MONHOCID": 9658,
@@ -1103,11 +1103,11 @@
         "MAMONHOC": "CO3127",
         "TENMONHOC": "Đồ án tổng hợp - hướng kỹ thuật dữ liệu",
         "SOTC": 1,
-        "DIEMCHU": "CH",
-        "DIEMSO": 15,
-        "DIEM": "CH",
+        "DIEMCHU": "A+",
+        "DIEMSO": 10,
+        "DIEM": "A+",
         "DIEMDAT": "1",
-        "UUTIEN": 15
+        "UUTIEN": 10
       },
       {
         "MONHOCID": 28801,
