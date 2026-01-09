@@ -61,6 +61,11 @@ const Transcript = () => {
   const [selectedSemester, setSelectedSemester] = useState('');
   const [selectedCourseComponents, setSelectedCourseComponents] = useState(null);
 
+  // State cho lựa chọn tính điểm (thành phần hay gốc) cho từng môn
+  // Key: MAMONHOC, Value: 'component' (tính từ thành phần) hoặc 'original' (lấy gốc)
+  // Default: 'original'
+  const [scoreCalculationMode, setScoreCalculationMode] = useState({});
+
   // State cho xác thực mật khẩu
   const [showPasswordModal, setShowPasswordModal] = useState(false);
   const [passwordInput, setPasswordInput] = useState('');
@@ -129,8 +134,11 @@ const Transcript = () => {
     let finalDiemHe4 = diemHe4;
     let isCalculated = false;
 
-    // Nếu có điểm thành phần và tính được điểm, sử dụng điểm tính toán
-    if (calculatedScore && !isSpecial) {
+    // Kiểm tra preference của người dùng cho môn này (default: 'original')
+    const userMode = scoreCalculationMode[course.MAMONHOC] || 'original';
+    
+    // Nếu có điểm thành phần và tính được điểm, sử dụng điểm tính toán (khi userMode = 'component')
+    if (calculatedScore && userMode === 'component') {
       finalDiemSo = calculatedScore.score;
       finalDiemChu = calculatedScore.grade;
       finalDiemHe4 = calculatedScore.gpa;
@@ -264,9 +272,11 @@ const Transcript = () => {
           diemHe4 = gradeToGPA[semesterScore.diemchu] || "--";
         }
         
-        // Tính điểm từ thành phần nếu có và không phải điểm đặc biệt
+        // Tính điểm từ thành phần nếu có - kiểm tra preference (default: 'original')
         const calculatedScore = calculateCourseScore(components);
-        if (calculatedScore && !isSpecial) {
+        const userMode = scoreCalculationMode[semesterScore.mamh] || 'original';
+        
+        if (calculatedScore && userMode === 'component') {
           finalDiemSo = calculatedScore.score;
           displayDiemChu = calculatedScore.grade;
           diemHe4 = calculatedScore.gpa;
@@ -300,7 +310,7 @@ const Transcript = () => {
       
       return grouped;
     }
-  }, [filteredGroupedByKKT, selectedSemester, semesterScores, khoiKienThuc]);
+  }, [filteredGroupedByKKT, selectedSemester, semesterScores, khoiKienThuc, scoreCalculationMode]);
 
   const avgGPA = (totalWeightedGPA / totalCredits).toFixed(2);
   const avg10 = (totalWeightedScore10 / totalCredits).toFixed(2);
@@ -1053,13 +1063,33 @@ const Transcript = () => {
 
   // Hàm xuất dữ liệu JSON
   const handleExportData = () => {
-    const dataStr = JSON.stringify({ code: "200", msg: "ok", data: currentData }, null, 2);
-    const dataBlob = new Blob([dataStr], { type: 'application/json' });
-    const url = URL.createObjectURL(dataBlob);
-    const link = document.createElement('a');
-    link.href = url;
-    link.download = 'diem_updated.json';
-    link.click();
+    // Xuất diem.json
+    const diemData = JSON.stringify({ code: "200", msg: "ok", data: currentData }, null, 2);
+    const diemBlob = new Blob([diemData], { type: 'application/json' });
+    const diemUrl = URL.createObjectURL(diemBlob);
+    const diemLink = document.createElement('a');
+    diemLink.href = diemUrl;
+    diemLink.download = 'diem.json';
+    diemLink.click();
+
+    const semesterData2 = JSON.stringify({ 
+      code: "200", 
+      msg: "OK", 
+      data: { 
+        diem: semesterScores,
+        tinChiTichLuy: semesterData.data.tinChiTichLuy 
+      } 
+    }, null, 2);
+    
+    // Xuất semester.json
+    setTimeout(() => {
+      const semesterBlob = new Blob([semesterData2], { type: 'application/json' });
+      const semesterUrl = URL.createObjectURL(semesterBlob);
+      const semesterLink = document.createElement('a');
+      semesterLink.href = semesterUrl;
+      semesterLink.download = 'semester.json';
+      semesterLink.click();
+    }, 500);
   };
 
   // Hàm lưu vào file gốc và commit
@@ -2024,7 +2054,23 @@ const Transcript = () => {
                           </td>
                           <td className="border px-4 py-2">
                             {course.components && course.components.length > 0 ? (
-                              <div className="space-y-1">
+                              <div className="space-y-1.5">
+                                <div className="flex items-center justify-between gap-1 mb-1 pb-1 border-b border-gray-200">
+                                  <span className="text-xs font-semibold text-gray-600">Chế độ:</span>
+                                  <select
+                                    value={scoreCalculationMode[course.MAMONHOC] || 'original'}
+                                    onChange={(e) => setScoreCalculationMode({
+                                      ...scoreCalculationMode,
+                                      [course.MAMONHOC]: e.target.value
+                                    })}
+                                    className="px-1.5 py-0.5 text-xs border border-gray-300 rounded bg-white hover:bg-gray-50"
+                                    title="Chọn chế độ tính điểm"
+                                  >
+                                    <option value="original">📄 Gốc</option>
+                                    <option value="component">📊 Thành phần</option>
+                                  </select>
+                                </div>
+                                <div className="space-y-1">
                                 {course.components
                                   .filter(comp => comp.ten !== "Tổng kết" && comp.ten !== "Tổng kết HP")
                                   .slice(0, 2)
@@ -2050,6 +2096,7 @@ const Transcript = () => {
                                 {course.components.filter(comp => comp.ten !== "Tổng kết" && comp.ten !== "Tổng kết HP").length === 0 && (
                                   <span className="text-gray-400 italic text-xs">Không có điểm thành phần</span>
                                 )}
+                                </div>
                               </div>
                             ) : (
                               <span className="text-gray-400 italic text-xs">Không có điểm thành phần</span>
