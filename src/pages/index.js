@@ -12,6 +12,7 @@ import GameSelector from "./games/GameSelector";
 import Game1024 from "./games/Game1024";
 import SudokuGame from "./games/SudokuGame";
 import ChessGame from "./games/ChessGame";
+import ModernTetris from "./games/Tetris";
 
 export {
     Home,
@@ -24,5 +25,5 @@ export {
     Form,
     Transcript,
     Blog,
-    GameSelector, Game1024, ChessGame, SudokuGame
+    GameSelector, Game1024, ChessGame, SudokuGame, ModernTetris
 }

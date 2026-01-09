@@ -2,7 +2,7 @@ import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import { Footer, Navbar, ChatBtn, BlogPost, SlideViewer, PdfViewer } from "./components";
 import { 
   Home, About, Projects, Contact, Photobooth, Transcript, CalendarPage, Form, Blog,
-  GameSelector, Game1024, ChessGame, SudokuGame,
+  GameSelector, Game1024, ChessGame, SudokuGame, ModernTetris,
   SorryPage,
 } from "./pages";
 import { Analytics } from '@vercel/analytics/react';
@@ -42,6 +42,7 @@ const App = () => {
                           <Route path="/chess" element={<ChessGame />} />
                           <Route path="/sudoku" element={<SudokuGame />} />
                           <Route path="/game1024" element={<Game1024 />} />
+                          <Route path="/tetris" element={<ModernTetris />} />
                         </Routes>
                       </>
                     }

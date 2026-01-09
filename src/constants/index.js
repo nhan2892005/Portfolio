@@ -649,18 +649,26 @@ export const games = [
       title: 'Sudoku',
       description: 'Rèn luyện tư duy với các bảng Sudoku đa cấp độ',
       icon: '🔢',
-      gradientFrom: 'green-400',
-      gradientTo: 'teal-600',
+      gradientFrom: 'yellow-400',
+      gradientTo: 'indigo-600',
       path: '/sudoku',
     },
     {
       title: 'Game 1024',
       description: 'Trò chơi hợp nhất số hiện đại, thử thách giới hạn của bạn!',
       icon: '🧠',
-      gradientFrom: 'yellow-400',
-      gradientTo: 'orange-600',
+      gradientFrom: 'green-400',
+      gradientTo: 'indigo-600',
       path: '/game1024',
-    }
+    },
+    {
+      title: 'Xếp khối',
+      description: 'Nhanh tay lẹ mắt và xoắn não cùng các khối hình',
+      icon: '♟️',
+      gradientFrom: 'orange-500',
+      gradientTo: 'indigo-600',
+      path: '/tetris',
+    },
   ];
 
 
