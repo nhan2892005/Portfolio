@@ -1115,11 +1115,11 @@
         "MAMONHOC": "SP1035",
         "TENMONHOC": "Chủ nghĩa Xã hội Khoa học",
         "SOTC": 2,
-        "DIEMCHU": "CH",
-        "DIEMSO": 15,
-        "DIEM": "CH",
+        "DIEMCHU": "B",
+        "DIEMSO": 7.5,
+        "DIEM": "B",
         "DIEMDAT": "1",
-        "UUTIEN": 15
+        "UUTIEN": 7.5
       },
       {
         "MONHOCID": 28802,
