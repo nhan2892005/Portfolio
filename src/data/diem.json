@@ -1091,11 +1091,11 @@
         "MAMONHOC": "CO3001",
         "TENMONHOC": "Công nghệ Phần mềm",
         "SOTC": 3,
-        "DIEMCHU": "CH",
-        "DIEMSO": 15,
-        "DIEM": "CH",
+        "DIEMCHU": "A",
+        "DIEMSO": 8.9,
+        "DIEM": "A",
         "DIEMDAT": "1",
-        "UUTIEN": 15
+        "UUTIEN": 8.9
       },
       {
         "MONHOCID": 335507,

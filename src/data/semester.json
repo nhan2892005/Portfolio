@@ -121,10 +121,10 @@
                 "mamh": "CO3001",
                 "tenmhvn": "Công nghệ Phần mềm",
                 "tc": 3,
-                "diem": "15",
-                "diemso": 15,
-                "diemcu": 15,
-                "diemchu": "CH",
+                "diem": "8.9",
+                "diemso": 8.9,
+                "diemcu": 8.9,
+                "diemchu": "A",
                 "diemdat": "1",
                 "ghichu": null,
                 "tctlhk": "--",
@@ -132,7 +132,7 @@
                 "dtbtl": "3.8",
                 "capnhat": "05/03/2024 10:01",
                 "nhomlop": "L02",
-                "diemthanhphanjson": "[{\"ma\":\"tkethp\",\"ten\":\"Tổng kết HP\",\"stt\":0,\"diem\":8.5,\"tyLe\":100},{\"ma\":\"tket\",\"ten\":\"Tổng kết\",\"stt\":0,\"diem\":8.5,\"tyLe\":100},{\"ma\":\"baiTapThucHanh\",\"ten\":\"Bài tập\",\"stt\":2,\"diem\":10,\"tyLe\":10},{\"ma\":\"baiTapLon_TieuLuan\",\"ten\":\"Bài tập lớn\",\"stt\":3,\"diem\":9,\"tyLe\":40},{\"ma\":\"thi\",\"ten\":\"Thi\",\"stt\":5,\"diem\":8,\"tyLe\":50}]",
+                "diemthanhphanjson": "[{\"ma\":\"tkethp\",\"ten\":\"Tổng kết HP\",\"stt\":0,\"diem\":8.5,\"tyLe\":100},{\"ma\":\"tket\",\"ten\":\"Tổng kết\",\"stt\":0,\"diem\":8.5,\"tyLe\":100},{\"ma\":\"baiTapThucHanh\",\"ten\":\"Bài tập\",\"stt\":2,\"diem\":10,\"tyLe\":10},{\"ma\":\"baiTapLon_TieuLuan\",\"ten\":\"Bài tập lớn\",\"stt\":3,\"diem\":9,\"tyLe\":40},{\"ma\":\"thi\",\"ten\":\"Thi\",\"stt\":5,\"diem\":8.5,\"tyLe\":50}]",
                 "tinhtrangdiem": "CTH"
             },
             {
