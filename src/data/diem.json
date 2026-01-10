@@ -1067,11 +1067,11 @@
         "MAMONHOC": "CO3093",
         "TENMONHOC": "Mạng máy tính",
         "SOTC": 3,
-        "DIEMCHU": "CH",
-        "DIEMSO": 15,
-        "DIEM": "CH",
+        "DIEMCHU": "A",
+        "DIEMSO": 8.5,
+        "DIEM": "A",
         "DIEMDAT": "1",
-        "UUTIEN": 15
+        "UUTIEN": 8.5
       },
       {
         "MONHOCID": 9660,
