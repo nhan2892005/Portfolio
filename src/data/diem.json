@@ -1055,11 +1055,11 @@
         "MAMONHOC": "CO2013",
         "TENMONHOC": "Hệ cơ sở Dữ liệu",
         "SOTC": 4,
-        "DIEMCHU": "CH",
-        "DIEMSO": 15,
+        "DIEMCHU": "A",
+        "DIEMSO": 8.5,
         "DIEM": "CH",
         "DIEMDAT": "1",
-        "UUTIEN": 15
+        "UUTIEN": 8.5
       },
       {
         "MONHOCID": 21152,
