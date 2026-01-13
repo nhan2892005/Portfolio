@@ -651,6 +651,14 @@
         "SOTC": 3
       },
       {
+        "KHOIKIENTHUCID": 25696,
+        "TENKHOIKIENTHUC": "Chuyên ngành (Nhóm C)",
+        "MONHOCID": 37995,
+        "MAMONHOC": "CO3137",
+        "TENMONHOC": "Dữ liệu lớn",
+        "SOTC": 3
+      },
+      {
         "KHOIKIENTHUCID": 25697,
         "TENKHOIKIENTHUC": "Tốt nghiệp",
         "MONHOCID": 21151,
@@ -1162,6 +1170,18 @@
         "MONHOCTUONGDUONG": null,
         "MAMONHOC": "CO2001",
         "TENMONHOC": "Kỹ năng Chuyên nghiệp cho Kỹ sư",
+        "SOTC": 3,
+        "DIEMCHU": "CH",
+        "DIEMSO": 15,
+        "DIEM": "CH",
+        "DIEMDAT": "1",
+        "UUTIEN": 15
+      },
+      {
+        "MONHOCID": 37995,
+        "MONHOCTUONGDUONG": null,
+        "MAMONHOC": "CO3137",
+        "TENMONHOC": "Dữ liệu lớn",
         "SOTC": 3,
         "DIEMCHU": "CH",
         "DIEMSO": 15,

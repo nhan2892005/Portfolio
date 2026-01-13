@@ -4,6 +4,28 @@
     "data": {
         "diem": [
             {
+                "id": "20252.CO3137.2312438",
+                "mahk": "252",
+                "hocky": 20252,
+                "tenhk": "Năm học 2025-2026 - Học kỳ 2",
+                "mamh": "CO3137",
+                "tenmhvn": "Dữ liệu lớn",
+                "tc": 3,
+                "diem": "15",
+                "diemso": 15,
+                "diemcu": 15,
+                "diemchu": "CH",
+                "diemdat": "1",
+                "ghichu": null,
+                "tctlhk": "--",
+                "dtbhk": "3.8",
+                "dtbtl": "3.8",
+                "capnhat": "05/03/2024 10:01",
+                "nhomlop": "L01",
+                "diemthanhphanjson": "[{\"ma\":\"tkethp\",\"ten\":\"Tổng kết HP\",\"stt\":0,\"diem\":8.5,\"tyLe\":100},{\"ma\":\"tket\",\"ten\":\"Tổng kết\",\"stt\":0,\"diem\":8.5,\"tyLe\":100},{\"ma\":\"baiTapLon_TieuLuan\",\"ten\":\"Bài tập lớn\",\"stt\":3,\"diem\":10,\"tyLe\":20},{\"ma\":\"thiNghiem\",\"ten\":\"Thí Nghiệm\",\"stt\":4,\"diem\":10,\"tyLe\":30},{\"ma\":\"thi\",\"ten\":\"Thi\",\"stt\":5,\"diem\":8,\"tyLe\":50}]",
+                "tinhtrangdiem": "CTH"
+            },
+            {
                 "id": "20252.CO2001.2312438",
                 "mahk": "252",
                 "hocky": 20252,
