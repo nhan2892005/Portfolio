@@ -1132,6 +1132,42 @@
         "DIEM": "CH",
         "DIEMDAT": "1",
         "UUTIEN": 15
+      },
+      {
+        "MONHOCID": 17756,
+        "MONHOCTUONGDUONG": null,
+        "MAMONHOC": "CO3011",
+        "TENMONHOC": "Quản lý Dự án Phần mềm",
+        "SOTC": 3,
+        "DIEMCHU": "CH",
+        "DIEMSO": 15,
+        "DIEM": "CH",
+        "DIEMDAT": "1",
+        "UUTIEN": 15
+      },
+      {
+        "MONHOCID": 9755,
+        "MONHOCTUONGDUONG": null,
+        "MAMONHOC": "IM3001",
+        "TENMONHOC": "Quản trị Kinh doanh cho Kỹ sư",
+        "SOTC": 3,
+        "DIEMCHU": "CH",
+        "DIEMSO": 15,
+        "DIEM": "CH",
+        "DIEMDAT": "1",
+        "UUTIEN": 15
+      },
+      {
+        "MONHOCID": 6783,
+        "MONHOCTUONGDUONG": null,
+        "MAMONHOC": "CO2001",
+        "TENMONHOC": "Kỹ năng Chuyên nghiệp cho Kỹ sư",
+        "SOTC": 3,
+        "DIEMCHU": "CH",
+        "DIEMSO": 15,
+        "DIEM": "CH",
+        "DIEMDAT": "1",
+        "UUTIEN": 15
       }
     ]
   }
