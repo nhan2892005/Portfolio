@@ -1188,6 +1188,18 @@
         "DIEM": "CH",
         "DIEMDAT": "1",
         "UUTIEN": 15
+      },
+      {
+        "MONHOCID": 29188,
+        "MONHOCTUONGDUONG": null,
+        "MAMONHOC": "CO3107",
+        "TENMONHOC": "Thực tập Đồ án môn học Đa ngành - Hướng Trí tuệ Nhân tạo",
+        "SOTC": 3,
+        "DIEMCHU": "CH",
+        "DIEMSO": 15,
+        "DIEM": "CH",
+        "DIEMDAT": "1",
+        "UUTIEN": 15
       }
     ]
   }
